@@ -1,4 +1,5 @@
 from sqlite3 import Cursor
+from openpyxl.workbook import workbook
 from pymysql import NULL
 from utils.db_pool import DBPool
 from sqlalchemy import create_engine
@@ -220,5 +221,63 @@ class Students_Dao:
     def export_to_excel():
         conn = DBPool.get_instance().get_coon()
         cursor = conn.cursor()
+        #文件名具有时效性
+        timestamp=datatime.now().strftime("%Y%m%d_%H%M%S")
+        default_filename=f"students_export_{timestamp}.xlsx"
+
+        #获取输出路径
+        filepath=input(f"请输入导出路径：").strip()
+        if not filepath:
+            filepath=default_filename#若不输入路径，则会导出到当前目录
+
+        #检查扩展名
+        if not filepath.lower().endswith('.xlsx'):
+            filepath+='.xlsx'
+
+        #分页参数
+        page_size=5000#每页查询的数据量
+        current_page=1
+        all_data=[]
+        #获取总记录数
+        cursor.execute("SLEECT COUNT(*) total FROM Students")
+        total=cursor.fetchone()['total']
+        print(f'一共{total}条记录，现在开始导出.....')
+
+        #分页查询数据
+        while (current_page-1)*page_size<total:
+            offset =(current_page-1)*page_size
+            cursor.execute("""SELECT s.StudentID 学号
+                                     s.Name 姓名
+                                     s.Gender 性别
+                                     s.BirthDate 出生日期
+                                     s.Phone 电话
+                                     c.ClassName 所属班级
+                               FROM Students s LEFT JOIN
+                               Classes c ON s.ClassID=c.ClassID
+                               LIMIT %s OFFSET %s """(page_size,offset))
+            page_data=cursor.fetchall()
+            all_data.extend(page_data)#注意用extend
+            if all_data:
+                current_page+=1
+                print(f"已加载一页数据到内存")
+            else:
+                 print ("没有可以导出的数据")
+                 return 
+
+        #转换为DataFrame
+        df= pd.DataFrame(all_data)
+        #excel写入参数
+        writer=pd.ExcelWriter(
+            filepath,
+            engine='xlsxwriter',
+            datetime_format='yyyy-mm-dd',#注意遵循excel的格式规范
+            options={'string_to_urls':False}#禁止将特定格式的字符串自动转换为Excel超链接
+            )
+        df.to_excel(writer,index=False,sheet_name='学生信息')
+
+        #获取工作表对象进行excel表的格式设置
+        workbook=writer.book
+        worksheet=writer.sheets['学生信息']
+
 
 

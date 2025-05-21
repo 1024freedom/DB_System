@@ -118,3 +118,34 @@ class Courses_Dao:
         finally:
             cursor.close()
             conn.close()
+    @staticmethod
+    def attach_course_tb():#为课程绑定教材
+        conn=DBPool.get_instance().get_coon()
+        cursor=conn.cursor()
+        while True:
+            TextbookID=input("请输入要操作的教材ID").strip()
+            cursor.execute("SELECT 1 FROM Courses WHERE TextbookID=%s"(TextbookID))
+            if not TextbookID or not cursor.hatchone():
+                print("教材ID不能为空或该教材不存在，请重新输入")
+            else:
+                break
+        while True:
+            CourseID=input("请输入要绑定的课程ID").strip()
+            cursor.execute("SELECT 1 FROM Courses WHERE CourseID=%s"(CourseID))
+            if not CourseID or not cursor.hatchone():
+                print("课程ID不能为空或该课程不存在，请重新输入")
+            else:
+                break
+        try:
+            cursor.execute("UPDATE FROM Textbooks SET CourseID=%s WHERE TextbookID=%s"(CourseID,TextbookID))
+            conn.commit()
+            print(f"绑定成功！")
+        except Exception as e:
+            conn.rollback()
+            print(f"绑定失败：{str(e)}")
+        finally:
+            cursor.close()
+            conn.close()
+    @staticmethod
+    
+
