@@ -1,5 +1,5 @@
 from sqlite3 import Cursor
-from openpyxl.workbook import workbook
+from openpyxl import Workbook
 from pymysql import NULL
 from utils.db_pool import DBPool
 from sqlalchemy import create_engine
@@ -9,7 +9,7 @@ import datetime
 class Students_Dao:
     @staticmethod
     def add_student_once():#单次增加学生信息
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             Name=input('输入姓名：').strip()#去除空格检验是否非空
@@ -63,7 +63,7 @@ class Students_Dao:
             conn.close()
     @staticmethod
     def alter_student_phone():#更改学生联系方式
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             StudentID=input("请输入学生ID：").strip()
@@ -97,7 +97,7 @@ class Students_Dao:
             conn.close()
     @staticmethod
     def alter_student_class():#为学生分配班级
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             StudentID=input("请输入学生ID：").strip()
@@ -131,7 +131,7 @@ class Students_Dao:
                             conn.close()
     @staticmethod
     def delete_student():  # 删除学生信息
-        conn = DBPool.get_instance().get_coon()
+        conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
     
         while True:
@@ -154,7 +154,7 @@ class Students_Dao:
             conn.close()
     @staticmethod
     def import_from_excel():#从excel文件导入学生数据到数据库
-        conn = DBPool.get_instance().get_coon()
+        conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         filepath=input("请输入文件的绝对路径")
         df=pd.read_excel(filepath,engine='openpyxl')
@@ -219,10 +219,10 @@ class Students_Dao:
                 conn.close() 
     @staticmethod
     def export_to_excel():
-        conn = DBPool.get_instance().get_coon()
+        conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         #文件名具有时效性
-        timestamp=datatime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp=datetime.now().strftime("%Y%m%d_%H%M%S")
         default_filename=f"students_export_{timestamp}.xlsx"
 
         #获取输出路径

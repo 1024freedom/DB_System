@@ -8,7 +8,7 @@ import datetime
 class Courses_Dao:
     @staticmethod
     def add_courses():#新增课程
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             CourseName=input("请输入课程名称").strip()
@@ -39,7 +39,7 @@ class Courses_Dao:
             conn.close()
     @staticmethod
     def edit_courses_name():#编辑课程名称
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             CourseID=input("请输入要操作的课程ID").strip()
@@ -66,7 +66,7 @@ class Courses_Dao:
             conn.close()
     @staticmethod
     def edit_courses_credit():#编辑课程学分
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             CourseID=input("请输入要操作的课程ID").strip()
@@ -93,7 +93,7 @@ class Courses_Dao:
             conn.close()
     @staticmethod
     def edit_courses_name():#编辑授课教师
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             CourseID=input("请输入要操作的课程ID").strip()
@@ -120,7 +120,7 @@ class Courses_Dao:
             conn.close()
     @staticmethod
     def attach_course_tb():#为课程绑定教材
-        conn=DBPool.get_instance().get_coon()
+        conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         while True:
             TextbookID=input("请输入要操作的教材ID").strip()
