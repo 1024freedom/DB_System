@@ -1,4 +1,5 @@
 from sqlite3 import Cursor
+from numpy._core.multiarray import normalize_axis_index
 from pymysql import NULL
 from utils.db_pool import DBPool
 from sqlalchemy import create_engine
@@ -151,14 +152,61 @@ class Courses_Dao:
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         #容量监控视图
-        """CREATE VIEW AS CourseCapacity
+        """CREATE VIEW CourseCapacity AS
             SELECT
               c.CourseID,
               c.CourseName,
               c.Capacity,
-              COUNT(e.EnrollmentID) AS remain
-              FROM Course c
+              (c.Capacity-COUNT(e.EnrollmentID)) AS remain
+              FROM Courses c
               LEFT JOIN Enrollments e ON c.CourseID=e.CourseID
               GROUP BY c.CourseID
         """
-
+        cursor.execute("""SELECT
+                            CourseID,
+                            CourseName,
+                            Capacity,
+                            remain
+                            FROM CourseCapacity
+                            """)
+        courses=cursor.fetchall()
+        if not courses:
+            print("无课程数据")
+            return
+        #显示数据准备
+        display_data=[]
+        try:
+            for course in courses:
+                capacity=course['Capacity']
+                remain=course['remain']
+                #状态
+                status="正常"
+                if remain/capacity>=0.9:
+                    status="预警！"
+                display_data.append({
+                    'CourseID':course['CourseID'],
+                    'CourseName':course['CourseName'],
+                    'Capacity':course['Capacity'],
+                    'remain':course['remain'],
+                    'status':status
+                    })
+            #打印
+            print("{:<10}{:<25}{:<10}{:<10}{:<5}".format(
+                "课程ID","课程名称","容量","余量","状态"))
+            print("-"*60)
+            for item in display_data:
+                print("{:<10}{:<25}{:<10}{:<10}{:<5}".format(
+                    item['CourseID'],
+                    item['CourseName'],
+                    item['Capacity'],
+                    item['remain'],
+                    item['status']
+                    ))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            print(f"课程数据显示异常：{str(e)}")
+        finally:
+            cursor.close()
+            conn.close()
+          

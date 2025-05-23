@@ -142,7 +142,26 @@ class Enrollments_Dao:
         finally:
             cursor.close()
             conn.close()
-
+    def students_enroll_ask()#选课记录查询
+        conn=DBPool.get_instance().get_conn()
+        cursor=conn.cursor()
+        #选课记录视图
+        """CREATE VIEW StudentEnrollments AS 
+         SELECT 
+            e.EnrollmentID,
+            s.StudentID,
+            s.Name AS StudentName,
+            c.CourseID,
+            c.CourseName,
+            t.Name AS TeacherName,
+            c.Day,
+            c.StartTime,
+            c.EndTime
+        FROM Enrollments e
+        LEFT JOIN Students s ON e.StudentID=s.StudentID
+        LEFT JOIN Courses c ON e.CourseID=c.CourseID
+        LEFT JOIN Teachers t ON c.TeacherID=t.TeacherID
+        """
         
 
 
