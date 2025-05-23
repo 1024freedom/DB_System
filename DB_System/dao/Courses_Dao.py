@@ -147,5 +147,18 @@ class Courses_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    
+    def course_capacity():#课程容量监控 实时显示选课人数与课程最大容量 预警超限情况
+        conn=DBPool.get_instance().get_conn()
+        cursor=conn.cursor()
+        #容量监控视图
+        """CREATE VIEW AS CourseCapacity
+            SELECT
+              c.CourseID,
+              c.CourseName,
+              c.Capacity,
+              COUNT(e.EnrollmentID) AS remain
+              FROM Course c
+              LEFT JOIN Enrollments e ON c.CourseID=e.CourseID
+              GROUP BY c.CourseID
+        """
 

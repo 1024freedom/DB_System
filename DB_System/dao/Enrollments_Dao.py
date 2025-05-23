@@ -21,7 +21,7 @@ class Enrollments_Dao:
                     break
             else:
                 print("学号不能为空，请重新输入")
-        #可选课程视图
+        #可选课程视图（处理课程余量)
                 """CREATE VIEW AvailableCourses AS
                 SELECT
                     c.CourseID,
@@ -38,6 +38,111 @@ class Enrollments_Dao:
                 GROUP BY c.CourseID
                 HAVING remain>0
         """
+            cursor.execute("""SELECT 
+                                CourseID,
+                                CourseName,
+                                Credit,
+                                Name,
+                                Day,
+                                StartTime,
+                                EndTime,
+                                remain
+                            FROM AvailableCourses
+            """)
+            available_courses=cursor.fetchall()
+            if not available_courses:
+                print("没有可选课程")
+                return
+            #打印可选课程
+            #课程ID 课程名称 学分 授课教师 星期 上课时间 下课时间 余量
+            print("可选课程:")
+            print("{:<10}{:<20}{:<7}{:<15}{:<5}{:<15}{:<15}{:<15}".format(
+                "课程ID", "课程名称", "授课教师", "星期", "上课时间", "下课时间", "余量"))
+            for course in available_courses:
+                print("{:<10}{:<20}{:<7}{:<15}{:<5}{:<15}{:<15}{:<15}".format(*course))
+
+            #选择课程
+            while True:
+                while True:
+                    CourseID=input("请输入要选择的课程ID(输入q退出)").strip()
+                    if CourseID.lower()=='q':
+                        return
+                    cursor.execute("SELECT 1 FROM AvailableCourses WHERE CourseID=%s"(CourseID))
+                    if not cursor.fetchone():
+                        print("输入的课程ID不存在或该课程已无余量")
+                    else:
+                        cursor.execute("SELECT 1 FROM Enrollments WHERE CourseID=%s AND StudentID=%s"(CourseID,StudentID))
+                        if cursor.fetchone():
+                            print("该课程您已存在与已选课表中，请重新输入")
+                        else:
+                            break
+            #获取目标课程时间段
+                cursor.execute("SELECT Day,StartTime ,EndTime FROM Courses WHERE CourseID=%s"(CourseID))
+                course_time=cursor.fetchone()
+                day,start,end=course_time
+            #获取已选课程时间段
+                cursor.execute("""SELECT 
+                                    c.Day,
+                                    c.StartTime,
+                                    c.EndTime 
+                                    FROM Enrollments e JOIN Courses c
+                                    ON e.CourseID=c.CourseID
+                                    WHERE e.StudentID=%s
+                                """(StudentID))
+                exist=False
+                for(exist_day,exist_start,exist_end) in cursor.fetchall():#检验时间冲突
+                    if day==exist_day:
+                        if (start>exist_start and start<exist_end) or (end>exist_start and end<exist_end):
+                            print("与已选课时间冲突，请重新选择")
+                            exist=True
+                            break
+                if exist:break
+                #写入选课表
+                try:
+                    cursor.execute("INSERT INTO Enrollments (StudentID,CourseID) VALUES (%s,%s)"(StudentID,CourseID))
+                    conn.commit()
+                    print("操作成功")
+                except Exception as e:
+                    conn.rollback()
+                    print(f"操作失败：{str(e)}")
+                finally:
+                    cursor.close()
+                    conn.close()
+    def students_drop_course():#学生退课
+        conn=DBPool.get_instance().get_conn()
+        cursor=conn.cursor()
+        while True:
+            StudentID=input("请输入学号").strip()
+            if StudentID:
+                cursor.execute("SELECT 1 FROM Enrollments WHERE StudentID=%s"(StudentID))
+                if not cursor.fatchone():
+                    print("选课记录中不存在该学号，请重新输入")
+                else:
+                    break
+            else:
+                print("学号不能为空，请重新输入")
+        while True:
+            CourseID=input("请输入要退选的课程ID").strip()
+            if CourseID:
+                cursor.execute("SELECT 1 FROM Enrollments WHERE StudentID=%s ADD CourseID=%s"(StudentID,CourseID))
+                if not cursor.fatchone():
+                    print("选课记录中不存在该课程，请重新输入")
+                else:
+                    break
+            else:
+                print("课程号不能为空，请重新输入")
+        #更改记录
+        try:
+            cursor.execute("DELETE FROM Enrollments WHERE StudentId=%s ADD CourseID=%s"(StudentID,CourseID))
+            conn.commit()
+            print("退课成功")
+        except Exception as e:
+            conn.rollback()
+            print(f"操作失败：{str(e)}")
+        finally:
+            cursor.close()
+            conn.close()
+
         
 
 
