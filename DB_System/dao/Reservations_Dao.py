@@ -5,7 +5,7 @@ from utils.db_pool import DBPool
 from sqlalchemy import create_engine
 import pandas as pd
 import re
-from datetime import date
+from datetime import datetime
 class Reservations_Dao:
     def lab_reservation():#实验室预约
         conn = DBPool.get_instance().get_conn()
@@ -189,4 +189,42 @@ class Reservations_Dao:
             cursor.close()
             conn.close()
     def reservation_cancel():#取消未开始的预约
-
+            conn = DBPool.get_instance().get_conn()
+            cursor = conn.cursor()
+            while True:
+                TeacherID=input("请输入您的教师ID")
+                if TeacherID:
+                    cursor.execute("SELECT 1 FROM Lab_Reservations WHERE TeacherID=%s",(TeacherID,))
+                    if not cursor.fetchone():
+                        print("该教师ID无预约记录或该教师ID不存在,请重新输入")
+                    else:
+                        break
+                else:
+                    print("教师ID不能为空,请重新输入")
+            #获取当前时间
+            DateTime=datetime.today()
+            try:
+                while True:
+                    ReservationID=input("请输入要取消的预约记录ID")
+                    if ReservationID:
+                        cursor.execute("SELECT 1 FROM LabReservations WHERE ReservationID=%s",(ReservationID))
+                        if not cursor.fetchone():
+                            print("该预约记录不存在,请重新输入")
+                        else:
+                            break
+                    else:
+                        print("预约记录ID不能为空,请重新输入")
+                    cursor.execute("SELECT StartTime FROM LabReservations WHERE ReservationID=%s",(ReservationID))
+                    re_datetime=cursor.fetchone()
+                    if DateTime<re_datetime[0]:
+                        cursor.execute("DELETE FROM LabReservations WHERE TeacherID=%s AND ReservationID=%s",(TeacherID,ReservationID,))
+                        conn.commit()
+                        print("取消成功")
+                    else:
+                        print("时间不合法")
+            except Exception as e:
+                conn.rollback()
+                print(f"操作失败：{str(e)}")
+            finally:
+                cursor.close()
+                conn.close()
