@@ -7,6 +7,7 @@ import pandas as pd
 import re
 from datetime import datetime
 class Reservations_Dao:
+    @staticmethod
     def lab_reservation():#实验室预约
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
@@ -77,6 +78,7 @@ class Reservations_Dao:
         finally:
             cursor.close()
             conn.close()
+    @staticmethod
     def reservation_ask():#预约记录查询
         try:
             conn = DBPool.get_instance().get_conn()
@@ -188,6 +190,7 @@ class Reservations_Dao:
         finally:
             cursor.close()
             conn.close()
+    @staticmethod
     def reservation_cancel():#取消未开始的预约
             conn = DBPool.get_instance().get_conn()
             cursor = conn.cursor()

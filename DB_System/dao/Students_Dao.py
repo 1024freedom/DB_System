@@ -8,82 +8,25 @@ import re
 import datetime
 class Students_Dao:
     @staticmethod
-    def add_student_once():#单次增加学生信息
+    def add_student_once(Name,Gender,BirthDate,Phone):#单次增加学生信息
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        while True:
-            Name=input('输入姓名：').strip()#去除空格检验是否非空
-            if Name:
-                break
-            print("姓名不能为空，请重新输入")
-        while True:
-            Gender=input('输入性别（男/女）：').strip()
-            if Gender in ('男','女'):
-                break
-            print ("请输入正确的性别：")
-        data_pattern =re.complie(r'^\d{4}-\d{2}-\d{2}$')#规定格式
-        while True:
-            BirthDate=input('请输入正确的出生年月日（格式：YYYY-MM-DD').strip()
-            if data_pattern.match(BirthDate):
-                try:
-                    #进一步验证日期的有效性
-                    datetime.strptime(BirthDate, '%Y-%m-%d')
-                    break
-                except ValueError:
-                    print("无效的日期，请重新输入")
-            else:
-                print("日期格式错误，请重新输入：")
-        while True:
-            Phone=input("请输入手机号：").strip()
-            if not Phone:
-                Phone=None
-                break
-            if len(Phone)!=11:
-                print("所输入手机号不合法，请重新输入")
-                continue
-            else:
-                cursor.execute("SELECT 1 FROM Students WHERE Phone=%s",(Phone))
-            #使用select 1更高效,格式化防止SQL注入
-            if cursor.fetchone():
-                print("该手机号已被注册")
-            else:
-                break
         #验证通过，执行插入
         try:
             sql="""INSERT INTO Students (Name, Gender, BirthDate, Phone)
             VALUES (%s, %s, %s, %s)"""
             cursor.execute(sql,(Name, Gender, BirthDate, Phone))
             conn.commit()
-            print("学生信息添加成功")
         except Exception as e:
             conn.rollback()
-            print(f"添加失败：{str(e)}")
+            raise e
         finally:
             cursor.close()
             conn.close()
     @staticmethod
-    def alter_student_phone():#更改学生联系方式
+    def alter_student_phone(Phone,StudentID):#更改学生联系方式
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        while True:
-            StudentID=input("请输入学生ID：").strip()
-            cursor.execute("SELECT 1 FROM Students WHERE StudentID = %s", (StudentID,))
-            if not cursor.fetchone():
-                print("该学生不存在，请重新输入：")
-            else:
-                break
-        while True:
-            Phone=input("请输入手机号：").strip()
-            if len(Phone)!=11:
-                print("所输入手机号不合法，请重新输入")
-                continue
-            else:
-                cursor.execute("SELECT 1 FROM Students WHERE Phone=%s AND StudentID!=%s",(Phone,StudentID))
-            #使用select 1更高效
-            if cursor.fetchone():
-                print("该手机号已被注册")
-            else:
-                break
         try:
             sql="""UPDATE Students SET Phone=%s WHERE StudentID=%s"""
             cursor.execute(sql,(Phone,StudentID))
@@ -91,72 +34,42 @@ class Students_Dao:
             print("学生手机号修改成功！")
         except Exception as e:
             conn.rollback()
-            print(f"修改失败：{str(e)}")
+            raise e
         finally:
             cursor.close()
             conn.close()
     @staticmethod
-    def alter_student_class():#为学生分配班级
+    def alter_student_class(ClassID,StudentID,CapacityNow):#为学生分配班级
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        while True:
-            StudentID=input("请输入学生ID：").strip()
-            cursor.execute("SELECT 1 FROM Students WHERE StudentID = %s", (StudentID,))
-            if not cursor.fetchone():
-                print("该学生不存在，请重新输入：")
-            else:
-                break
-        while True:
-            ClassID=input("请输入要为该学生分配的班级号：")
-            if not ClassID:
-                break
-            else:
-                cursor.execute("SELECT 1 FROM Classes WHERE ClassID=%s",(ClassID))
-                if not cursor.hatchone():
-                    print("该班级不存在，请重新输入")
-                else:
-                    cursor.execute("SELECT CapacityNow,Capacity FROM Classes WHERE ClassID=%s",(ClassID))
-                    CapacityNow,Capacity=cursor.fetchone()
-                    if CapacityNow<Capacity:
-                        try:
-                            cursor.execute("UPDATE Students SET ClassID=%s WHERE StudentID=%s",(ClassID,StudentID))
-                            cursor.execute("UPDATE Classer SET CapacityNow=%s+1 WHERE ClassID=%s",(CapacityNow,ClassID,))
-                            conn.commit()
-                            print("分配班级成功")
-                        except Exception as e:
-                            conn.rollback()
-                            print(f"分配失败：{str(e)}")
-                        finally:
-                            cursor.close()
-                            conn.close()
+
+        try:
+            cursor.execute("UPDATE Students SET ClassID=%s WHERE StudentID=%s",(ClassID,StudentID))
+            cursor.execute("UPDATE Classer SET CapacityNow=%s+1 WHERE ClassID=%s",(CapacityNow,ClassID,))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            raise e
+        finally:
+            cursor.close()
+            conn.close()
     @staticmethod
-    def delete_student():  # 删除学生信息
+    def delete_student(StudentID):  # 删除学生信息
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
-    
-        while True:
-            StudentID = input("请输入学生ID：").strip()
-            cursor.execute("SELECT 1 FROM Students WHERE StudentID = %s", (StudentID,))
-            if not cursor.fetchone():
-                print("该学生不存在，请重新输入：")
-            else:
-                break
-    
         try:
             cursor.execute("DELETE FROM Students WHERE StudentID=%s", (StudentID,))
             conn.commit()
-            print("删除成功")
         except Exception as e:
             conn.rollback()
-            print(f"删除失败：{str(e)}")
+            raise e
         finally:
             cursor.close()
             conn.close()
     @staticmethod
-    def import_from_excel():#从excel文件导入学生数据到数据库
+    def import_from_excel(filepath):#从excel文件导入学生数据到数据库
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
-        filepath=input("请输入文件的绝对路径")
         df=pd.read_excel(filepath,engine='openpyxl')
         #进行数据清洗与预处理
         valid_records=[]#存储经过验证的有效记录
@@ -213,20 +126,17 @@ class Students_Dao:
                 print(f"成功导入{len(valid_records)}条记录")
             except Exception as e:
                 conn.rollback()
-                print(f"导入失败：{str(e)}")
+                raise e
             finally:
                 cursor.close()
                 conn.close() 
     @staticmethod
-    def export_to_excel():
+    def export_to_excel(filepath):
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         #文件名具有时效性
         timestamp=datetime.now().strftime("%Y%m%d_%H%M%S")
         default_filename=f"students_export_{timestamp}.xlsx"
-
-        #获取输出路径
-        filepath=input(f"请输入导出路径：").strip()
         if not filepath:
             filepath=default_filename#若不输入路径，则会导出到当前目录
 

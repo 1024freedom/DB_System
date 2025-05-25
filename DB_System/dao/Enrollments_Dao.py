@@ -108,6 +108,7 @@ class Enrollments_Dao:
                 finally:
                     cursor.close()
                     conn.close()
+    @staticmethod
     def students_drop_course():#学生退课
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
@@ -142,6 +143,7 @@ class Enrollments_Dao:
         finally:
             cursor.close()
             conn.close()
+    @staticmethod
     def students_enroll_ask():#选课记录查询
         try:
             conn=DBPool.get_instance().get_conn()

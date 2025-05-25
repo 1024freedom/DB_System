@@ -7,6 +7,7 @@ import pandas as pd
 import re
 import datetime
 class Grades_Dao:
+    @staticmethod
     def grades_insert_once():#单条成绩录入
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
@@ -40,6 +41,7 @@ class Grades_Dao:
         finally:
             cursor.close()
             conn.close()
+    @staticmethod
     def grades_alert():#生成警告名单
         
         try:
@@ -82,38 +84,34 @@ class Grades_Dao:
                                 """(page_size,offset))
 
 
-                enrollments=cursor.fetchall()
-                if not enrollments:
+                alerts=cursor.fetchall()
+                if not alerts:
                     print("无警告人员")
                     return
                 #显示数据准备
                 display_data=[]
                
-                for enrollment in enrollments:
+                for alert in alerts:
                     
                         display_data.append({
-                            'StudentID':enrollment['StudentID'],
-                            'CourseID':enrollment['CourseID'],
-                            'StudentName':enrollment['StudentName'],
-                            'CourseName':enrollment['CourseName'],
-                            'Score':
+                            'StudentID':alert['StudentID'],
+                            'CourseID':alert['CourseID'],
+                            'StudentName':alert['StudentName'],
+                            'CourseName':alert['CourseName'],
+                            'Score':alert['Score']
                             })
                     #打印
                 print(f"当前页码:{current_page}/{total_pages}")
-                print("{:<10}{:<10}{:<10}{:<10}{:<10}{:10}{:<5}{:<15}{:<15}".format(
-                        "选课记录ID","学生ID","学生姓名","课程ID","课程名","授课教师","星期","上课时间","下课时间"))
-                print("-"*95)
+                print("{:<10}{:<10}{:<10}{:<10}{:<10}".format(
+                      "警告学生ID","课程ID","学生姓名","课程名","分数"))
+                print("-"*50)
                 for item in display_data:
-                        print("{:<10}{:<10}{:<10}{:<10}{:<10}{:10}{:<5}{:<15}{:<15}".format(
-                            item['EnrollmentID'],
+                        print("{:<10}{:<10}{:<10}{:<10}{:<10}".format(
                             item['StudentID'],
-                            item['StudentName'],
                             item['CourseID'],
+                            item['StudentName'],
                             item['CourseName'],
-                            item['TeacherName'],
-                            item['Day'],
-                            item['StartTime'],
-                            item['EndTime']
+                            item['Score']
                             ))
                     #分页导航
                 if total_pages>1:
