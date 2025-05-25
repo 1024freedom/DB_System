@@ -92,7 +92,7 @@ class Reservations_Dao:
                 else:
                     print("教师ID不能为空,请重新输入")
             #预约记录视图
-                    """CREATE VIEW Lab_Reservations AS
+                    """CREATE VIEW vw_Lab_Reservations AS
                             SELECT 
                                 l.ReservationID,
                                 l.TeacherID,
@@ -106,7 +106,7 @@ class Reservations_Dao:
                                 JOIN Classrooms c ON l.LabID=c.ClassroomID
             """
         #获取总记录数
-            cursor.execute("SELECT COUNT(*) AS total FROM Lab_Reservations ")
+            cursor.execute("SELECT COUNT(*) AS total FROM vm_Lab_Reservations ")
             total_records=cursor.fetchone()['total']
             if total_records==0:
                 print("当前没有数据")
@@ -126,7 +126,7 @@ class Reservations_Dao:
                                 LabID,
                                 StartTime,
                                 EndTime
-                                FROM Lab_Reservations
+                                FROM vw_Lab_Reservations
                                 LIMIT %s OFFSET %s
                                 """(page_size,offset))
 
@@ -194,7 +194,7 @@ class Reservations_Dao:
             while True:
                 TeacherID=input("请输入您的教师ID")
                 if TeacherID:
-                    cursor.execute("SELECT 1 FROM Lab_Reservations WHERE TeacherID=%s",(TeacherID,))
+                    cursor.execute("SELECT 1 FROM vw_Lab_Reservations WHERE TeacherID=%s",(TeacherID,))
                     if not cursor.fetchone():
                         print("该教师ID无预约记录或该教师ID不存在,请重新输入")
                     else:

@@ -22,7 +22,7 @@ class Enrollments_Dao:
             else:
                 print("学号不能为空，请重新输入")
         #可选课程视图（处理课程余量)
-                """CREATE VIEW AvailableCourses AS
+                """CREATE VIEW vw_Available_Courses AS
                 SELECT
                     c.CourseID,
                     c.CourseName,
@@ -47,7 +47,7 @@ class Enrollments_Dao:
                                 StartTime,
                                 EndTime,
                                 remain
-                            FROM AvailableCourses
+                            FROM vw_Available_Courses
             """)
             available_courses=cursor.fetchall()
             if not available_courses:
@@ -67,7 +67,7 @@ class Enrollments_Dao:
                     CourseID=input("请输入要选择的课程ID(输入q退出)").strip()
                     if CourseID.lower()=='q':
                         return
-                    cursor.execute("SELECT 1 FROM AvailableCourses WHERE CourseID=%s"(CourseID))
+                    cursor.execute("SELECT 1 FROM vw_Available_Courses WHERE CourseID=%s"(CourseID))
                     if not cursor.fetchone():
                         print("输入的课程ID不存在或该课程已无余量")
                     else:
@@ -147,7 +147,7 @@ class Enrollments_Dao:
             conn=DBPool.get_instance().get_conn()
             cursor=conn.cursor()
             #选课记录视图
-            """CREATE VIEW StudentEnrollments AS 
+            """CREATE VIEW vw_Student_Enrollments AS 
              SELECT 
                 e.EnrollmentID,
                 s.StudentID,
@@ -164,7 +164,7 @@ class Enrollments_Dao:
             LEFT JOIN Teachers t ON c.TeacherID=t.TeacherID
             """
             #获取总记录数
-            cursor.execute("SELECT COUNT(*) AS total FROM StudentEnrollments ")
+            cursor.execute("SELECT COUNT(*) AS total FROM vw_Student_Enrollments ")
             total_records=cursor.fetchone()['total']
             if total_records==0:
                 print("当前没有数据")
@@ -187,7 +187,7 @@ class Enrollments_Dao:
                                 Day,
                                 StartTime,
                                 EndTime
-                                FROM StudentEnrollments
+                                FROM vw_Student_Enrollments
                                 LIMIT %s OFFSET %s
                                 """(page_size,offset))
 

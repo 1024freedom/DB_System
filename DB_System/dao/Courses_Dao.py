@@ -153,7 +153,7 @@ class Courses_Dao:
             conn=DBPool.get_instance().get_conn()
             cursor=conn.cursor()
             #容量监控视图
-            """CREATE VIEW CourseCapacity AS
+            """CREATE VIEW vw_Course_Capacity AS
                 SELECT
                   c.CourseID,
                   c.CourseName,
@@ -164,7 +164,7 @@ class Courses_Dao:
                   GROUP BY c.CourseID
             """
             #获取总记录数
-            cursor.execute("SELECT COUNT(*) AS total FROM CourseCapacity ")
+            cursor.execute("SELECT COUNT(*) AS total FROM vw_Course_Capacity ")
             total_records=cursor.fetchone()['total']
             if total_records==0:
                 print("当前没有数据")
@@ -182,7 +182,7 @@ class Courses_Dao:
                                 CourseName,
                                 Capacity,
                                 remain
-                                FROM CourseCapacity
+                                FROM vw_Course_Capacity
                                 LIMIT %s OFFSET %s
                                 """(page_size,offset))
 
