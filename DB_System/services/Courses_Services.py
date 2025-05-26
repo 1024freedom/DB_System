@@ -110,4 +110,38 @@ class Course_Services:
             Courses_Dao.course_capacity()
         except Exception as e:
             print(f"操作失败：{str(e)}")
-
+    @staticmethod
+    def course_time_arr():#排课
+        while True:
+            CourseID=input("请输入要操作的课程ID")
+            if CourseID:
+                if Search_Dao.search1('Courses','CourseID',CourseID):
+                    break
+                else:
+                    print("该课程不存在，请重新输入")
+            else:
+                print("课程ID不能为空，请重新输入")
+        while True:
+            Day=input("请输入上课的星期（1-7）")
+            if Day:
+                if 1<=Day<=7:
+                    break
+                else:
+                    print("请输入数字1-7")
+            else:
+                print("星期不能为空，请重新输入")
+        while True:
+            StartTime=input("请输入上课时间")
+            EndTime=input("请输入下课时间")
+            if StartTime and EndTime:
+                if Search_Dao.search_time('Courses',Day,StartTime,EndTime):
+                    print("与已排课时间冲突，请重新排课")
+                else:
+                    break
+            else:
+                print("输入不能为空，请重新输入")
+        try:
+            Courses_Dao.course_time_arr(CourseID,Day,StartTime,EndTime)
+            return True,"操作成功"
+        except Exception as e:
+            print(f"操作失败：{str(e)}")

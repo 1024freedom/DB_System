@@ -81,7 +81,7 @@ class Enrollments_Dao:
                 course_time=cursor.fetchone()
                 day,start,end=course_time
             #获取已选课程时间段
-                cursor.execute("""SELECT 
+                cursor.execute("""SELECT    
                                     c.Day,
                                     c.StartTime,
                                     c.EndTime 

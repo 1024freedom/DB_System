@@ -79,6 +79,5 @@ class Att_Ass_Dao:
             print(f"·¢²¼Ê§°Ü£º{str(e)}")
         finally:
             cursor.close()
-            conn.close()
-           
+            conn.close()  
 

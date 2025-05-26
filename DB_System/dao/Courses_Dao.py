@@ -34,7 +34,7 @@ class Courses_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def edit_courses_credit():#编辑课程学分
+    def edit_courses_credit(newCredit,CourseID):#编辑课程学分
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
@@ -110,8 +110,6 @@ class Courses_Dao:
                                 FROM vw_Course_Capacity
                                 LIMIT %s OFFSET %s
                                 """(page_size,offset))
-
-
                 courses=cursor.fetchall()
                 if not courses:
                     print("无课程数据")
@@ -171,4 +169,16 @@ class Courses_Dao:
         finally:
             cursor.close()
             conn.close()
-          
+    @staticmethod
+    def course_time_arr(CourseID,Day,StartTime,EndTime):#排课
+        conn=DBPool.get_instance().get_conn()
+        cursor=conn.cursor()
+        try:
+            cursor.execute("UPDATE TABLE SET Day=%s,StartTime=%s,EndTime=%s WHERE CourseID=%s ",(Day,StartTime,EndTime,CourseID,))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            raise e
+        finally:
+            cursor.close()
+            conn.close()

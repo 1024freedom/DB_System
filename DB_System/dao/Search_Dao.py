@@ -29,6 +29,16 @@ class Search_Dao:
             return False
         cursor.close
         conn.close
-
+    def search_time(table:str,Day:any,StartTime:any,EndTime:any):#¼ì²éÅÅ¿ÎÊ±¼ä³åÍ»(³åÍ»·µ»ØTrue)
+        conn = DBPool.get_instance().get_conn()
+        cursor = conn.cursor()
+        sql=f"SELECT 1 FROM {table} WHERE Day=%s AND ((StartTime>=%s AND EndTime>=%s) OR (StartTime<=%s AND EndTime<=%s))"
+        cursor.execute(sql,(Day,StartTime,EndTime,StartTime,EndTime,))
+        if cursor.fetchone():
+            return True
+        else:
+            return False
+        cursor.close()
+        conn.close
 
 
