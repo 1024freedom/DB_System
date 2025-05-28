@@ -21,7 +21,7 @@ class Search_Dao:
     def search2(table:str,column1:str,column2:str,value1:any,value2:any):#检查是否存在(存在返回true)
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
-        sql=f"SELECT 1 FROM {table} WHERE {column1}=%s ADD {column2}=%s"
+        sql=f"SELECT 1 FROM {table} WHERE {column1}=%s AND {column2}=%s"
         cursor.execute(sql,(value1,value2,))
         if cursor.fetchone():
             return True

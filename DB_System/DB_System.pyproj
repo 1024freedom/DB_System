@@ -37,10 +37,12 @@
     <Compile Include="dao\Search_Dao.py" />
     <Compile Include="dao\Students_Dao.py" />
     <Compile Include="main.py" />
+    <Compile Include="services\Att_Ass_Services.py" />
     <Compile Include="services\Courses_Services.py" />
     <Compile Include="services\Enrollments_Services.py" />
     <Compile Include="services\Grades_Services.py" />
     <Compile Include="services\Loans_Services.py" />
+    <Compile Include="services\Reservations_Services.py" />
     <Compile Include="services\Students_Services.py" />
     <Compile Include="utils\db_pool.py" />
   </ItemGroup>

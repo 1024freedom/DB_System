@@ -8,73 +8,15 @@ import re
 from datetime import datetime
 class Reservations_Dao:
     @staticmethod
-    def lab_reservation():#实验室预约
+    def lab_reservation(LabID):#实验室预约
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
-        while True:
-            TeacherID=input("请输入您的教师ID")
-            if TeacherID:
-                cursor.execute("SELECT 1 FROM Teachers WHERE TeacherID=%s"(TeacherID))
-                if not cursor.fetchone():
-                    print("该教师ID不存在,请重新输入")
-                else:
-                    break
-            else:
-                print("教师ID不能为空,请重新输入")
-        while True:
-            LabID=input("请输入要预约的实验室ID")
-            if LabID:
-                cursor.execute("SELECT 1 FROM Classrooms WHERE ClassroomID=%s",(LabID,))
-                if cursor.fetchone():
-                    cursor.execute("SELECT Type FROM Cassrooms WHERE ClassroomID=%s"(LabID))
-                    Type=cursor.fetchone()
-                    if Type[0]!="实验室":
-                        print("该房间不是实验室,请重新输入")
-                    else:
-                        break
-                else:
-                    print("该房间不存在,请重新输入")
-            else:
-                print("实验室ID不能为空,请重新输入")
-        pattern=r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"#时间格式
-        while True:
-            StartTime=input("请输入开始使用时间(示例):2025-12-31 23:34):").strip()
-            if not StartTime:
-                print("开始时间不能为空")
-                continue
-            if not re.match(pattern,StartTime):
-                print("格式错误,请使用示例格式")
-                continue
-            EndTime=input("请输入结束使用时间(示例):2025-12-31 23:34):").strip()
-            if not EndTime:
-                print("结束时间不能为空")
-                continue
-            if not re.match(pattern,EndTime):
-                print("格式错误,请使用示例格式")
-                continue
-        #校验时间冲突 
-            cursor.execute("""SELECT 
-                                l.StartTime,
-                                l.EndTime 
-                                FROM Labreservations l
-                                WHERE l.LabID=%s
-                            """,(LabID,))
-            exist=False
-            for(exist_start,exist_end) in cursor.fetchall():
-                    
-                    if (StartTime>exist_start and StartTime<exist_end) or (EndTime>exist_start and EndTime<exist_end):
-                        print(f"该时间段{StartTime}-{EndTime}已被预约，请重新选择")
-                        exist=True
-                        break
-            if not exist:
-                break
         try:
             cursor.execute("INSERT INTO Labreserations (TeacherID,LabID,StartTime,EndTime) VALUES (%s,%s,%s,%s)",(TeacherID,LabID,StartTime,EndTime))
             conn.commit()
-            print(f"实验室(ID:{LabID})预约成功")
         except Exception as e:
             conn.rollback()
-            print(f"预约失败：{str(e)}")
+            raise e
         finally:
             cursor.close()
             conn.close()

@@ -1,5 +1,4 @@
-from dao import Courses_Dao
-from dao.Loans_Dao import Loans_Dao
+from dao.LoanS_Dao import Loans_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao
 from datetime import date

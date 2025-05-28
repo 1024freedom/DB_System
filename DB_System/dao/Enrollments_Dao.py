@@ -109,29 +109,9 @@ class Enrollments_Dao:
                     cursor.close()
                     conn.close()
     @staticmethod
-    def students_drop_course():#学生退课
+    def students_drop_course(StudentID,CourseID):#学生退课
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        while True:
-            StudentID=input("请输入学号").strip()
-            if StudentID:
-                cursor.execute("SELECT 1 FROM Enrollments WHERE StudentID=%s"(StudentID))
-                if not cursor.fatchone():
-                    print("选课记录中不存在该学号，请重新输入")
-                else:
-                    break
-            else:
-                print("学号不能为空，请重新输入")
-        while True:
-            CourseID=input("请输入要退选的课程ID").strip()
-            if CourseID:
-                cursor.execute("SELECT 1 FROM Enrollments WHERE StudentID=%s ADD CourseID=%s"(StudentID,CourseID))
-                if not cursor.fatchone():
-                    print("选课记录中不存在该课程，请重新输入")
-                else:
-                    break
-            else:
-                print("课程号不能为空，请重新输入")
         #更改记录
         try:
             cursor.execute("DELETE FROM Enrollments WHERE StudentId=%s ADD CourseID=%s"(StudentID,CourseID))
