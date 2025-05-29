@@ -119,5 +119,57 @@ class Enrollments_Servises:
             return True,results
         except Exception as e:
             print(f"操作失败：{str(e)}")
-
-
+    @staticmethod
+    def students_enroll():#学生选课
+        while True:
+            StudentID=input("请输入学号").strip()
+            if StudentID:
+                if not Search_Dao.search1('Students','StudentID',StudentID)
+                    print("学号不存在，请重新输入")
+                else:
+                    break
+            else:
+                print("学号不能为空，请重新输入")
+            #选择课程
+            while True:
+                while True:
+                    CourseID=input("请输入要选择的课程ID(输入q退出)").strip()
+                    if CourseID.lower()=='q':
+                        return
+                    if not Search_Dao.search1('vw_Available_Courses','CourseID',CourseID):
+                        print("输入的课程ID不存在或该课程已无余量")
+                    else:
+                        if Search_Dao.search2('Enrollments','CourseID','StudentID',CourseID,StudentID):
+                            print("该课程您已存在与已选课表中，请重新输入")
+                        else:
+                            break
+                #获取目标课程时间段
+                sql="""SELECT 
+                        Day,StartTime ,EndTime 
+                        FROM Courses WHERE CourseID=%s"""
+                params=(CourseID,)
+                course_time=Fetch_Dao.fetchof(sql,params)
+                day,start,end=course_time[0]
+            #获取已选课程时间段
+                sql="""SELECT    
+                        c.Day,
+                        c.StartTime,
+                        c.EndTime 
+                        FROM Enrollments e JOIN Courses c
+                        ON e.CourseID=c.CourseID
+                        WHERE e.StudentID=%s
+                    """
+                params=(StudentID,)
+                exist=False
+                for(exist_day,exist_start,exist_end) in Fetch_Dao.fetchof(sql,params):
+                    if day==exist_day:
+                        if (start>exist_start and start<exist_end) or (end>exist_start and end<exist_end):
+                            print("与已选课时间冲突，请重新选择")
+                            exist=True
+                            break
+                if exist:break
+                try:
+                    Enrollments_Dao.students_enroll(StudentID,CourseID)
+                    return True,"操作成功"
+                except Exception as e:
+                    print(f"操作失败：{str(e)}")

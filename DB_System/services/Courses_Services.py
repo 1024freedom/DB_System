@@ -1,6 +1,7 @@
 from dao.Courses_Dao import Courses_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao
+from dao.Askpages_Dao import Askpages_Dao
 import datetime
 import re
 class Course_Services:
@@ -104,9 +105,42 @@ class Course_Services:
         except Exception as e:
             print(f"操作失败：{str(e)}")
     @staticmethod
-    def course_capacity():#课程容量监控 实时显示选课人数与课程最大容量 预警超限情况
+    def course_capacity(current_page):#课程容量监控 实时显示选课人数与课程最大容量 预警超限情况
+        #容量监控视图
+        """CREATE VIEW vw_Course_Capacity AS
+            SELECT
+                c.CourseID,
+                c.CourseName,
+                c.Capacity,
+                (c.Capacity-COUNT(e.EnrollmentID)) AS remain
+                FROM Courses c
+                LEFT JOIN Enrollments e ON c.CourseID=e.CourseID
+                GROUP BY c.CourseID
+        """
+        base_sql="""SELECT
+                        CourseID,
+                        CourseName,
+                        Capacity,
+                        remain
+                        FROM vw_Course_Capacity
+                        LIMIT %s OFFSET %s
+        """
+        count_sql="""SELECT COUNT(*) AS total FROM vw_Course_Capacity"""
+        #分页参数
+        page_size=20
         try:
-            Courses_Dao.course_capacity()
+            results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)
+            #显示数据准备
+               
+            #(显示逻辑处理)
+            for item in results['data']:
+                    capacity=item['Capacity']
+                    remain=item['remain']
+                        #状态
+                    item['status']="正常"
+                    if remain/capacity>=0.9:
+                        item['status']="预警！"
+            return True,results
         except Exception as e:
             print(f"操作失败：{str(e)}")
     @staticmethod

@@ -1,8 +1,7 @@
-from math import remainder
-from services import Enrollments_Services
 from services.Reservations_Services import Reservation_Services
 from services.Grades_Services import Grades_Services
 from services.Enrollments_Services import Enrollments_Servises
+from services.Courses_Services import Course_Services
 from dao.Search_Dao import Search_Dao
 def reservation_ask():#预约记录查询
     while True:
@@ -156,6 +155,41 @@ def enroll_avail_ask():#可选课程查询
                  item['remain']
                  ))
         
+            #分页导航
+        if total_pages>1:
+                action=input("请输入操作:n:下一页 p:下一页 j:跳转目标页 q:退出 ").lower()
+                if action=='n':
+                    current_page=min(current_page+1,total_pages)
+                elif action=='p':
+                    current_page=max(current_page-1,1)
+                elif action=='j':
+                    target=int(input(f"请输入目标页(1-{total_pages})"))
+                    current_page=max(1,min(target,total_pages))
+                elif action=='q':
+                    break
+                else:
+                    print("无效操作码")
+        else:
+                input("没有更多页,按任意键返回")
+                break
+def course_capacity_show():#课程容量监视
+    current_page=1
+    while True:
+        results=Course_Services.course_capacity(current_page)
+        result=results['data']
+        total_pages=results['total_pages']
+        print(f"当前页码:{current_page}/{total_pages}")
+        print("{:<10}{:<25}{:<10}{:<10}{:<5}".format(
+                "课程ID","课程名称","容量","余量","状态"))
+        print("-"*60)
+        for item in result:
+                print("{:<10}{:<25}{:<10}{:<10}{:<5}".format(
+                    item['CourseID'],
+                    item['CourseName'],
+                    item['Capacity'],
+                    item['remain'],
+                    item['status']
+                    ))
             #分页导航
         if total_pages>1:
                 action=input("请输入操作:n:下一页 p:下一页 j:跳转目标页 q:退出 ").lower()
