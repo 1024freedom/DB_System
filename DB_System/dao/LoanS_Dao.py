@@ -8,7 +8,7 @@ import re
 import datetime
 class Loans_Dao:
     @staticmethod
-    def loan(table:str,table_loan:str,loan_ID_column:str,StudentID,loanID:any,BorrowDate,ReturnDate):#设备借用
+    def loan(table:str,table_loan:str,loan_ID_column:str,StudentID,loanID:any,BorrowDate,ReturnDate):#借用
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:

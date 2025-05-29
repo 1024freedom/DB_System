@@ -27,6 +27,7 @@
     <Folder Include="utils\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dao\Askpages_Dao.py" />
     <Compile Include="dao\Att_Ass_Dao.py" />
     <Compile Include="dao\Courses_Dao.py" />
     <Compile Include="dao\Enrollments_Dao.py" />
