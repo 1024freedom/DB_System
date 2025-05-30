@@ -1,6 +1,8 @@
+from ctypes.wintypes import BOOL
 from sqlite3 import Cursor
 from numpy._core.multiarray import normalize_axis_index
 from pymysql import NULL
+from sqlalchemy import Boolean
 from utils.db_pool import DBPool
 class Askpages_Dao:#分页查询
     def ask(base_sql:str,count_sql:str,page_size:int,current_page:int,ID:any):#预约记录查询
@@ -25,7 +27,8 @@ class Askpages_Dao:#分页查询
                     reservations=cursor.fetchall()
                 return {
                     'data':reservations,
-                    'total_pages':total_pages
+                    'total_pages':total_pages,
+                    'total_records':total_records
                     }
                 conn.commit()
             except Exception as e:

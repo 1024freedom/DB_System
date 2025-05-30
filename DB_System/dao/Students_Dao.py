@@ -67,69 +67,18 @@ class Students_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def import_from_excel(filepath):#从excel文件导入学生数据到数据库
+    def import_from_excel(valid_records):#从excel文件导入学生数据到数据库
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
-        df=pd.read_excel(filepath,engine='openpyxl')
-        #进行数据清洗与预处理
-        valid_records=[]#存储经过验证的有效记录
-        duplicate_phones=set()#跟踪重复的手机号
-        invalid_class_ids=set()#存储无效的班级ID
-        #查询现有手机号与班级ID
-        cursor.execute("SELECT Phone FROM Students")
-        existing_phones={row[0] for row in cursor.fetchall()}
-
-        cursor.execute("SELECT DISTINCT ClassID FROM Classes")
-        valid_class_ids={row[0] for row in cursor.fatchall()}
-
-        #遍历数据
-        for index,row in df.iterrows():
-            #空值校验
-            if pd.isnull(row['Name']) or pd.isnull(row['Gender']) or pd.isnull(['BirthDate']):
-                print(f'第{index+2}行缺失数据，已跳过')
-                continue
-
-            #性别校验
-            gender=str(row['Gender']).strip()
-            if gender not in('男','女'):
-                print(f'第{index+2}行性别值不合法，已跳过')
-                continue
-
-            #手机号校验
-            phone =str(row['Phone']).strip().replace(' ','')if not pd.isnull(row['Phone'])else None
-            if phone:
-                if phone in existing_phones:
-                    print(f'第{index+2}行手机号已存在，已跳过该行')
-                    duplicate_phones.add(phone)
-                    continue
-                existing_phones.add(phone)
-            #班级ID校验
-            class_id =row['ClassID']
-            if class_id and class_id not in valid_class_ids:
-                invalid_class_ids.add(class_id)
-                print(f'第{index+2}行班级号不存在，已跳过')
-                continue
-
-            #日期格式转换
-            birth_date =pd.to_datatime(row['BirthDate']).strftime('%Y-%m-%d')
-            valid_records.append((
-                row['Name'],#需获取
-                gender,
-                birth_date,
-                phone,
-                class_id
-                ))
-        if valid_records:
-            try:
-                cursor.execute("INSERT INTO Students(Name,Gender,BirthDate,Phone,ClassID)VALUES(%s,%s,%s,%s,%s)"(valid_records))
-                conn.commit()
-                print(f"成功导入{len(valid_records)}条记录")
-            except Exception as e:
-                conn.rollback()
-                raise e
-            finally:
-                cursor.close()
-                conn.close() 
+        try:
+            cursor.executemany("INSERT INTO Students(Name,Gender,BirthDate,Phone,ClassID)VALUES(%s,%s,%s,%s,%s)"(valid_records))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            raise e
+        finally:
+            cursor.close()
+            conn.close() 
     @staticmethod
     def export_to_excel(filepath):
         conn = DBPool.get_instance().get_conn()
@@ -188,6 +137,25 @@ class Students_Dao:
         #获取工作表对象进行excel表的格式设置
         workbook=writer.book
         worksheet=writer.sheets['学生信息']
-
+        # 设置列宽自适应
+        for idx, col in enumerate(df.columns):
+            max_len = max((
+                df[col].astype(str).map(len).max(),  # 列内容最大长度
+                len(str(col))  # 列标题长度
+            )) + 2  # 额外填充
+            worksheet.set_column(idx, idx, max_len)
+                
+        # 设置标题行格式
+        header_format = workbook.add_format({
+            'bold': True,
+            'text_wrap': True,
+            'valign': 'top',
+            'fg_color': '#D7E4BC',
+            'border': 1
+        })
+        for col_num, value in enumerate(df.columns.values):
+            worksheet.write(0, col_num, value, header_format)
+            
+        print(f"导出完成，文件已保存至: {filepath}")
 
 

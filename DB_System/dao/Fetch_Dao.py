@@ -25,10 +25,13 @@ class Fetch_Dao:
         cursor.close()
         conn.close()
         return fetchvalue
-    def fetchof(sql:str ,params:tuple):#获取较复杂sql语句的多个select结果
+    def fetchof(sql:str ,params:tuple):#直接获取sql语句的结果
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
-        cursor.execute(sql,params)
+        if params:
+            cursor.execute(sql,params)
+        else:
+            cursor.execute(sql)
         result=cursor.fetchall()
         cursor.close()
         conn.close()
