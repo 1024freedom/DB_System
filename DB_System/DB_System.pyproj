@@ -34,6 +34,7 @@
     <Compile Include="dao\Fetch_Dao.py" />
     <Compile Include="dao\Grades_Dao.py" />
     <Compile Include="dao\Loans_Dao.py" />
+    <Compile Include="dao\Permissions_Dao.py" />
     <Compile Include="dao\Reservations_Dao.py" />
     <Compile Include="dao\Search_Dao.py" />
     <Compile Include="dao\Students_Dao.py" />
