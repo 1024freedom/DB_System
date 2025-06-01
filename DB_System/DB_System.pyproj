@@ -23,10 +23,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="dao\" />
+    <Folder Include="cli\" />
     <Folder Include="services\" />
     <Folder Include="utils\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cli\Att_Ass_cli.py" />
+    <Compile Include="cli\main_menu.py" />
+    <Compile Include="cli\Register_cli.py" />
     <Compile Include="dao\Askpages_Dao.py" />
     <Compile Include="dao\Att_Ass_Dao.py" />
     <Compile Include="dao\Courses_Dao.py" />
@@ -35,6 +39,7 @@
     <Compile Include="dao\Grades_Dao.py" />
     <Compile Include="dao\Loans_Dao.py" />
     <Compile Include="dao\Permissions_Dao.py" />
+    <Compile Include="dao\Register_Dao.py" />
     <Compile Include="dao\Reservations_Dao.py" />
     <Compile Include="dao\Search_Dao.py" />
     <Compile Include="dao\Students_Dao.py" />
@@ -44,9 +49,12 @@
     <Compile Include="services\Enrollments_Services.py" />
     <Compile Include="services\Grades_Services.py" />
     <Compile Include="services\Loans_Services.py" />
+    <Compile Include="services\Permissions_Services.py" />
+    <Compile Include="services\Register_Services.py" />
     <Compile Include="services\Reservations_Services.py" />
     <Compile Include="services\Students_Services.py" />
     <Compile Include="utils\db_pool.py" />
+    <Compile Include="utils\Security_tools.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

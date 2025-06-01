@@ -144,7 +144,6 @@ class Permissions_Dao:
                 path_set.add(new_path)
             elif isinstance(value,dict):#如果是字典，递归
                 Permissions_Dao.collect_permission_paths(value,new_path,path_set)
-
     @staticmethod
     def update_permission_tree():#根据用户权限和角色默认权限更新权限树
         conn = DBPool.get_instance().get_conn()
@@ -166,7 +165,42 @@ class Permissions_Dao:
                 if row['Permission']:
                     perms_dict=json.loads(row['Permissions'])
                     Permissions_Dao.collect_permission_paths(perms_dict,"",all_permissions)
-            #获取现有权限树中的权限ID
+            #获取现有权限树中的权限ID(ID即为路径)
+            cursor.execute("SELECT PermissionID FROM PermissionTree")
+            existing_perms={row['PermissionID'] for row in cursor.fetchall()}
+            #添加缺失的权限节点
+            for perm_path in all_permissions:
+                if perm_path not in existing_perms:
+                    #解析路径
+                    parts=perm_path.split('.')
+                    name=parts[-1].capitalize().replace('_',' ')
+                    #确定父节点
+                    parent_id=None
+                    if len(parts)>1:
+                        parent_id='.'.join(parts[:-1])
 
-
+                    #确定节点类型
+                    node_type="action"#默认为操作节点
+                    if len(parts)==1:
+                        node_type="module"
+                    elif len(parts)==2:
+                        node_type="page"
+                    sql="""
+                        INSERT INTO PermissionTree (PermissionID, ParentID, Name, Type)
+                        VALUES (%s, %s, %s, %s)
+                        ON DUPLICATE KEY UPDATE 
+                            ParentID = VALUES(ParentID),
+                            Name = VALUES(Name),
+                            Type = VALUES(Type)
+                    """
+                    cursor.execute(sql,(perm_path,parent_id,name,node_type))
+            conn.commit()
+            return True,"更新权限树成功"
+        except Exception as e:
+            conn.rollback()
+            raise e
+            return False
+        finally:
+            cursor.close()
+            conn.close()
     
