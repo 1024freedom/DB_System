@@ -5,6 +5,7 @@ class Register_cli:
         print("\n===== 用户注册页面 =====")
         print("1. 学生注册")
         print("2. 教师注册")
+        print("0. 退出")
         print("========================")
     @staticmethod
     def register_student():#注册学生用户
@@ -23,7 +24,7 @@ class Register_cli:
             else:
                 print('\033[91m' + message + '\033[0m')#红色文本
     @staticmethod
-    def register_student():#注册教师用户
+    def register_teacher():#注册教师用户
         print("\n===== 教师注册 =====")
         while True:
             user_id=input("请输入教师id").strip()
@@ -38,5 +39,16 @@ class Register_cli:
                 break
             else:
                 print('\033[91m' + message + '\033[0m')#红色文本
+    @staticmethod
+    def run():
+        Register_cli.show_menu()
+        while choice:
+            choice=input("请选择操作：").strip()
+            match choice:
+                case 1:
+                    Register_cli.register_student()
+                case 2:
+                    Register_cli.register_teacher()
+                
 
 

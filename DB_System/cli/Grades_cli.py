@@ -6,6 +6,7 @@ class Grades_cli:
         print("\n===== 成绩管理页面 =====")
         print("1. 单条成绩录入")
         print("2. 成绩警告名单")
+        print("0. 退出")
         print("========================")
     @staticmethod
     def grades_insert_once():#单条成绩录入
@@ -73,3 +74,15 @@ class Grades_cli:
                         break
             else:
                 print('\033[91m' + results + '\033[0m')#红色文本
+    @staticmethod
+    def run():
+        Grades_cli.show_menu()
+        choice=1
+        while choice:
+            choice=input("请选择操作：").strip()
+            match choice:
+                case 1:
+                    Grades_cli.grades_insert_once()
+                case 2:
+                    Grades_cli.grades_alert_ask()
+                

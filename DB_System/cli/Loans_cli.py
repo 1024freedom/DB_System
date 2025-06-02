@@ -5,6 +5,7 @@ class Loans_cli:
         print("\n===== 成绩管理页面 =====")
         print("1. 设备借用")
         print("2. 图书借用")
+        print("0. 退出")
         print("========================")
     @staticmethod
     def equipments_loan():#设备借用
@@ -60,3 +61,15 @@ class Loans_cli:
                 break
             else:
                 print('\033[91m' + message + '\033[0m')#红色文本
+    @staticmethod
+    def run():
+        Loans_cli.show_menu()
+        choice=1
+        while choice:
+            choice=input("请选择操作：").strip()
+            match choice:
+                case 1:
+                    Loans_cli.equipments_loan()
+                case 2:
+                    Loans_cli.books_borrow()
+                

@@ -4,6 +4,7 @@ from openpyxl import Workbook
 from pymysql import NULL
 from utils.db_pool import DBPool
 from sqlalchemy import create_engine
+from utils.Security_tools import Security_tools
 import pandas as pd
 import re
 import datetime
@@ -13,6 +14,7 @@ class Register_Dao():
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         role='学生'
+        password=Security_tools.hash_password(password)#哈希加密存储
         try:
             cursor.execute("INSERT INTO UserRoles(UserID,Role,Password) VALUES(%s,%s,%s)",(user_id,role,password,))
             conn.commit()
@@ -27,6 +29,7 @@ class Register_Dao():
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         role='教师'
+        password=Security_tools.hash_password(password)
         try:
             cursor.execute("INSERT INTO UserRoles(UserID,Role,Password) VALUES(%s,%s,%s)",(user_id,role,password,))
             conn.commit()

@@ -1,3 +1,6 @@
+from itertools import filterfalse
+from pickle import FALSE
+from numpy import False_
 from dao.Students_Dao import Students_Dao
 from dao.Askpages_Dao import Askpages_Dao
 from dao.Search_Dao import Search_Dao
@@ -5,119 +8,70 @@ from dao.Fetch_Dao import Fetch_Dao
 from openpyxl import Workbook
 from pymysql import NULL
 from utils.db_pool import DBPool
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, false
 import pandas as pd
 import datetime
 import re
 class Students_Services:
     @staticmethod
-    def add_student_once():#单次增加学生信息
-        while True:
-            Name=input('输入姓名：').strip()#去除空格检验是否非空
-            if Name:
-                break
-            print("姓名不能为空，请重新输入")
-        while True:
-            Gender=input('输入性别（男/女）：').strip()
-            if Gender in ('男','女'):
-                break
-            print ("请输入正确的性别：")
-        data_pattern =re.complie(r'^\d{4}-\d{2}-\d{2}$')#规定格式
-        while True:
-            BirthDate=input('请输入正确的出生年月日（格式：YYYY-MM-DD').strip()
+    def add_student_once(Name,Gender,BirthDate,Phone):#单次增加学生信息
+        try:
+            data_pattern =re.complie(r'^\d{4}-\d{2}-\d{2}$')#规定格式
             if data_pattern.match(BirthDate):
                 try:
                     #进一步验证日期的有效性
                     datetime.strptime(BirthDate, '%Y-%m-%d')
-                    break
                 except ValueError:
-                    print("无效的日期，请重新输入")
+                    return False,"无效的日期，请重新输入"
             else:
-                print("日期格式错误，请重新输入：")
-        while True:
-            Phone=input("请输入手机号：").strip()
-            if not Phone:
-                Phone=None
-                break
-            if len(Phone)!=11:
-                print("所输入手机号不合法，请重新输入")
-                continue
-            elif Search_Dao.search1('Students','Phone',Phone):
-                print("该手机号已被注册")
-            else:
-                break
-        #验证通过，执行插入
-        try:
+                return False,"日期格式错误，请重新输入："
+            if Phone:
+                if Search_Dao.search1('Students','Phone',Phone):
+                    return False,"该手机号已被注册"
             Students_Dao.add_student_once(Name,Gender,BirthDate,Phone)
+            return True,"操作成功"
         except Exception as e:
-            print(f"操作失败：{str(e)}")
+                return False,f"{str(e)}"
     @staticmethod
-    def alter_student_phone():#更改学生联系方式
-        while True:
-            StudentID=input("请输入学生ID：").strip()
-            if not Search_Dao.search1('Students','StudentID',StudentID):
-                print("该学生不存在，请重新输入：")
-            else:
-                break
-        while True:
-            Phone=input("请输入手机号：").strip()
-            if len(Phone)!=11:
-                print("所输入手机号不合法，请重新输入")
-                continue
-            else:
-                cursor.execute("SELECT 1 FROM Students WHERE Phone=%s AND StudentID!=%s",(Phone,StudentID))
-            #使用select 1更高效
-            if Search_Dao.search2('Students','Phone','StudentID',Phone,StudentID):
-                print("该手机号已被注册")
-            else:
-                break
+    def alter_student_phone(StudentID,Phone):#更改学生联系方式
         try:
+            if not Search_Dao.search1('Students','StudentID',StudentID):
+                return False,"该学生不存在，请重新输入："
+            if Search_Dao.search2('Students','Phone','StudentID',Phone,StudentID):
+                return False,"该手机号已被注册"
             Students_Dao.alter_student_phone(Phone,StudentID)
             return True,"操作成功"
         except Exception as e:
-            print(f"操作失败：{str(e)}")
+            return False,f"{str(e)}"
     @staticmethod
-    def alter_student_class():#为学生分配班级
-        while True:
-            StudentID=input("请输入学生ID：").strip()
-            if not Search_Dao.search1('Students','StudentID',StudentID):
-                print("该学生不存在，请重新输入：")
-            else:
-                break
-        while True:
-            ClassID=input("请输入要为该学生分配的班级号：")
-            if not ClassID:
-                print("班级号不能为空，请重新输入")
-            else:
-                if not Search_Dao.search1('Classes','ClassID',ClassID):
-                    print("该班级不存在，请重新输入")
-                else:
-                    CapacityNow=Fetch_Dao.fetch('CapacityNow','Classes','ClassID',ClassID)
-                    Capacity=Fetch_Dao.fetch('Capacity','Classes','ClassID',ClassID)
-                    if CapacityNow<Capacity:
-                        try:
-                            Students_Dao.alter_student_class(ClassID,StudentID,CapacityNow)
-                            return True,"操作成功"
-                        except Exception as e:
-                            print(f"操作失败：{str(e)}")
-                        break
-                    else:
-                        print("该班级已满，请重新选择")
-    @staticmethod
-    def delete_student():  # 删除学生信息
-        while True:
-            StudentID = input("请输入学生ID：").strip()
-            if not Search_Dao.search1('Students','StudentID',StudentID):
-                print("该学生不存在，请重新输入：")
-            else:
-                break
+    def alter_student_class(StudentID,ClassID):#为学生分配班级
         try:
+            if not Search_Dao.search1('Students','StudentID',StudentID):
+                return False,"该学生不存在，请重新输入："
+        
+            if not Search_Dao.search1('Classes','ClassID',ClassID):
+                return False,"该班级不存在，请重新输入"
+                
+            CapacityNow=Fetch_Dao.fetch('CapacityNow','Classes','ClassID',ClassID)
+            Capacity=Fetch_Dao.fetch('Capacity','Classes','ClassID',ClassID)
+            if CapacityNow<Capacity:
+                Students_Dao.alter_student_class(ClassID,StudentID,CapacityNow)
+                return True,"操作成功"
+            else:
+                return False,"该班级已满，请重新选择"
+        except Exception as e:
+            return False,f"{str(e)}"
+    @staticmethod
+    def delete_student(StudentID):  # 删除学生信息
+        try:
+            if not Search_Dao.search1('Students','StudentID',StudentID):
+                return False,"该学生不存在，请重新输入："
             Students_Dao.delete_student(StudentID)
             return True,"操作成功"
         except Exception as e:
-            print(f"操作失败：{str(e)}")
+            return False,f"{str(e)}"
     @staticmethod
-    def import_from_excel():#从excel文件导入学生数据到数据库
+    def import_from_excel(filepath):#从excel文件导入学生数据到数据库
         filepath=input("请输入文件的绝对路径")
         df=pd.read_excel(filepath,engine='openpyxl')
         #进行数据清洗与预处理
@@ -175,82 +129,84 @@ class Students_Services:
             except Exception as e:
                 print(f"操作失败：{str(e)}")
     @staticmethod
-    def export_to_excel():#以excel文件形式批量导出学生信息
-        filepath=input("请输入导出路径")
-        #文件名具有时效性
-        timestamp=datetime.now().strftime("%Y%m%d_%H%M%S")
-        default_filename=f"students_export_{timestamp}.xlsx"
-        if not filepath:
-            filepath=default_filename#若不输入路径，则会导出到当前目录
+    def export_to_excel(filepath):#以excel文件形式批量导出学生信息
+        try:
+            #文件名具有时效性
+            timestamp=datetime.now().strftime("%Y%m%d_%H%M%S")
+            default_filename=f"students_export_{timestamp}.xlsx"
+            if not filepath:
+                filepath=default_filename#若不输入路径，则会导出到当前目录
 
-        #检查扩展名
-        if not filepath.lower().endswith('.xlsx'):
-            filepath+='.xlsx'
+            #检查扩展名
+            if not filepath.lower().endswith('.xlsx'):
+                filepath+='.xlsx'
 
-        #分页参数
-        page_size=5000#每页查询的数据量
-        current_page=1
-        all_data=[]
-        #获取总记录数
-        count_sql="""SLEECT COUNT(*) AS total FROM Students"""
-        base_sql="""SELECT s.StudentID 学号
-                            s.Name 姓名
-                            s.Gender 性别
-                            s.BirthDate 出生日期
-                            s.Phone 电话
-                            c.ClassName 所属班级
-                    FROM Students s LEFT JOIN
-                    Classes c ON s.ClassID=c.ClassID
-                    LIMIT %s OFFSET %s """
-        results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)
-        total_records=results['total_records']
-        #分页查询数据
-        while (current_page-1)*page_size<total_records:
-            offset =(current_page-1)*page_size
-            try:
-                page_data=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)['data']
-            except Exception as e:
-                print(f"获取数据失败：{str(e)}")
-            all_data.extend(page_data)#注意用extend
-            if all_data:
-                current_page+=1
-                print(f"已加载一页数据到内存")
-            else:
-                 print ("没有可以导出的数据")
-                 return 
+            #分页参数
+            page_size=5000#每页查询的数据量
+            current_page=1
+            all_data=[]
+            #获取总记录数
+            count_sql="""SLEECT COUNT(*) AS total FROM Students"""
+            base_sql="""SELECT s.StudentID 学号
+                                s.Name 姓名
+                                s.Gender 性别
+                                s.BirthDate 出生日期
+                                s.Phone 电话
+                                c.ClassName 所属班级
+                        FROM Students s LEFT JOIN
+                        Classes c ON s.ClassID=c.ClassID
+                        LIMIT %s OFFSET %s """
+            results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)
+            total_records=results['total_records']
+            #分页查询数据
+            while (current_page-1)*page_size<total_records:
+                offset =(current_page-1)*page_size
+                try:
+                    page_data=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)['data']
+                except Exception as e:
+                    print(f"获取数据失败：{str(e)}")
+                all_data.extend(page_data)#注意用extend
+                if all_data:
+                    current_page+=1
+                    print(f"已加载一页数据到内存")
+                else:
+                     print ("没有可以导出的数据")
+                     return 
 
-        #转换为DataFrame
-        df= pd.DataFrame(all_data)
-        #excel写入参数
-        writer=pd.ExcelWriter(
-            filepath,
-            engine='xlsxwriter',
-            datetime_format='yyyy-mm-dd',#注意遵循excel的格式规范
-            options={'string_to_urls':False}#禁止将特定格式的字符串自动转换为Excel超链接
-            )
-        df.to_excel(writer,index=False,sheet_name='学生信息')
+            #转换为DataFrame
+            df= pd.DataFrame(all_data)
+            #excel写入参数
+            writer=pd.ExcelWriter(
+                filepath,
+                engine='xlsxwriter',
+                datetime_format='yyyy-mm-dd',#注意遵循excel的格式规范
+                options={'string_to_urls':False}#禁止将特定格式的字符串自动转换为Excel超链接
+                )
+            df.to_excel(writer,index=False,sheet_name='学生信息')
 
-        #获取工作表对象进行excel表的格式设置
-        workbook=writer.book
-        worksheet=writer.sheets['学生信息']
-        # 设置列宽自适应
-        for idx, col in enumerate(df.columns):
-            max_len = max((
-                df[col].astype(str).map(len).max(),  # 列内容最大长度
-                len(str(col))  # 列标题长度
-            )) + 2  # 额外填充
-            worksheet.set_column(idx, idx, max_len)
+            #获取工作表对象进行excel表的格式设置
+            workbook=writer.book
+            worksheet=writer.sheets['学生信息']
+            # 设置列宽自适应
+            for idx, col in enumerate(df.columns):
+                max_len = max((
+                    df[col].astype(str).map(len).max(),  # 列内容最大长度
+                    len(str(col))  # 列标题长度
+                )) + 2  # 额外填充
+                worksheet.set_column(idx, idx, max_len)
                 
-        # 设置标题行格式
-        header_format = workbook.add_format({
-            'bold': True,
-            'text_wrap': True,
-            'valign': 'top',
-            'fg_color': '#D7E4BC',
-            'border': 1
-        })
-        for col_num, value in enumerate(df.columns.values):
-            worksheet.write(0, col_num, value, header_format)
+            # 设置标题行格式
+            header_format = workbook.add_format({
+                'bold': True,
+                'text_wrap': True,
+                'valign': 'top',
+                'fg_color': '#D7E4BC',
+                'border': 1
+            })
+            for col_num, value in enumerate(df.columns.values):
+                worksheet.write(0, col_num, value, header_format)
             
-        print(f"导出完成，文件已保存至: {filepath}")
-        
+            print(f"导出完成，文件已保存至: {filepath}")
+            return True,"导出成功"
+        except Exception as e:
+            return False,f"{str(e)}"

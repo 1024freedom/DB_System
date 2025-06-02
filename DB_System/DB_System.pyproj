@@ -4,8 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>fe7325a3-d1a5-4f0a-8e6f-a837b66e43de</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -35,6 +34,9 @@
     <Compile Include="cli\Loans_cli.py" />
     <Compile Include="cli\main_menu.py" />
     <Compile Include="cli\Register_cli.py" />
+    <Compile Include="cli\Reservations_cli.py" />
+    <Compile Include="cli\Students_cli.py" />
+    <Compile Include="cli\Userlogin_cli.py" />
     <Compile Include="dao\Askpages_Dao.py" />
     <Compile Include="dao\Att_Ass_Dao.py" />
     <Compile Include="dao\Courses_Dao.py" />
@@ -47,6 +49,7 @@
     <Compile Include="dao\Reservations_Dao.py" />
     <Compile Include="dao\Search_Dao.py" />
     <Compile Include="dao\Students_Dao.py" />
+    <Compile Include="dao\Userlogin_Dao.py" />
     <Compile Include="main.py" />
     <Compile Include="services\Att_Ass_Services.py" />
     <Compile Include="services\Courses_Services.py" />
@@ -57,6 +60,7 @@
     <Compile Include="services\Register_Services.py" />
     <Compile Include="services\Reservations_Services.py" />
     <Compile Include="services\Students_Services.py" />
+    <Compile Include="services\Userlogin_Services.py" />
     <Compile Include="utils\db_pool.py" />
     <Compile Include="utils\Security_tools.py" />
   </ItemGroup>

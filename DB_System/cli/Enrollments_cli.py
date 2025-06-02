@@ -5,8 +5,9 @@ class Enrollments_cli:
         print("\n===== 选课页面 =====")
         print("1. 可选课程查询")
         print("2. 学生退课")
-        print("2. 学生选课记录查询")
-        print("2. 学生选课")
+        print("3. 学生选课记录查询")
+        print("4. 学生选课")
+        print("0. 退出")
         print("========================")
     @staticmethod
     def enroll_avail_ask():#可选课程查询
@@ -144,3 +145,18 @@ class Enrollments_cli:
                 break
             else:
                 print('\033[91m' + message + '\033[0m')#红色文本
+    @staticmethod
+    def run():
+        Enrollments_cli.show_menu()
+        choice=1
+        while choice:
+            choice=input("请选择操作：").strip()
+            match choice:
+                case 1:
+                    Enrollments_cli.enroll_avail_ask()
+                case 2:
+                    Enrollments_cli.students_drop_course()
+                case 3:
+                    Enrollments_cli.student_enroll_ask()
+                case 4:
+                    Enrollments_cli.students_enroll()

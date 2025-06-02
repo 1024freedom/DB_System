@@ -11,6 +11,7 @@ class Courses_cli:
         print("5. 为课程绑定教材")
         print("6. 课程容量监视")
         print("7. 排课")
+        print("0. 退出")
         print("========================")
     @staticmethod
     def add_courses():#新增课程
@@ -185,4 +186,25 @@ class Courses_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#红色文本
+                print('\033[91m' + message + '\033[0m')#红色文本\
+    @staticmethod
+    def run():
+        Courses_cli.show_menu()
+        choice=1
+        while choice:
+            choice=input("请选择操作：").strip()
+            match choice:
+                case 1:
+                    Courses_cli.add_courses()
+                case 2:
+                    Courses_cli.edit_courses_name()
+                case 3:
+                    Courses_cli.edit_courses_credit()
+                case 4:
+                    Courses_cli.edit_teachers()
+                case 5:
+                    Courses_cli.attach_course_tb()
+                case 6:
+                    Courses_cli.course_capacity_show()
+                case 7:
+                    Courses_cli.course_time_arr()
