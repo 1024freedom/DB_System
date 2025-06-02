@@ -29,6 +29,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cli\Att_Ass_cli.py" />
+    <Compile Include="cli\Courses_cli.py" />
+    <Compile Include="cli\Enrollments_cli.py" />
+    <Compile Include="cli\Grades_cli.py" />
+    <Compile Include="cli\Loans_cli.py" />
     <Compile Include="cli\main_menu.py" />
     <Compile Include="cli\Register_cli.py" />
     <Compile Include="dao\Askpages_Dao.py" />

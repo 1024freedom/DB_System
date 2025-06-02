@@ -1,3 +1,5 @@
+from numpy import False_
+from sqlalchemy import false
 from dao.Enrollments_Dao import Enrollments_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao
@@ -47,32 +49,18 @@ class Enrollments_Servises:
                     
             return True,results
         except Exception as e:
-            print(f"操作失败：{str(e)}")
+            return False,f"{str(e)}"
     @staticmethod
-    def students_drop_course():#学生退课
-        while True:
-            StudentID=input("请输入学号").strip()
-            if StudentID:
-                if not Search_Dao.search1('Enrollments','StudentID',StudentID):
-                    print("选课记录中不存在该学号，请重新输入")
-                else:
-                    break
-            else:
-                print("学号不能为空，请重新输入")
-        while True:
-            CourseID=input("请输入要退选的课程ID").strip()
-            if CourseID:
-                if not Search_Dao.search2('Enrollments','StudentID','CourseID',StudentID,CourseID):
-                    print("选课记录中不存在该课程，请重新输入")
-                else:
-                    break
-            else:
-                print("课程号不能为空，请重新输入")
+    def students_drop_course(StudentID,CourseID):#学生退课
         try:
+            if not Search_Dao.search1('Enrollments','StudentID',StudentID):
+                return False,"选课记录中不存在该学号，请重新输入"
+            if not Search_Dao.search2('Enrollments','StudentID','CourseID',StudentID,CourseID):
+                return False,"选课记录中不存在该课程，请重新输入"
             Enrollments_Dao.students_drop_course(StudentID,CourseID)
             return True,"操作成功"
         except Exception as e:
-            print(f"操作失败：{str(e)}")
+            return False,f"{str(e)}"
     @staticmethod
     def students_enroll_ask(current_page,ID):#学生选课记录查询
         #选课记录视图
@@ -110,6 +98,8 @@ class Enrollments_Servises:
         """
         page_size=20
         try:
+            if not Search_Dao.search1('Students','StudentID',ID):
+                    return False,"学号不存在，请重新输入"
             results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page,ID)
             #显示数据准备
                
@@ -118,31 +108,17 @@ class Enrollments_Servises:
                     
             return True,results
         except Exception as e:
-            print(f"操作失败：{str(e)}")
+            return False,f"{str(e)}"
     @staticmethod
-    def students_enroll():#学生选课
-        while True:
-            StudentID=input("请输入学号").strip()
-            if StudentID:
-                if not Search_Dao.search1('Students','StudentID',StudentID)
-                    print("学号不存在，请重新输入")
-                else:
-                    break
+    def students_enroll(StudentID,CourseID):#学生选课
+       try:
+            if not Search_Dao.search1('Students','StudentID',StudentID):
+                return False,"学号不存在，请重新输入"
+            if not Search_Dao.search1('vw_Available_Courses','CourseID',CourseID):
+                return False,"输入的课程ID不存在或该课程已无余量"
             else:
-                print("学号不能为空，请重新输入")
-            #选择课程
-            while True:
-                while True:
-                    CourseID=input("请输入要选择的课程ID(输入q退出)").strip()
-                    if CourseID.lower()=='q':
-                        return
-                    if not Search_Dao.search1('vw_Available_Courses','CourseID',CourseID):
-                        print("输入的课程ID不存在或该课程已无余量")
-                    else:
-                        if Search_Dao.search2('Enrollments','CourseID','StudentID',CourseID,StudentID):
-                            print("该课程您已存在与已选课表中，请重新输入")
-                        else:
-                            break
+                if Search_Dao.search2('Enrollments','CourseID','StudentID',CourseID,StudentID):
+                    return False,"该课程您已存在与已选课表中，请重新输入" 
                 #获取目标课程时间段
                 sql="""SELECT 
                         Day,StartTime ,EndTime 
@@ -160,16 +136,12 @@ class Enrollments_Servises:
                         WHERE e.StudentID=%s
                     """
                 params=(StudentID,)
-                exist=False
                 for(exist_day,exist_start,exist_end) in Fetch_Dao.fetchof(sql,params):
                     if day==exist_day:
                         if (start>exist_start and start<exist_end) or (end>exist_start and end<exist_end):
-                            print("与已选课时间冲突，请重新选择")
-                            exist=True
-                            break
-                if exist:break
-                try:
-                    Enrollments_Dao.students_enroll(StudentID,CourseID)
-                    return True,"操作成功"
-                except Exception as e:
-                    print(f"操作失败：{str(e)}")
+                            return False,"与已选课时间冲突，请重新选择"
+            
+                Enrollments_Dao.students_enroll(StudentID,CourseID)
+                return True,"操作成功"
+       except Exception as e:
+          return False,f"{str(e)}"
