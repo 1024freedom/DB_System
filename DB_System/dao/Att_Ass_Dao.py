@@ -8,7 +8,7 @@ import re
 from datetime import date
 class Att_Ass_Dao:
     @staticmethod
-    def Attendance_add(StudentID,CourseID,Date,Status):#考勤记录
+    def Attendance_add(StudentID,CourseID,Date,Status):#鑰冨嫟璁板綍
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
@@ -21,7 +21,7 @@ class Att_Ass_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def Assignment_add(CourseID,Title,Deadline):#作业发布
+    def Assignment_add(CourseID,Title,Deadline):#浣滀笟鍙戝竷
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:

@@ -8,7 +8,7 @@ import json
 import datetime
 class Permissions_Dao:
     @staticmethod
-    def get_user_role(user_id):#»ñÈ¡ÓÃ»§½ÇÉ«
+    def get_user_role(user_id):#è·å–ç”¨æˆ·è§’è‰²
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -22,7 +22,7 @@ class Permissions_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def get_user_permissions(user_id):#»ñÈ¡ÓÃ»§È¨ÏŞ£¨°üº¬½ÇÉ«Ä¬ÈÏÈ¨ÏŞºÍÓÃ»§ÌØ¶¨È¨ÏŞ£©
+    def get_user_permissions(user_id):#è·å–ç”¨æˆ·æƒé™ï¼ˆåŒ…å«è§’è‰²é»˜è®¤æƒé™å’Œç”¨æˆ·ç‰¹å®šæƒé™ï¼‰
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -34,7 +34,7 @@ class Permissions_Dao:
             """,(user_id,))
             result=cursor.fetchone()
             if result:
-                #½âÎöjsonÊı¾İ
+                #è§£æjsonæ•°æ®
                 user_perms=json.loads(result['UserPermissions']) if result['UserPermissions'] else {}
                 default_perms=json.loads(result['DefaultPermissions']) if result['DefaultPermissions'] else {}
                 return{
@@ -51,7 +51,7 @@ class Permissions_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def update_user_permissions(user_id,permissions):#¸üĞÂÓÃ»§È¨ÏŞ
+    def update_user_permissions(user_id,permissions):#æ›´æ–°ç”¨æˆ·æƒé™
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -62,7 +62,7 @@ class Permissions_Dao:
             WHERE UserID = %s
             """,(user_id,))
             conn.commit()
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             conn.rollback()
             raise e
@@ -71,7 +71,7 @@ class Permissions_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def modify_permission(user_id,permission_path,value):#ĞŞ¸ÄÌØ¶¨È¨ÏŞ
+    def modify_permission(user_id,permission_path,value):#ä¿®æ”¹ç‰¹å®šæƒé™
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -82,10 +82,10 @@ class Permissions_Dao:
                 '$.{permission_path.replace('.', '".')}', %s
             )
             WHERE UserID = %s
-            """#¸üĞÂÌØ¶¨Â·¾¶
+            """#æ›´æ–°ç‰¹å®šè·¯å¾„
             cursor.execute(sql,(value,user_id,))
             conn.commit()
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             conn.rollback()
             raise e
@@ -94,13 +94,13 @@ class Permissions_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def grant_permission(user_id,permission_path):#ÊÚÓèÌØ¶¨È¨ÏŞ
+    def grant_permission(user_id,permission_path):#æˆäºˆç‰¹å®šæƒé™
         return Permissions_Dao.modify_permission(user_id,permission_path,True)
     @staticmethod
-    def revoke_permission(user_id,permission_path):#³·ÏúÌØ¶¨È¨ÏŞ
+    def revoke_permission(user_id,permission_path):#æ’¤é”€ç‰¹å®šæƒé™
         return Permissions_Dao.modify_permission(user_id,permission_path,False)
     @staticmethod
-    def get_role_default_permission(role):#»ñÈ¡½ÇÉ«Ä¬ÈÏÈ¨ÏŞ
+    def get_role_default_permission(role):#è·å–è§’è‰²é»˜è®¤æƒé™
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -114,7 +114,7 @@ class Permissions_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def set_role_default_permissions(role,permissions):#ÉèÖÃ½ÇÉ«Ä¬ÈÏÈ¨ÏŞ
+    def set_role_default_permissions(role,permissions):#è®¾ç½®è§’è‰²é»˜è®¤æƒé™
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -123,10 +123,10 @@ class Permissions_Dao:
             INSERT INTO RoleDefaults (Role, DefaultPermissions)
             VALUES (%s, %s)
             ON DUPLICATE KEY UPDATE DefaultPermissions = VALUES(DefaultPermissions)
-            """#²åÈëĞÂ½ÇÉ«+È¨ÏŞ»ò¸üĞÂÒÑÓĞ½ÇÉ«È¨ÏŞ
+            """#æ’å…¥æ–°è§’è‰²+æƒé™æˆ–æ›´æ–°å·²æœ‰è§’è‰²æƒé™
             cursor.execute(sql,(role,perms_json,))
             conn.commit()
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             conn.rollback()
             raise e
@@ -135,52 +135,52 @@ class Permissions_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def collect_permission_paths(permission_dict,current_path,path_set):#µİ¹éÊÕ¼¯È¨ÏŞÂ·¾¶
+    def collect_permission_paths(permission_dict,current_path,path_set):#é€’å½’æ”¶é›†æƒé™è·¯å¾„
         if not permission_dict:
             return
         for key,value in permission_dict.items():
             new_path=f"{current_path}.{key}" if current_path else key
-            if isinstance(value,bool):#Èç¹ûÊÇ²¼¶ûÖµ£¬±íÃ÷ÕâÊÇÒ»¸ö½Úµã
+            if isinstance(value,bool):#å¦‚æœæ˜¯å¸ƒå°”å€¼ï¼Œè¡¨æ˜è¿™æ˜¯ä¸€ä¸ªèŠ‚ç‚¹
                 path_set.add(new_path)
-            elif isinstance(value,dict):#Èç¹ûÊÇ×Öµä£¬µİ¹é
+            elif isinstance(value,dict):#å¦‚æœæ˜¯å­—å…¸ï¼Œé€’å½’
                 Permissions_Dao.collect_permission_paths(value,new_path,path_set)
     @staticmethod
-    def update_permission_tree():#¸ù¾İÓÃ»§È¨ÏŞºÍ½ÇÉ«Ä¬ÈÏÈ¨ÏŞ¸üĞÂÈ¨ÏŞÊ÷
+    def update_permission_tree():#æ ¹æ®ç”¨æˆ·æƒé™å’Œè§’è‰²é»˜è®¤æƒé™æ›´æ–°æƒé™æ ‘
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
-            #ÊÕ¼¯ËùÓĞÊµ¼ÊÊ¹ÓÃµÄÈ¨ÏŞÂ·¾¶
+            #æ”¶é›†æ‰€æœ‰å®é™…ä½¿ç”¨çš„æƒé™è·¯å¾„
             all_permissions=set()
-            #´ÓÓÃ»§È¨ÏŞ±íÊÕ¼¯È¨ÏŞÂ·¾¶
+            #ä»ç”¨æˆ·æƒé™è¡¨æ”¶é›†æƒé™è·¯å¾„
             cursor.execute("SELECT Permissions FROM UserRoles WHERE Permissions IS NOT NULL")
             user_perms=cursor.fetchall()
             for row in user_perms:
                 if row['Permission']:
                     perms_dict=json.loads(row['Permissions'])
                     Permissions_Dao.collect_permission_paths(perms_dict,"",all_permissions)
-            #´Ó½ÇÉ«Ä¬ÈÏÈ¨ÏŞ±íÊÕ¼¯È¨ÏŞÂ·¾¶
+            #ä»è§’è‰²é»˜è®¤æƒé™è¡¨æ”¶é›†æƒé™è·¯å¾„
             cursor.execute("SELECT Permissions FROM UserRoles WHERE Permissions IS NOT NULL")
             user_perms=cursor.fetchall()
             for row in user_perms:
                 if row['Permission']:
                     perms_dict=json.loads(row['Permissions'])
                     Permissions_Dao.collect_permission_paths(perms_dict,"",all_permissions)
-            #»ñÈ¡ÏÖÓĞÈ¨ÏŞÊ÷ÖĞµÄÈ¨ÏŞID(ID¼´ÎªÂ·¾¶)
+            #è·å–ç°æœ‰æƒé™æ ‘ä¸­çš„æƒé™ID(IDå³ä¸ºè·¯å¾„)
             cursor.execute("SELECT PermissionID FROM PermissionTree")
             existing_perms={row['PermissionID'] for row in cursor.fetchall()}
-            #Ìí¼ÓÈ±Ê§µÄÈ¨ÏŞ½Úµã
+            #æ·»åŠ ç¼ºå¤±çš„æƒé™èŠ‚ç‚¹
             for perm_path in all_permissions:
                 if perm_path not in existing_perms:
-                    #½âÎöÂ·¾¶
+                    #è§£æè·¯å¾„
                     parts=perm_path.split('.')
                     name=parts[-1].capitalize().replace('_',' ')
-                    #È·¶¨¸¸½Úµã
+                    #ç¡®å®šçˆ¶èŠ‚ç‚¹
                     parent_id=None
                     if len(parts)>1:
                         parent_id='.'.join(parts[:-1])
 
-                    #È·¶¨½ÚµãÀàĞÍ
-                    node_type="action"#Ä¬ÈÏÎª²Ù×÷½Úµã
+                    #ç¡®å®šèŠ‚ç‚¹ç±»å‹
+                    node_type="action"#é»˜è®¤ä¸ºæ“ä½œèŠ‚ç‚¹
                     if len(parts)==1:
                         node_type="module"
                     elif len(parts)==2:
@@ -195,7 +195,7 @@ class Permissions_Dao:
                     """
                     cursor.execute(sql,(perm_path,parent_id,name,node_type))
             conn.commit()
-            return True,"¸üĞÂÈ¨ÏŞÊ÷³É¹¦"
+            return True,"æ›´æ–°æƒé™æ ‘æˆåŠŸ"
         except Exception as e:
             conn.rollback()
             raise e

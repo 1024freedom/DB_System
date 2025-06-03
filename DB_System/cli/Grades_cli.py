@@ -3,30 +3,30 @@ from services.Grades_Services import Grades_Services
 class Grades_cli:
     @staticmethod
     def show_menu():
-        print("\n===== ³É¼¨¹ÜÀíÒ³Ãæ =====")
-        print("1. µ¥Ìõ³É¼¨Â¼Èë")
-        print("2. ³É¼¨¾¯¸æÃûµ¥")
-        print("0. ÍË³ö")
+        print("\n===== æˆç»©ç®¡ç†é¡µé¢ =====")
+        print("1. å•æ¡æˆç»©å½•å…¥")
+        print("2. æˆç»©è­¦å‘Šåå•")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def grades_insert_once():#µ¥Ìõ³É¼¨Â¼Èë
+    def grades_insert_once():#å•æ¡æˆç»©å½•å…¥
         while True:
             while True:
-                StudentID = input("ÇëÊäÈëÑ§ÉúID£º").strip()
+                StudentID = input("è¯·è¾“å…¥å­¦ç”ŸIDï¼š").strip()
                 if not StudentID:
-                    print("Ñ§ÉúID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë£º")
+                    print("å­¦ç”ŸIDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥ï¼š")
                 else:
                     break
             while True:
-                CourseID = input("ÇëÊäÈë¿Î³ÌID£º").strip()
+                CourseID = input("è¯·è¾“å…¥è¯¾ç¨‹IDï¼š").strip()
                 if not CourseID:
-                    print("¿Î³ÌID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë£º")
+                    print("è¯¾ç¨‹IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥ï¼š")
                 else:
                     break
             while True:
-                Score=input("ÇëÊäÈëÒªÂ¼È¡µÄ³É¼¨·ÖÊı(0~100):")
+                Score=input("è¯·è¾“å…¥è¦å½•å–çš„æˆç»©åˆ†æ•°(0~100):")
                 if Score>100 or Score<0:
-                    print("ÊäÈëµÄ³É¼¨²»ºÏ·¨,ÇëÖØĞÂÊäÈë")
+                    print("è¾“å…¥çš„æˆç»©ä¸åˆæ³•,è¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             success,message=Grades_Services.grades_insert_once(StudentID,CourseID)
@@ -34,18 +34,18 @@ class Grades_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def grades_alert_ask():#³É¼¨¾¯¸æÃûµ¥²éÑ¯
+    def grades_alert_ask():#æˆç»©è­¦å‘Šåå•æŸ¥è¯¢
         current_page=1
         while True:
             success,results=Grades_Services.grades_alert(current_page)
             if success:
                 result=results['data']
                 total_pages=results['total_pages']
-                print(f"µ±Ç°Ò³Âë:{current_page}/{total_pages}")
+                print(f"å½“å‰é¡µç :{current_page}/{total_pages}")
                 print("{:<10}{:<10}{:<10}{:<10}{:<10}".format(
-                        "¾¯¸æÑ§ÉúID","¿Î³ÌID","Ñ§ÉúĞÕÃû","¿Î³ÌÃû","·ÖÊı"))
+                        "è­¦å‘Šå­¦ç”ŸID","è¯¾ç¨‹ID","å­¦ç”Ÿå§“å","è¯¾ç¨‹å","åˆ†æ•°"))
                 print("-"*50)
                 for item in result:
                         print("{:<10}{:<10}{:<10}{:<10}{:<10}".format(
@@ -55,34 +55,34 @@ class Grades_cli:
                             item['CourseName'],
                             item['Score']
                             ))
-                    #·ÖÒ³µ¼º½
+                    #åˆ†é¡µå¯¼èˆª
                 if total_pages>1:
-                        action=input("ÇëÊäÈë²Ù×÷:n:ÏÂÒ»Ò³ p:ÏÂÒ»Ò³ j:Ìø×ªÄ¿±êÒ³ q:ÍË³ö ").lower()
+                        action=input("è¯·è¾“å…¥æ“ä½œ:n:ä¸‹ä¸€é¡µ p:ä¸‹ä¸€é¡µ j:è·³è½¬ç›®æ ‡é¡µ q:é€€å‡º ").lower()
                         if action=='n':
                             current_page=min(current_page+1,total_pages)
                         elif action=='p':
                             current_page=max(current_page-1,1)
                         elif action=='j':
-                            target=int(input(f"ÇëÊäÈëÄ¿±êÒ³(1-{total_pages})"))
+                            target=int(input(f"è¯·è¾“å…¥ç›®æ ‡é¡µ(1-{total_pages})"))
                             current_page=max(1,min(target,total_pages))
                         elif action=='q':
                             break
                         else:
-                            print("ÎŞĞ§²Ù×÷Âë")
+                            print("æ— æ•ˆæ“ä½œç ")
                 else:
-                        input("Ã»ÓĞ¸ü¶àÒ³,°´ÈÎÒâ¼ü·µ»Ø")
+                        input("æ²¡æœ‰æ›´å¤šé¡µ,æŒ‰ä»»æ„é”®è¿”å›")
                         break
             else:
-                print('\033[91m' + results + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + results + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
     def run():
         Grades_cli.show_menu()
         choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Grades_cli.grades_insert_once()
-                case 2:
+                case "2":
                     Grades_cli.grades_alert_ask()
                 

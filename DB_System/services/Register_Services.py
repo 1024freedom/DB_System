@@ -1,33 +1,31 @@
-from math import e
 from dao.Register_Dao import Register_Dao
 from dao.Search_Dao import Search_Dao
 from utils.Security_tools import Security_tools
 class Register_Services:
     @staticmethod
-    def register_student(user_id,password):#Ñ§ÉúÓÃ»§×¢²á
+    def register_student(user_id,password):#å­¦ç”Ÿç”¨æˆ·æ³¨å†Œ
         try:
             if not Search_Dao.search1('Students','StudentID',user_id):
-                return False,"¸ÃIDÎŞÑ§¼®"
+                return False,"è¯¥IDæ— å­¦ç±"
             elif not Security_tools.is_password_strong(password):
-                return False,"ÃÜÂëÇ¿¶ÈÈõ£¬ÇëÖØĞÂÉèÖÃÃÜÂë"
+                return False,"å¯†ç å¼ºåº¦å¼±ï¼Œè¯·é‡æ–°è®¾ç½®å¯†ç "
             else:
                 Register_Dao.register_student(user_id,password)
-                return True,"×¢²á³É¹¦"
+                return True,"æ³¨å†ŒæˆåŠŸ"
         except Exception as e:
-            return False,"²Ù×÷Ê§°Ü"
-            return False
+            return False,f"{str(e)}"
     @staticmethod
-    def register_student(user_id,password):#Ñ§ÉúÓÃ»§×¢²á
+    def register_teacher(user_id,password):#æ•™å¸ˆç”¨æˆ·æ³¨å†Œ
         try:
             if not Search_Dao.search1('Students','StudentID',user_id):
-                return False,"¸ÃIDÎŞ½ÌÊ¦¼®"
+                return False,"è¯¥IDæ— æ•™å¸ˆç±"
             elif not Security_tools.is_password_strong(password):
-                return False,"ÃÜÂëÇ¿¶ÈÈõ£¬ÇëÖØĞÂÉèÖÃÃÜÂë"
+                return False,"å¯†ç å¼ºåº¦å¼±ï¼Œè¯·é‡æ–°è®¾ç½®å¯†ç "
             else:
                 Register_Dao.register_teacher(user_id,password)
-                return True,"×¢²á³É¹¦"
+                return True,"æ³¨å†ŒæˆåŠŸ"
         except Exception as e:
-            return False,"²Ù×÷Ê§°Ü"
+            return False,f"{str(e)}"
             return False
 
 

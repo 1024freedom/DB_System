@@ -11,6 +11,10 @@
     <OutputPath>.</OutputPath>
     <Name>DB_System</Name>
     <RootNamespace>DB_System</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <Environment>PYTHONIOENCODING=utf8
+PYTHONUTF8=1</Environment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

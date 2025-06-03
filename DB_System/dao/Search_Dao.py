@@ -7,7 +7,7 @@ import pandas as pd
 import re
 import datetime
 class Search_Dao:
-    def search1(table:str,column:str,value:any):#¼ì²éÊÇ·ñ´æÔÚ(´æÔÚ·µ»Øtrue)
+    def search1(table:str,column:str,value:any):#æ£€æŸ¥æ˜¯å¦å­˜åœ¨(å­˜åœ¨è¿”å›žtrue)
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         sql=f"SELECT 1 FROM {table} WHERE {column}=%s"
@@ -18,7 +18,7 @@ class Search_Dao:
             return False
         cursor.close
         conn.close
-    def search2(table:str,column1:str,column2:str,value1:any,value2:any):#¼ì²éÊÇ·ñ´æÔÚ(´æÔÚ·µ»Øtrue)
+    def search2(table:str,column1:str,column2:str,value1:any,value2:any):#æ£€æŸ¥æ˜¯å¦å­˜åœ¨(å­˜åœ¨è¿”å›žtrue)
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         sql=f"SELECT 1 FROM {table} WHERE {column1}=%s AND {column2}=%s"
@@ -29,7 +29,7 @@ class Search_Dao:
             return False
         cursor.close
         conn.close
-    def search_time(table:str,Day:any,StartTime:any,EndTime:any):#¼ì²éÅÅ¿ÎÊ±¼ä³åÍ»(³åÍ»·µ»ØTrue)
+    def search_time(table:str,Day:any,StartTime:any,EndTime:any):#æ£€æŸ¥æŽ’è¯¾æ—¶é—´å†²çª(å†²çªè¿”å›žTrue)
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         sql=f"SELECT 1 FROM {table} WHERE Day=%s AND ((StartTime>=%s AND EndTime>=%s) OR (StartTime<=%s AND EndTime<=%s))"

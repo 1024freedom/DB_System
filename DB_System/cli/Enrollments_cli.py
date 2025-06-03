@@ -2,25 +2,25 @@ from services.Enrollments_Services import Enrollments_Servises
 class Enrollments_cli:
     @staticmethod
     def show_menu():
-        print("\n===== Ñ¡¿ÎÒ³Ãæ =====")
-        print("1. ¿ÉÑ¡¿Î³Ì²éÑ¯")
-        print("2. Ñ§ÉúÍË¿Î")
-        print("3. Ñ§ÉúÑ¡¿Î¼ÇÂ¼²éÑ¯")
-        print("4. Ñ§ÉúÑ¡¿Î")
-        print("0. ÍË³ö")
+        print("\n===== é€‰è¯¾é¡µé¢ =====")
+        print("1. å¯é€‰è¯¾ç¨‹æŸ¥è¯¢")
+        print("2. å­¦ç”Ÿé€€è¯¾")
+        print("3. å­¦ç”Ÿé€‰è¯¾è®°å½•æŸ¥è¯¢")
+        print("4. å­¦ç”Ÿé€‰è¯¾")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def enroll_avail_ask():#¿ÉÑ¡¿Î³Ì²éÑ¯
+    def enroll_avail_ask():#å¯é€‰è¯¾ç¨‹æŸ¥è¯¢
         current_page=1
         while True:
             success,results=Enrollments_Servises.students_enroll_avail(current_page)
             if success:
                 result=results['data']
                 total_pages=results['total_pages']
-                print("¿ÉÑ¡¿Î³Ì:")
-                print(f"µ±Ç°Ò³Âë:{current_page}/{total_pages}")
+                print("å¯é€‰è¯¾ç¨‹:")
+                print(f"å½“å‰é¡µç :{current_page}/{total_pages}")
                 print("{:<10}{:<20}{:<7}{:<15}{:<5}{:<15}{:<15}{:<15}".format(
-                      "¿Î³ÌID", "¿Î³ÌÃû³Æ","Ñ§·Ö", "ÊÚ¿Î½ÌÊ¦", "ĞÇÆÚ", "ÉÏ¿ÎÊ±¼ä", "ÏÂ¿ÎÊ±¼ä", "ÓàÁ¿"))
+                      "è¯¾ç¨‹ID", "è¯¾ç¨‹åç§°","å­¦åˆ†", "æˆè¯¾æ•™å¸ˆ", "æ˜ŸæœŸ", "ä¸Šè¯¾æ—¶é—´", "ä¸‹è¯¾æ—¶é—´", "ä½™é‡"))
                 print("-"*102)
                 for item in result:
                      print("{:<10}{:<20}{:<7}{:<15}{:<5}{:<15}{:<15}{:<15}".format(
@@ -34,63 +34,63 @@ class Enrollments_cli:
                          item['remain']
                          ))
         
-                    #·ÖÒ³µ¼º½
+                    #åˆ†é¡µå¯¼èˆª
                 if total_pages>1:
-                        action=input("ÇëÊäÈë²Ù×÷:n:ÏÂÒ»Ò³ p:ÏÂÒ»Ò³ j:Ìø×ªÄ¿±êÒ³ q:ÍË³ö ").lower()
+                        action=input("è¯·è¾“å…¥æ“ä½œ:n:ä¸‹ä¸€é¡µ p:ä¸‹ä¸€é¡µ j:è·³è½¬ç›®æ ‡é¡µ q:é€€å‡º ").lower()
                         if action=='n':
                             current_page=min(current_page+1,total_pages)
                         elif action=='p':
                             current_page=max(current_page-1,1)
                         elif action=='j':
-                            target=int(input(f"ÇëÊäÈëÄ¿±êÒ³(1-{total_pages})"))
+                            target=int(input(f"è¯·è¾“å…¥ç›®æ ‡é¡µ(1-{total_pages})"))
                             current_page=max(1,min(target,total_pages))
                         elif action=='q':
                             break
                         else:
-                            print("ÎŞĞ§²Ù×÷Âë")
+                            print("æ— æ•ˆæ“ä½œç ")
                 else:
-                        input("Ã»ÓĞ¸ü¶àÒ³,°´ÈÎÒâ¼ü·µ»Ø")
+                        input("æ²¡æœ‰æ›´å¤šé¡µ,æŒ‰ä»»æ„é”®è¿”å›")
                         break
             else:
-                print('\033[91m' + results + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + results + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def students_drop_course():#Ñ§ÉúÍË¿Î
+    def students_drop_course():#å­¦ç”Ÿé€€è¯¾
         while True:
             while True:
-                StudentID=input("ÇëÊäÈëÑ§ºÅ").strip()
+                StudentID=input("è¯·è¾“å…¥å­¦å·").strip()
                 if StudentID:
                     break
                 else:
-                    print("Ñ§ºÅ²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å­¦å·ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                CourseID=input("ÇëÊäÈëÒªÍËÑ¡µÄ¿Î³ÌID").strip()
+                CourseID=input("è¯·è¾“å…¥è¦é€€é€‰çš„è¯¾ç¨‹ID").strip()
                 if CourseID:
                     break
                 else:
-                    print("¿Î³ÌºÅ²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹å·ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             success,message=Enrollments_Servises.students_drop_course(StudentID,CourseID)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def student_enroll_ask():#Ñ§ÉúÑ¡¿Î¼ÇÂ¼²éÑ¯
+    def student_enroll_ask():#å­¦ç”Ÿé€‰è¯¾è®°å½•æŸ¥è¯¢
         while True:
-            StudentID=input("ÇëÊäÈëÑ§ºÅ").strip()
+            StudentID=input("è¯·è¾“å…¥å­¦å·").strip()
             if StudentID:
                 break
             else:
-                print("Ñ§ºÅ²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                print("å­¦å·ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
         current_page=1
         while True:
             success,results=Enrollments_Servises.students_enroll_ask(current_page,StudentID)
             if success:
                 result=results['data']
                 total_pages=results['total_pages']
-                print(f"µ±Ç°Ò³Âë:{current_page}/{total_pages}")
+                print(f"å½“å‰é¡µç :{current_page}/{total_pages}")
                 print("{:<10}{:<10}{:<10}{:<10}{:<10}{:10}{:<5}{:<15}{:<15}".format(
-                        "Ñ¡¿Î¼ÇÂ¼ID","Ñ§ÉúID","Ñ§ÉúĞÕÃû","¿Î³ÌID","¿Î³ÌÃû","ÊÚ¿Î½ÌÊ¦","ĞÇÆÚ","ÉÏ¿ÎÊ±¼ä","ÏÂ¿ÎÊ±¼ä"))
+                        "é€‰è¯¾è®°å½•ID","å­¦ç”ŸID","å­¦ç”Ÿå§“å","è¯¾ç¨‹ID","è¯¾ç¨‹å","æˆè¯¾æ•™å¸ˆ","æ˜ŸæœŸ","ä¸Šè¯¾æ—¶é—´","ä¸‹è¯¾æ—¶é—´"))
                 print("-"*95)
                 for item in result:
                         print("{:<10}{:<10}{:<10}{:<10}{:<10}{:10}{:<5}{:<15}{:<15}".format(
@@ -104,59 +104,59 @@ class Enrollments_cli:
                             item['StartTime'],
                             item['EndTime']
                             ))
-                    #·ÖÒ³µ¼º½
+                    #åˆ†é¡µå¯¼èˆª
                 if total_pages>1:
-                        action=input("ÇëÊäÈë²Ù×÷:n:ÏÂÒ»Ò³ p:ÏÂÒ»Ò³ j:Ìø×ªÄ¿±êÒ³ q:ÍË³ö ").lower()
+                        action=input("è¯·è¾“å…¥æ“ä½œ:n:ä¸‹ä¸€é¡µ p:ä¸‹ä¸€é¡µ j:è·³è½¬ç›®æ ‡é¡µ q:é€€å‡º ").lower()
                         if action=='n':
                             current_page=min(current_page+1,total_pages)
                         elif action=='p':
                             current_page=max(current_page-1,1)
                         elif action=='j':
-                            target=int(input(f"ÇëÊäÈëÄ¿±êÒ³(1-{total_pages})"))
+                            target=int(input(f"è¯·è¾“å…¥ç›®æ ‡é¡µ(1-{total_pages})"))
                             current_page=max(1,min(target,total_pages))
                         elif action=='q':
                             break
                         else:
-                            print("ÎŞĞ§²Ù×÷Âë")
+                            print("æ— æ•ˆæ“ä½œç ")
                 else:
-                        input("Ã»ÓĞ¸ü¶àÒ³,°´ÈÎÒâ¼ü·µ»Ø")
+                        input("æ²¡æœ‰æ›´å¤šé¡µ,æŒ‰ä»»æ„é”®è¿”å›")
                         break
             else:
-                print('\033[91m' + results + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + results + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def students_enroll():#Ñ§ÉúÑ¡¿Î
-        #Ñ¡Ôñ¿Î³Ì
+    def students_enroll():#å­¦ç”Ÿé€‰è¯¾
+        #é€‰æ‹©è¯¾ç¨‹
         while True:
             while True:
-                StudentID=input("ÇëÊäÈëÑ§ºÅ").strip()
+                StudentID=input("è¯·è¾“å…¥å­¦å·").strip()
             if StudentID:
                 break
             else:
-                print("Ñ§ºÅ²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                print("å­¦å·ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                CourseID=input("ÇëÊäÈëÒªÑ¡ÔñµÄ¿Î³ÌID(ÊäÈëqÍË³ö)").strip()
+                CourseID=input("è¯·è¾“å…¥è¦é€‰æ‹©çš„è¯¾ç¨‹ID(è¾“å…¥qé€€å‡º)").strip()
                 if CourseID.lower()=='q':
                     return
                 elif not CourseID:
-                    print("¿Î³ÌID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             success,message=Enrollments_Servises.students_enroll(StudentID,CourseID)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
     def run():
         Enrollments_cli.show_menu()
         choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Enrollments_cli.enroll_avail_ask()
-                case 2:
+                case "2":
                     Enrollments_cli.students_drop_course()
-                case 3:
+                case "3":
                     Enrollments_cli.student_enroll_ask()
-                case 4:
+                case "4":
                     Enrollments_cli.students_enroll()

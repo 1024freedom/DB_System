@@ -2,18 +2,18 @@ from dao.Permissions_Dao import Permissions_Dao
 import json
 class Permissions_Services:
     @staticmethod
-    def get_user_role(user_id):#»ñÈ¡ÓÃ»§½ÇÉ«
+    def get_user_role(user_id):#è·å–ç”¨æˆ·è§’è‰²
         return Permissions_Dao.get_user_role(user_id)
     @staticmethod
-    def get_user_permissions(user_id):#»ñÈ¡ÓÃ»§ÍêÕûÈ¨ÏŞĞÅÏ¢
+    def get_user_permissions(user_id):#è·å–ç”¨æˆ·å®Œæ•´æƒé™ä¿¡æ¯
         result = Permissions_Dao.get_user_permissions(user_id)
         if not result:
             return None
         
-        # ºÏ²¢Ä¬ÈÏÈ¨ÏŞºÍÓÃ»§ÌØ¶¨È¨ÏŞ
+        # åˆå¹¶é»˜è®¤æƒé™å’Œç”¨æˆ·ç‰¹å®šæƒé™
         merged_permissions = {}
         
-        # µİ¹éºÏ²¢È¨ÏŞ×Öµä
+        # é€’å½’åˆå¹¶æƒé™å­—å…¸
         def merge_dicts(default, custom):
             for key, value in custom.items():
                 if key in default:
@@ -24,11 +24,11 @@ class Permissions_Services:
                 else:
                     default[key] = value
             
-        # ¸´ÖÆÄ¬ÈÏÈ¨ÏŞ×÷Îª»ù´¡
+        # å¤åˆ¶é»˜è®¤æƒé™ä½œä¸ºåŸºç¡€
         if result['default_permissions']:
             merged_permissions = json.loads(json.dumps(result['default_permissions']))
         
-        # ºÏ²¢ÓÃ»§ÌØ¶¨È¨ÏŞ
+        # åˆå¹¶ç”¨æˆ·ç‰¹å®šæƒé™
         if result['permisssions']:
             merge_dicts(merged_permissions, result['permisssions'])
         
@@ -40,25 +40,25 @@ class Permissions_Services:
             'custom_permissions': result['permisssions']
         }
     @staticmethod
-    def update_user_permissions(user_id, permissions):#¸üĞÂÓÃ»§È¨ÏŞ
+    def update_user_permissions(user_id, permissions):#æ›´æ–°ç”¨æˆ·æƒé™
         return Permissions_Dao.update_user_permissions(user_id, permissions)
     @staticmethod
-    def modify_permission(user_id, permission_path, value):#ĞŞ¸ÄÓÃ»§ÌØ¶¨È¨ÏŞ
+    def modify_permission(user_id, permission_path, value):#ä¿®æ”¹ç”¨æˆ·ç‰¹å®šæƒé™
         return Permissions_Dao.modify_permission(user_id, permission_path, value)
     @staticmethod
-    def grant_permission(user_id, permission_path):#ÊÚÓèÈ¨ÏŞ
+    def grant_permission(user_id, permission_path):#æˆäºˆæƒé™
         return Permissions_Dao.grant_permission(user_id, permission_path)
     @staticmethod
-    def revoke_permission(user_id, permission_path):#³·ÏúÈ¨ÏŞ
+    def revoke_permission(user_id, permission_path):#æ’¤é”€æƒé™
         return Permissions_Dao.revoke_permission(user_id, permission_path)
     @staticmethod
-    def get_role_default_permissions(role):#»ñÈ¡½ÇÉ«Ä¬ÈÏÈ¨ÏŞ
+    def get_role_default_permissions(role):#è·å–è§’è‰²é»˜è®¤æƒé™
         return Permissions_Dao.get_role_default_permission(role)
     @staticmethod
-    def set_role_default_permissions(role, permissions):#ÉèÖÃ½ÇÉ«Ä¬ÈÏÈ¨ÏŞ
+    def set_role_default_permissions(role, permissions):#è®¾ç½®è§’è‰²é»˜è®¤æƒé™
         return Permissions_Dao.set_role_default_permissions(role, permissions)
     @staticmethod
-    def update_permission_tree():#¸üĞÂÈ¨ÏŞÊ÷
+    def update_permission_tree():#æ›´æ–°æƒé™æ ‘
         return Permissions_Dao.update_permission_tree()
 
 

@@ -3,35 +3,35 @@ from services.Reservations_Services import Reservation_Services
 class Reservation_cli:
     @staticmethod
     def show_menu():
-        print("\n===== Ô¤Ô¼¹ÜÀíÒ³Ãæ =====")
-        print("1. ÊµÑéÊÒÔ¤Ô¼")
-        print("2. Ô¤Ô¼¼ÇÂ¼²éÑ¯")
-        print("3. È¡ÏûÎ´¿ªÊ¼µÄÔ¤Ô¼")
-        print("0. ÍË³ö")
+        print("\n===== é¢„çº¦ç®¡ç†é¡µé¢ =====")
+        print("1. å®éªŒå®¤é¢„çº¦")
+        print("2. é¢„çº¦è®°å½•æŸ¥è¯¢")
+        print("3. å–æ¶ˆæœªå¼€å§‹çš„é¢„çº¦")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def lab_reservation():#ÊµÑéÊÒÔ¤Ô¼
+    def lab_reservation():#å®éªŒå®¤é¢„çº¦
         while True:
             while True:
-                TeacherID=input("ÇëÊäÈëÄúµÄ½ÌÊ¦ID")
+                TeacherID=input("è¯·è¾“å…¥æ‚¨çš„æ•™å¸ˆID")
                 if TeacherID:
                     break
                 else:
-                    print("½ÌÊ¦ID²»ÄÜÎª¿Õ,ÇëÖØĞÂÊäÈë")
+                    print("æ•™å¸ˆIDä¸èƒ½ä¸ºç©º,è¯·é‡æ–°è¾“å…¥")
             while True:
-                LabID=input("ÇëÊäÈëÒªÔ¤Ô¼µÄÊµÑéÊÒID")
+                LabID=input("è¯·è¾“å…¥è¦é¢„çº¦çš„å®éªŒå®¤ID")
                 if LabID:
                     break
                 else:
-                    print("ÊµÑéÊÒID²»ÄÜÎª¿Õ,ÇëÖØĞÂÊäÈë")
+                    print("å®éªŒå®¤IDä¸èƒ½ä¸ºç©º,è¯·é‡æ–°è¾“å…¥")
             while True:
-                StartTime=input("ÇëÊäÈë¿ªÊ¼Ê¹ÓÃÊ±¼ä(Ê¾Àı):2025-12-31 23:34):").strip()
+                StartTime=input("è¯·è¾“å…¥å¼€å§‹ä½¿ç”¨æ—¶é—´(ç¤ºä¾‹):2025-12-31 23:34):").strip()
                 if not StartTime:
-                    print("¿ªÊ¼Ê±¼ä²»ÄÜÎª¿Õ")
+                    print("å¼€å§‹æ—¶é—´ä¸èƒ½ä¸ºç©º")
                     continue
-                EndTime=input("ÇëÊäÈë½áÊøÊ¹ÓÃÊ±¼ä(Ê¾Àı):2025-12-31 23:34):").strip()
+                EndTime=input("è¯·è¾“å…¥ç»“æŸä½¿ç”¨æ—¶é—´(ç¤ºä¾‹):2025-12-31 23:34):").strip()
                 if not EndTime:
-                    print("½áÊøÊ±¼ä²»ÄÜÎª¿Õ")
+                    print("ç»“æŸæ—¶é—´ä¸èƒ½ä¸ºç©º")
                 else:
                     break
             success,message=Reservation_Services.lab_reservation(TeacherID,LabID,StartTime,EndTime)
@@ -39,24 +39,24 @@ class Reservation_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def reservation_ask():#Ô¤Ô¼¼ÇÂ¼²éÑ¯
+    def reservation_ask():#é¢„çº¦è®°å½•æŸ¥è¯¢
         while True:
-            TeacherID=input("ÇëÊäÈëÄúµÄ½ÌÊ¦ID")
+            TeacherID=input("è¯·è¾“å…¥æ‚¨çš„æ•™å¸ˆID")
             if TeacherID:
                 break
             else:
-                print("½ÌÊ¦ID²»ÄÜÎª¿Õ,ÇëÖØĞÂÊäÈë")
+                print("æ•™å¸ˆIDä¸èƒ½ä¸ºç©º,è¯·é‡æ–°è¾“å…¥")
         current_page=1
         while True:
             success,results=Reservation_Services.reservation_ask(current_page,TeacherID)
             if success:
                 result=results['data']
                 total_pages=results['total_pages']
-                print(f"µ±Ç°Ò³Âë:{current_page}/{total_pages}")
+                print(f"å½“å‰é¡µç :{current_page}/{total_pages}")
                 print("{:<10}{:<10}{:<10}{:<10}{:<10}{:<10}{:<10}".format(
-                        "Ô¤Ô¼¼ÇÂ¼ID","½ÌÊ¦ID","½ÌÊ¦ĞÕÃû","ÊµÑéÊÒID","¿ªÊ¼Ê¹ÓÃÊ±¼ä","½áÊøÊ¹ÓÃÊ±¼ä"))
+                        "é¢„çº¦è®°å½•ID","æ•™å¸ˆID","æ•™å¸ˆå§“å","å®éªŒå®¤ID","å¼€å§‹ä½¿ç”¨æ—¶é—´","ç»“æŸä½¿ç”¨æ—¶é—´"))
                 print("-"*70)
                 for item in result:
                         print("{:<10}{:<10}{:<10}{:<10}{:<10}{:<10}{:<10}".format(
@@ -68,57 +68,57 @@ class Reservation_cli:
                             item['EndTime'],
                             item['Location']
                             ))
-                    #·ÖÒ³µ¼º½
+                    #åˆ†é¡µå¯¼èˆª
                 if total_pages>1:
-                        action=input("ÇëÊäÈë²Ù×÷:n:ÏÂÒ»Ò³ p:ÏÂÒ»Ò³ j:Ìø×ªÄ¿±êÒ³ q:ÍË³ö ").lower()
+                        action=input("è¯·è¾“å…¥æ“ä½œ:n:ä¸‹ä¸€é¡µ p:ä¸‹ä¸€é¡µ j:è·³è½¬ç›®æ ‡é¡µ q:é€€å‡º ").lower()
                         if action=='n':
                             current_page=min(current_page+1,total_pages)
                         elif action=='p':
                             current_page=max(current_page-1,1)
                         elif action=='j':
-                            target=int(input(f"ÇëÊäÈëÄ¿±êÒ³(1-{total_pages})"))
+                            target=int(input(f"è¯·è¾“å…¥ç›®æ ‡é¡µ(1-{total_pages})"))
                             current_page=max(1,min(target,total_pages))
                         elif action=='q':
                             break
                         else:
-                            print("ÎŞĞ§²Ù×÷Âë")
+                            print("æ— æ•ˆæ“ä½œç ")
                 else:
-                        input("Ã»ÓĞ¸ü¶àÒ³,°´ÈÎÒâ¼ü·µ»Ø")
+                        input("æ²¡æœ‰æ›´å¤šé¡µ,æŒ‰ä»»æ„é”®è¿”å›")
                         break
             else:
-                print('\033[91m' + results + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + results + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def reservation_cancel():#È¡ÏûÎ´¿ªÊ¼µÄÔ¤Ô¼
+    def reservation_cancel():#å–æ¶ˆæœªå¼€å§‹çš„é¢„çº¦
         while True:
             while True:
-                    TeacherID=input("ÇëÊäÈëÄúµÄ½ÌÊ¦ID")
+                    TeacherID=input("è¯·è¾“å…¥æ‚¨çš„æ•™å¸ˆID")
                     if TeacherID:
                         break
                     else:
-                        print("½ÌÊ¦ID²»ÄÜÎª¿Õ,ÇëÖØĞÂÊäÈë")
+                        print("æ•™å¸ˆIDä¸èƒ½ä¸ºç©º,è¯·é‡æ–°è¾“å…¥")
             while True:
-                ReservationID=input("ÇëÊäÈëÒªÈ¡ÏûµÄÔ¤Ô¼¼ÇÂ¼ID")
+                ReservationID=input("è¯·è¾“å…¥è¦å–æ¶ˆçš„é¢„çº¦è®°å½•ID")
                 if ReservationID:
                     break
                 else:
-                    print("Ô¤Ô¼¼ÇÂ¼ID²»ÄÜÎª¿Õ,ÇëÖØĞÂÊäÈë")
+                    print("é¢„çº¦è®°å½•IDä¸èƒ½ä¸ºç©º,è¯·é‡æ–°è¾“å…¥")
             success,message=Reservation_Services.reservation_cancel(TeacherID,ReservationID)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
     def run():
         Reservation_cli.show_menu()
         choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Reservation_cli.lab_reservation()
-                case 2:
+                case "2":
                     Reservation_cli.reservation_ask()
-                case 3:
+                case "3":
                     Reservation_cli.reservation_cancel()
                 

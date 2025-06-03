@@ -14,109 +14,109 @@ import datetime
 import re
 class Students_Services:
     @staticmethod
-    def add_student_once(Name,Gender,BirthDate,Phone):#µ¥´ÎÔö¼ÓÑ§ÉúĞÅÏ¢
+    def add_student_once(Name,Gender,BirthDate,Phone):#å•æ¬¡å¢åŠ å­¦ç”Ÿä¿¡æ¯
         try:
-            data_pattern =re.complie(r'^\d{4}-\d{2}-\d{2}$')#¹æ¶¨¸ñÊ½
+            data_pattern =re.complie(r'^\d{4}-\d{2}-\d{2}$')#è§„å®šæ ¼å¼
             if data_pattern.match(BirthDate):
                 try:
-                    #½øÒ»²½ÑéÖ¤ÈÕÆÚµÄÓĞĞ§ĞÔ
+                    #è¿›ä¸€æ­¥éªŒè¯æ—¥æœŸçš„æœ‰æ•ˆæ€§
                     datetime.strptime(BirthDate, '%Y-%m-%d')
                 except ValueError:
-                    return False,"ÎŞĞ§µÄÈÕÆÚ£¬ÇëÖØĞÂÊäÈë"
+                    return False,"æ— æ•ˆçš„æ—¥æœŸï¼Œè¯·é‡æ–°è¾“å…¥"
             else:
-                return False,"ÈÕÆÚ¸ñÊ½´íÎó£¬ÇëÖØĞÂÊäÈë£º"
+                return False,"æ—¥æœŸæ ¼å¼é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
             if Phone:
                 if Search_Dao.search1('Students','Phone',Phone):
-                    return False,"¸ÃÊÖ»úºÅÒÑ±»×¢²á"
+                    return False,"è¯¥æ‰‹æœºå·å·²è¢«æ³¨å†Œ"
             Students_Dao.add_student_once(Name,Gender,BirthDate,Phone)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
                 return False,f"{str(e)}"
     @staticmethod
-    def alter_student_phone(StudentID,Phone):#¸ü¸ÄÑ§ÉúÁªÏµ·½Ê½
+    def alter_student_phone(StudentID,Phone):#æ›´æ”¹å­¦ç”Ÿè”ç³»æ–¹å¼
         try:
             if not Search_Dao.search1('Students','StudentID',StudentID):
-                return False,"¸ÃÑ§Éú²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º"
+                return False,"è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
             if Search_Dao.search2('Students','Phone','StudentID',Phone,StudentID):
-                return False,"¸ÃÊÖ»úºÅÒÑ±»×¢²á"
+                return False,"è¯¥æ‰‹æœºå·å·²è¢«æ³¨å†Œ"
             Students_Dao.alter_student_phone(Phone,StudentID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def alter_student_class(StudentID,ClassID):#ÎªÑ§Éú·ÖÅä°à¼¶
+    def alter_student_class(StudentID,ClassID):#ä¸ºå­¦ç”Ÿåˆ†é…ç­çº§
         try:
             if not Search_Dao.search1('Students','StudentID',StudentID):
-                return False,"¸ÃÑ§Éú²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º"
+                return False,"è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
         
             if not Search_Dao.search1('Classes','ClassID',ClassID):
-                return False,"¸Ã°à¼¶²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥ç­çº§ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
                 
             CapacityNow=Fetch_Dao.fetch('CapacityNow','Classes','ClassID',ClassID)
             Capacity=Fetch_Dao.fetch('Capacity','Classes','ClassID',ClassID)
             if CapacityNow<Capacity:
                 Students_Dao.alter_student_class(ClassID,StudentID,CapacityNow)
-                return True,"²Ù×÷³É¹¦"
+                return True,"æ“ä½œæˆåŠŸ"
             else:
-                return False,"¸Ã°à¼¶ÒÑÂú£¬ÇëÖØĞÂÑ¡Ôñ"
+                return False,"è¯¥ç­çº§å·²æ»¡ï¼Œè¯·é‡æ–°é€‰æ‹©"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def delete_student(StudentID):  # É¾³ıÑ§ÉúĞÅÏ¢
+    def delete_student(StudentID):  # åˆ é™¤å­¦ç”Ÿä¿¡æ¯
         try:
             if not Search_Dao.search1('Students','StudentID',StudentID):
-                return False,"¸ÃÑ§Éú²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º"
+                return False,"è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
             Students_Dao.delete_student(StudentID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def import_from_excel(filepath):#´ÓexcelÎÄ¼şµ¼ÈëÑ§ÉúÊı¾İµ½Êı¾İ¿â
-        filepath=input("ÇëÊäÈëÎÄ¼şµÄ¾ø¶ÔÂ·¾¶")
+    def import_from_excel(filepath):#ä»excelæ–‡ä»¶å¯¼å…¥å­¦ç”Ÿæ•°æ®åˆ°æ•°æ®åº“
+        filepath=input("è¯·è¾“å…¥æ–‡ä»¶çš„ç»å¯¹è·¯å¾„")
         df=pd.read_excel(filepath,engine='openpyxl')
-        #½øĞĞÊı¾İÇåÏ´ÓëÔ¤´¦Àí
-        valid_records=[]#´æ´¢¾­¹ıÑéÖ¤µÄÓĞĞ§¼ÇÂ¼
-        duplicate_phones=set()#¸ú×ÙÖØ¸´µÄÊÖ»úºÅ
-        invalid_class_ids=set()#´æ´¢ÎŞĞ§µÄ°à¼¶ID
-        #²éÑ¯ÏÖÓĞÊÖ»úºÅÓë°à¼¶ID
+        #è¿›è¡Œæ•°æ®æ¸…æ´—ä¸é¢„å¤„ç†
+        valid_records=[]#å­˜å‚¨ç»è¿‡éªŒè¯çš„æœ‰æ•ˆè®°å½•
+        duplicate_phones=set()#è·Ÿè¸ªé‡å¤çš„æ‰‹æœºå·
+        invalid_class_ids=set()#å­˜å‚¨æ— æ•ˆçš„ç­çº§ID
+        #æŸ¥è¯¢ç°æœ‰æ‰‹æœºå·ä¸ç­çº§ID
         sql="""SELECT Phone FROM Students"""
         existing_phones={row[0] for row in Fetch_Dao.fetchof(sql)}
 
         sql="""SELECT DISTINCT ClassID FROM Classes"""
         valid_class_ids={row[0] for row in Fetch_Dao.fetchof(sql)}
 
-        #±éÀúÊı¾İ
+        #éå†æ•°æ®
         for index,row in df.iterrows():
-            #¿ÕÖµĞ£Ñé
+            #ç©ºå€¼æ ¡éªŒ
             if pd.isnull(row['Name']) or pd.isnull(row['Gender']) or pd.isnull(['BirthDate']):
-                print(f'µÚ{index+2}ĞĞÈ±Ê§Êı¾İ£¬ÒÑÌø¹ı')
+                print(f'ç¬¬{index+2}è¡Œç¼ºå¤±æ•°æ®ï¼Œå·²è·³è¿‡')
                 continue
 
-            #ĞÔ±ğĞ£Ñé
+            #æ€§åˆ«æ ¡éªŒ
             gender=str(row['Gender']).strip()
-            if gender not in('ÄĞ','Å®'):
-                print(f'µÚ{index+2}ĞĞĞÔ±ğÖµ²»ºÏ·¨£¬ÒÑÌø¹ı')
+            if gender not in('ç”·','å¥³'):
+                print(f'ç¬¬{index+2}è¡Œæ€§åˆ«å€¼ä¸åˆæ³•ï¼Œå·²è·³è¿‡')
                 continue
 
-            #ÊÖ»úºÅĞ£Ñé
+            #æ‰‹æœºå·æ ¡éªŒ
             phone =str(row['Phone']).strip().replace(' ','')if not pd.isnull(row['Phone'])else None
             if phone:
                 if phone in existing_phones:
-                    print(f'µÚ{index+2}ĞĞÊÖ»úºÅÒÑ´æÔÚ£¬ÒÑÌø¹ı¸ÃĞĞ')
+                    print(f'ç¬¬{index+2}è¡Œæ‰‹æœºå·å·²å­˜åœ¨ï¼Œå·²è·³è¿‡è¯¥è¡Œ')
                     duplicate_phones.add(phone)
                     continue
                 existing_phones.add(phone)
-            #°à¼¶IDĞ£Ñé
+            #ç­çº§IDæ ¡éªŒ
             class_id =row['ClassID']
             if class_id and class_id not in valid_class_ids:
                 invalid_class_ids.add(class_id)
-                print(f'µÚ{index+2}ĞĞ°à¼¶ºÅ²»´æÔÚ£¬ÒÑÌø¹ı')
+                print(f'ç¬¬{index+2}è¡Œç­çº§å·ä¸å­˜åœ¨ï¼Œå·²è·³è¿‡')
                 continue
 
-            #ÈÕÆÚ¸ñÊ½×ª»»
+            #æ—¥æœŸæ ¼å¼è½¬æ¢
             birth_date =pd.to_datatime(row['BirthDate']).strftime('%Y-%m-%d')
             valid_records.append((
-                row['Name'],#Ğè»ñÈ¡
+                row['Name'],#éœ€è·å–
                 gender,
                 birth_date,
                 phone,
@@ -125,77 +125,77 @@ class Students_Services:
         if valid_records:
             try:
                 Students_Dao.import_from_excel(valid_class_ids)
-                return True,"²Ù×÷³É¹¦"
+                return True,"æ“ä½œæˆåŠŸ"
             except Exception as e:
-                print(f"²Ù×÷Ê§°Ü£º{str(e)}")
+                print(f"æ“ä½œå¤±è´¥ï¼š{str(e)}")
     @staticmethod
-    def export_to_excel(filepath):#ÒÔexcelÎÄ¼şĞÎÊ½ÅúÁ¿µ¼³öÑ§ÉúĞÅÏ¢
+    def export_to_excel(filepath):#ä»¥excelæ–‡ä»¶å½¢å¼æ‰¹é‡å¯¼å‡ºå­¦ç”Ÿä¿¡æ¯
         try:
-            #ÎÄ¼şÃû¾ßÓĞÊ±Ğ§ĞÔ
+            #æ–‡ä»¶åå…·æœ‰æ—¶æ•ˆæ€§
             timestamp=datetime.now().strftime("%Y%m%d_%H%M%S")
             default_filename=f"students_export_{timestamp}.xlsx"
             if not filepath:
-                filepath=default_filename#Èô²»ÊäÈëÂ·¾¶£¬Ôò»áµ¼³öµ½µ±Ç°Ä¿Â¼
+                filepath=default_filename#è‹¥ä¸è¾“å…¥è·¯å¾„ï¼Œåˆ™ä¼šå¯¼å‡ºåˆ°å½“å‰ç›®å½•
 
-            #¼ì²éÀ©Õ¹Ãû
+            #æ£€æŸ¥æ‰©å±•å
             if not filepath.lower().endswith('.xlsx'):
                 filepath+='.xlsx'
 
-            #·ÖÒ³²ÎÊı
-            page_size=5000#Ã¿Ò³²éÑ¯µÄÊı¾İÁ¿
+            #åˆ†é¡µå‚æ•°
+            page_size=5000#æ¯é¡µæŸ¥è¯¢çš„æ•°æ®é‡
             current_page=1
             all_data=[]
-            #»ñÈ¡×Ü¼ÇÂ¼Êı
+            #è·å–æ€»è®°å½•æ•°
             count_sql="""SLEECT COUNT(*) AS total FROM Students"""
-            base_sql="""SELECT s.StudentID Ñ§ºÅ
-                                s.Name ĞÕÃû
-                                s.Gender ĞÔ±ğ
-                                s.BirthDate ³öÉúÈÕÆÚ
-                                s.Phone µç»°
-                                c.ClassName ËùÊô°à¼¶
+            base_sql="""SELECT s.StudentID å­¦å·
+                                s.Name å§“å
+                                s.Gender æ€§åˆ«
+                                s.BirthDate å‡ºç”Ÿæ—¥æœŸ
+                                s.Phone ç”µè¯
+                                c.ClassName æ‰€å±ç­çº§
                         FROM Students s LEFT JOIN
                         Classes c ON s.ClassID=c.ClassID
                         LIMIT %s OFFSET %s """
             results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)
             total_records=results['total_records']
-            #·ÖÒ³²éÑ¯Êı¾İ
+            #åˆ†é¡µæŸ¥è¯¢æ•°æ®
             while (current_page-1)*page_size<total_records:
                 offset =(current_page-1)*page_size
                 try:
                     page_data=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)['data']
                 except Exception as e:
-                    print(f"»ñÈ¡Êı¾İÊ§°Ü£º{str(e)}")
-                all_data.extend(page_data)#×¢ÒâÓÃextend
+                    print(f"è·å–æ•°æ®å¤±è´¥ï¼š{str(e)}")
+                all_data.extend(page_data)#æ³¨æ„ç”¨extend
                 if all_data:
                     current_page+=1
-                    print(f"ÒÑ¼ÓÔØÒ»Ò³Êı¾İµ½ÄÚ´æ")
+                    print(f"å·²åŠ è½½ä¸€é¡µæ•°æ®åˆ°å†…å­˜")
                 else:
-                     print ("Ã»ÓĞ¿ÉÒÔµ¼³öµÄÊı¾İ")
+                     print ("æ²¡æœ‰å¯ä»¥å¯¼å‡ºçš„æ•°æ®")
                      return 
 
-            #×ª»»ÎªDataFrame
+            #è½¬æ¢ä¸ºDataFrame
             df= pd.DataFrame(all_data)
-            #excelĞ´Èë²ÎÊı
+            #excelå†™å…¥å‚æ•°
             writer=pd.ExcelWriter(
                 filepath,
                 engine='xlsxwriter',
-                datetime_format='yyyy-mm-dd',#×¢Òâ×ñÑ­excelµÄ¸ñÊ½¹æ·¶
-                options={'string_to_urls':False}#½ûÖ¹½«ÌØ¶¨¸ñÊ½µÄ×Ö·û´®×Ô¶¯×ª»»ÎªExcel³¬Á´½Ó
+                datetime_format='yyyy-mm-dd',#æ³¨æ„éµå¾ªexcelçš„æ ¼å¼è§„èŒƒ
+                options={'string_to_urls':False}#ç¦æ­¢å°†ç‰¹å®šæ ¼å¼çš„å­—ç¬¦ä¸²è‡ªåŠ¨è½¬æ¢ä¸ºExcelè¶…é“¾æ¥
                 )
-            df.to_excel(writer,index=False,sheet_name='Ñ§ÉúĞÅÏ¢')
+            df.to_excel(writer,index=False,sheet_name='å­¦ç”Ÿä¿¡æ¯')
 
-            #»ñÈ¡¹¤×÷±í¶ÔÏó½øĞĞexcel±íµÄ¸ñÊ½ÉèÖÃ
+            #è·å–å·¥ä½œè¡¨å¯¹è±¡è¿›è¡Œexcelè¡¨çš„æ ¼å¼è®¾ç½®
             workbook=writer.book
-            worksheet=writer.sheets['Ñ§ÉúĞÅÏ¢']
-            # ÉèÖÃÁĞ¿í×ÔÊÊÓ¦
+            worksheet=writer.sheets['å­¦ç”Ÿä¿¡æ¯']
+            # è®¾ç½®åˆ—å®½è‡ªé€‚åº”
             for idx, col in enumerate(df.columns):
                 max_len = max((
-                    df[col].astype(str).map(len).max(),  # ÁĞÄÚÈİ×î´ó³¤¶È
-                    len(str(col))  # ÁĞ±êÌâ³¤¶È
-                )) + 2  # ¶îÍâÌî³ä
+                    df[col].astype(str).map(len).max(),  # åˆ—å†…å®¹æœ€å¤§é•¿åº¦
+                    len(str(col))  # åˆ—æ ‡é¢˜é•¿åº¦
+                )) + 2  # é¢å¤–å¡«å……
                 worksheet.set_column(idx, idx, max_len)
                 
-            # ÉèÖÃ±êÌâĞĞ¸ñÊ½
+            # è®¾ç½®æ ‡é¢˜è¡Œæ ¼å¼
             header_format = workbook.add_format({
                 'bold': True,
                 'text_wrap': True,
@@ -206,7 +206,7 @@ class Students_Services:
             for col_num, value in enumerate(df.columns.values):
                 worksheet.write(0, col_num, value, header_format)
             
-            print(f"µ¼³öÍê³É£¬ÎÄ¼şÒÑ±£´æÖÁ: {filepath}")
-            return True,"µ¼³ö³É¹¦"
+            print(f"å¯¼å‡ºå®Œæˆï¼Œæ–‡ä»¶å·²ä¿å­˜è‡³: {filepath}")
+            return True,"å¯¼å‡ºæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"

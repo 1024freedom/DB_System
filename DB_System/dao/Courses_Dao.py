@@ -8,7 +8,7 @@ import re
 import datetime
 class Courses_Dao:
     @staticmethod
-    def add_courses(CourseName,Credit,TeacherID):#ĞÂÔö¿Î³Ì
+    def add_courses(CourseName,Credit,TeacherID):#æ–°å¢è¯¾ç¨‹
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
@@ -21,7 +21,7 @@ class Courses_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def edit_courses_name(newCourseName,CourseID):#±à¼­¿Î³ÌÃû³Æ
+    def edit_courses_name(newCourseName,CourseID):#ç¼–è¾‘è¯¾ç¨‹åç§°
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
@@ -34,7 +34,7 @@ class Courses_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def edit_courses_credit(newCredit,CourseID):#±à¼­¿Î³ÌÑ§·Ö
+    def edit_courses_credit(newCredit,CourseID):#ç¼–è¾‘è¯¾ç¨‹å­¦åˆ†
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
@@ -47,7 +47,7 @@ class Courses_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def edit_teachers(newTeacherID,CourseID):#±à¼­ÊÚ¿Î½ÌÊ¦
+    def edit_teachers(newTeacherID,CourseID):#ç¼–è¾‘æˆè¯¾æ•™å¸ˆ
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
@@ -60,7 +60,7 @@ class Courses_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def attach_course_tb(CourseID,TextbookID):#Îª¿Î³Ì°ó¶¨½Ì²Ä
+    def attach_course_tb(CourseID,TextbookID):#ä¸ºè¯¾ç¨‹ç»‘å®šæ•™æ
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
@@ -73,7 +73,7 @@ class Courses_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def course_time_arr(CourseID,Day,StartTime,EndTime):#ÅÅ¿Î
+    def course_time_arr(CourseID,Day,StartTime,EndTime):#æ’è¯¾
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:

@@ -25,7 +25,7 @@ class Fetch_Dao:
         cursor.close()
         conn.close()
         return fetchvalue
-    def fetchof(sql:str ,params:tuple):#Ö±½Ó»ñÈ¡sqlÓï¾äµÄ½á¹û
+    def fetchof(sql:str ,params:tuple):#ç›´æ¥è·å–sqlè¯­å¥çš„ç»“æœ
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         if params:

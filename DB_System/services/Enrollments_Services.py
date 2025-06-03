@@ -8,8 +8,8 @@ import datetime
 import re
 class Enrollments_Servises:
     @staticmethod
-    def students_enroll_avail(current_page):#¿ÉÑ¡¿Î³Ì²éÑ¯
-        #¿ÉÑ¡¿Î³ÌÊÓÍ¼£¨´¦Àí¿Î³ÌÓàÁ¿)
+    def students_enroll_avail(current_page):#å¯é€‰è¯¾ç¨‹æŸ¥è¯¢
+        #å¯é€‰è¯¾ç¨‹è§†å›¾ï¼ˆå¤„ç†è¯¾ç¨‹ä½™é‡)
         """CREATE VIEW vw_Available_Courses AS
         SELECT
             c.CourseID,
@@ -42,28 +42,28 @@ class Enrollments_Servises:
         page_size=20
         try:
             results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)
-            #ÏÔÊ¾Êı¾İ×¼±¸
+            #æ˜¾ç¤ºæ•°æ®å‡†å¤‡
                
-            #(ÏÔÊ¾Âß¼­´¦Àí)
+            #(æ˜¾ç¤ºé€»è¾‘å¤„ç†)
             #for item in results['data']:
                     
             return True,results
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def students_drop_course(StudentID,CourseID):#Ñ§ÉúÍË¿Î
+    def students_drop_course(StudentID,CourseID):#å­¦ç”Ÿé€€è¯¾
         try:
             if not Search_Dao.search1('Enrollments','StudentID',StudentID):
-                return False,"Ñ¡¿Î¼ÇÂ¼ÖĞ²»´æÔÚ¸ÃÑ§ºÅ£¬ÇëÖØĞÂÊäÈë"
+                return False,"é€‰è¯¾è®°å½•ä¸­ä¸å­˜åœ¨è¯¥å­¦å·ï¼Œè¯·é‡æ–°è¾“å…¥"
             if not Search_Dao.search2('Enrollments','StudentID','CourseID',StudentID,CourseID):
-                return False,"Ñ¡¿Î¼ÇÂ¼ÖĞ²»´æÔÚ¸Ã¿Î³Ì£¬ÇëÖØĞÂÊäÈë"
+                return False,"é€‰è¯¾è®°å½•ä¸­ä¸å­˜åœ¨è¯¥è¯¾ç¨‹ï¼Œè¯·é‡æ–°è¾“å…¥"
             Enrollments_Dao.students_drop_course(StudentID,CourseID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def students_enroll_ask(current_page,ID):#Ñ§ÉúÑ¡¿Î¼ÇÂ¼²éÑ¯
-        #Ñ¡¿Î¼ÇÂ¼ÊÓÍ¼
+    def students_enroll_ask(current_page,ID):#å­¦ç”Ÿé€‰è¯¾è®°å½•æŸ¥è¯¢
+        #é€‰è¯¾è®°å½•è§†å›¾
         """CREATE VIEW vw_Student_Enrollments AS 
             SELECT 
             e.EnrollmentID,
@@ -99,34 +99,34 @@ class Enrollments_Servises:
         page_size=20
         try:
             if not Search_Dao.search1('Students','StudentID',ID):
-                    return False,"Ñ§ºÅ²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                    return False,"å­¦å·ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page,ID)
-            #ÏÔÊ¾Êı¾İ×¼±¸
+            #æ˜¾ç¤ºæ•°æ®å‡†å¤‡
                
-            #(ÏÔÊ¾Âß¼­´¦Àí)
+            #(æ˜¾ç¤ºé€»è¾‘å¤„ç†)
             #for item in results['data']:
                     
             return True,results
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def students_enroll(StudentID,CourseID):#Ñ§ÉúÑ¡¿Î
+    def students_enroll(StudentID,CourseID):#å­¦ç”Ÿé€‰è¯¾
        try:
             if not Search_Dao.search1('Students','StudentID',StudentID):
-                return False,"Ñ§ºÅ²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"å­¦å·ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             if not Search_Dao.search1('vw_Available_Courses','CourseID',CourseID):
-                return False,"ÊäÈëµÄ¿Î³ÌID²»´æÔÚ»ò¸Ã¿Î³ÌÒÑÎŞÓàÁ¿"
+                return False,"è¾“å…¥çš„è¯¾ç¨‹IDä¸å­˜åœ¨æˆ–è¯¥è¯¾ç¨‹å·²æ— ä½™é‡"
             else:
                 if Search_Dao.search2('Enrollments','CourseID','StudentID',CourseID,StudentID):
-                    return False,"¸Ã¿Î³ÌÄúÒÑ´æÔÚÓëÒÑÑ¡¿Î±íÖĞ£¬ÇëÖØĞÂÊäÈë" 
-                #»ñÈ¡Ä¿±ê¿Î³ÌÊ±¼ä¶Î
+                    return False,"è¯¥è¯¾ç¨‹æ‚¨å·²å­˜åœ¨ä¸å·²é€‰è¯¾è¡¨ä¸­ï¼Œè¯·é‡æ–°è¾“å…¥" 
+                #è·å–ç›®æ ‡è¯¾ç¨‹æ—¶é—´æ®µ
                 sql="""SELECT 
                         Day,StartTime ,EndTime 
                         FROM Courses WHERE CourseID=%s"""
                 params=(CourseID,)
                 course_time=Fetch_Dao.fetchof(sql,params)
                 day,start,end=course_time[0]
-            #»ñÈ¡ÒÑÑ¡¿Î³ÌÊ±¼ä¶Î
+            #è·å–å·²é€‰è¯¾ç¨‹æ—¶é—´æ®µ
                 sql="""SELECT    
                         c.Day,
                         c.StartTime,
@@ -139,9 +139,9 @@ class Enrollments_Servises:
                 for(exist_day,exist_start,exist_end) in Fetch_Dao.fetchof(sql,params):
                     if day==exist_day:
                         if (start>exist_start and start<exist_end) or (end>exist_start and end<exist_end):
-                            return False,"ÓëÒÑÑ¡¿ÎÊ±¼ä³åÍ»£¬ÇëÖØĞÂÑ¡Ôñ"
+                            return False,"ä¸å·²é€‰è¯¾æ—¶é—´å†²çªï¼Œè¯·é‡æ–°é€‰æ‹©"
             
                 Enrollments_Dao.students_enroll(StudentID,CourseID)
-                return True,"²Ù×÷³É¹¦"
+                return True,"æ“ä½œæˆåŠŸ"
        except Exception as e:
           return False,f"{str(e)}"

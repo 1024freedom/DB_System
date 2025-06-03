@@ -4,16 +4,16 @@ from dao.Search_Dao import Search_Dao
 from utils.Security_tools import Security_tools
 class Userlogin_Services:
     @staticmethod
-    def login(user_id,password):#ÓÃ»§ÈÏÖ¤
+    def login(user_id,password):#ç”¨æˆ·è®¤è¯
         try:
             if not Search_Dao.search1('UserRoles','UserID',user_id):
-                return False,"¸ÃÓÃ»§²»´æÔÚÇëÖØĞÂÊäÈë"
+                return False,"è¯¥ç”¨æˆ·ä¸å­˜åœ¨è¯·é‡æ–°è¾“å…¥"
             user_password=Userlogin_Dao.get_user(user_id)['password']
             role=Userlogin_Dao.get_user(user_id)['Role']
             if Security_tools.verify_password(password,user_password):
-                return True,"ÑéÖ¤³É¹¦",role
+                return True,"éªŒè¯æˆåŠŸ",role
             else:
-                return False,"ÃÜÂë´íÎó"
+                return False,"å¯†ç é”™è¯¯"
         except Exception as e:
             return False,f"{str(e)}"
 

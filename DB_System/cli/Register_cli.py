@@ -1,53 +1,54 @@
 from services.Register_Services import Register_Services
 class Register_cli:
     @staticmethod
-    def show_menu():#Ö÷²Ëµ¥
-        print("\n===== ÓÃ»§×¢²áÒ³Ãæ =====")
-        print("1. Ñ§Éú×¢²á")
-        print("2. ½ÌÊ¦×¢²á")
-        print("0. ÍË³ö")
+    def show_menu():#ä¸»èœå•
+        print("\n===== ç”¨æˆ·æ³¨å†Œé¡µé¢ =====")
+        print("1. å­¦ç”Ÿæ³¨å†Œ")
+        print("2. æ•™å¸ˆæ³¨å†Œ")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def register_student():#×¢²áÑ§ÉúÓÃ»§
-        print("\n===== Ñ§Éú×¢²á =====")
+    def register_student():#æ³¨å†Œå­¦ç”Ÿç”¨æˆ·
+        print("\n===== å­¦ç”Ÿæ³¨å†Œ =====")
         while True:
-            user_id=input("ÇëÊäÈëÑ§Éúid").strip()
-            password=input("ÇëÊäÈëÃÜÂë£¨³¤¶ÈÖÁÉÙÎª°ËÎ»£¬°üº¬´óĞ¡Ğ´×ÖÄ¸ºÍÊı×Ö").strip()
-            confirm_password=input("ÇëÔÙ´ÎÊäÈëÃÜÂëÈ·ÈÏ").strip()
+            user_id=input("è¯·è¾“å…¥å­¦ç”Ÿid").strip()
+            password=input("è¯·è¾“å…¥å¯†ç ï¼ˆé•¿åº¦è‡³å°‘ä¸ºå…«ä½ï¼ŒåŒ…å«å¤§å°å†™å­—æ¯å’Œæ•°å­—").strip()
+            confirm_password=input("è¯·å†æ¬¡è¾“å…¥å¯†ç ç¡®è®¤").strip()
             if password!=confirm_password:
-                print("ÃÜÂë²»Ò»ÖÂ£¬ÇëÖØĞÂ²Ù×÷")
+                print("å¯†ç ä¸ä¸€è‡´ï¼Œè¯·é‡æ–°æ“ä½œ")
                 continue
             success,message=Register_Services.register_student(user_id,password)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def register_teacher():#×¢²á½ÌÊ¦ÓÃ»§
-        print("\n===== ½ÌÊ¦×¢²á =====")
+    def register_teacher():#æ³¨å†Œæ•™å¸ˆç”¨æˆ·
+        print("\n===== æ•™å¸ˆæ³¨å†Œ =====")
         while True:
-            user_id=input("ÇëÊäÈë½ÌÊ¦id").strip()
-            password=input("ÇëÊäÈëÃÜÂë£¨³¤¶ÈÖÁÉÙÎª°ËÎ»£¬°üº¬´óĞ¡Ğ´×ÖÄ¸ºÍÊı×Ö").strip()
-            confirm_password=input("ÇëÔÙ´ÎÊäÈëÃÜÂëÈ·ÈÏ").strip()
+            user_id=input("è¯·è¾“å…¥æ•™å¸ˆid").strip()
+            password=input("è¯·è¾“å…¥å¯†ç ï¼ˆé•¿åº¦è‡³å°‘ä¸ºå…«ä½ï¼ŒåŒ…å«å¤§å°å†™å­—æ¯å’Œæ•°å­—").strip()
+            confirm_password=input("è¯·å†æ¬¡è¾“å…¥å¯†ç ç¡®è®¤").strip()
             if password!=confirm_password:
-                print("ÃÜÂë²»Ò»ÖÂ£¬ÇëÖØĞÂ²Ù×÷")
+                print("å¯†ç ä¸ä¸€è‡´ï¼Œè¯·é‡æ–°æ“ä½œ")
                 continue
             success,message=Register_Services.register_teacher(user_id,password)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
     def run():
         Register_cli.show_menu()
+        choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Register_cli.register_student()
-                case 2:
+                case "2":
                     Register_cli.register_teacher()
                 
 

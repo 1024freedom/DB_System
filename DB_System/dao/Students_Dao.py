@@ -8,10 +8,10 @@ import re
 import datetime
 class Students_Dao:
     @staticmethod
-    def add_student_once(Name,Gender,BirthDate,Phone):#µ¥´ÎÔö¼ÓÑ§ÉúĞÅÏ¢
+    def add_student_once(Name,Gender,BirthDate,Phone):#å•æ¬¡å¢åŠ å­¦ç”Ÿä¿¡æ¯
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        #ÑéÖ¤Í¨¹ı£¬Ö´ĞĞ²åÈë
+        #éªŒè¯é€šè¿‡ï¼Œæ‰§è¡Œæ’å…¥
         try:
             sql="""INSERT INTO Students (Name, Gender, BirthDate, Phone)
             VALUES (%s, %s, %s, %s)"""
@@ -24,14 +24,14 @@ class Students_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def alter_student_phone(Phone,StudentID):#¸ü¸ÄÑ§ÉúÁªÏµ·½Ê½
+    def alter_student_phone(Phone,StudentID):#æ›´æ”¹å­¦ç”Ÿè”ç³»æ–¹å¼
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
             sql="""UPDATE Students SET Phone=%s WHERE StudentID=%s"""
             cursor.execute(sql,(Phone,StudentID))
             conn.commit()
-            print("Ñ§ÉúÊÖ»úºÅĞŞ¸Ä³É¹¦£¡")
+            print("å­¦ç”Ÿæ‰‹æœºå·ä¿®æ”¹æˆåŠŸï¼")
         except Exception as e:
             conn.rollback()
             raise e
@@ -39,7 +39,7 @@ class Students_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def alter_student_class(ClassID,StudentID,CapacityNow):#ÎªÑ§Éú·ÖÅä°à¼¶
+    def alter_student_class(ClassID,StudentID,CapacityNow):#ä¸ºå­¦ç”Ÿåˆ†é…ç­çº§
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
 
@@ -54,7 +54,7 @@ class Students_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def delete_student(StudentID):  # É¾³ıÑ§ÉúĞÅÏ¢
+    def delete_student(StudentID):  # åˆ é™¤å­¦ç”Ÿä¿¡æ¯
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -67,7 +67,7 @@ class Students_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def import_from_excel(valid_records):#´ÓexcelÎÄ¼şµ¼ÈëÑ§ÉúÊı¾İµ½Êı¾İ¿â
+    def import_from_excel(valid_records):#ä»excelæ–‡ä»¶å¯¼å…¥å­¦ç”Ÿæ•°æ®åˆ°æ•°æ®åº“
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -83,69 +83,69 @@ class Students_Dao:
     def export_to_excel(filepath):
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
-        #ÎÄ¼şÃû¾ßÓĞÊ±Ğ§ĞÔ
+        #æ–‡ä»¶åå…·æœ‰æ—¶æ•ˆæ€§
         timestamp=datetime.now().strftime("%Y%m%d_%H%M%S")
         default_filename=f"students_export_{timestamp}.xlsx"
         if not filepath:
-            filepath=default_filename#Èô²»ÊäÈëÂ·¾¶£¬Ôò»áµ¼³öµ½µ±Ç°Ä¿Â¼
+            filepath=default_filename#è‹¥ä¸è¾“å…¥è·¯å¾„ï¼Œåˆ™ä¼šå¯¼å‡ºåˆ°å½“å‰ç›®å½•
 
-        #¼ì²éÀ©Õ¹Ãû
+        #æ£€æŸ¥æ‰©å±•å
         if not filepath.lower().endswith('.xlsx'):
             filepath+='.xlsx'
 
-        #·ÖÒ³²ÎÊı
-        page_size=5000#Ã¿Ò³²éÑ¯µÄÊı¾İÁ¿
+        #åˆ†é¡µå‚æ•°
+        page_size=5000#æ¯é¡µæŸ¥è¯¢çš„æ•°æ®é‡
         current_page=1
         all_data=[]
-        #»ñÈ¡×Ü¼ÇÂ¼Êı
+        #è·å–æ€»è®°å½•æ•°
         cursor.execute("SLEECT COUNT(*) total FROM Students")
         total=cursor.fetchone()['total']
-        print(f'Ò»¹²{total}Ìõ¼ÇÂ¼£¬ÏÖÔÚ¿ªÊ¼µ¼³ö.....')
+        print(f'ä¸€å…±{total}æ¡è®°å½•ï¼Œç°åœ¨å¼€å§‹å¯¼å‡º.....')
 
-        #·ÖÒ³²éÑ¯Êı¾İ
+        #åˆ†é¡µæŸ¥è¯¢æ•°æ®
         while (current_page-1)*page_size<total:
             offset =(current_page-1)*page_size
-            cursor.execute("""SELECT s.StudentID Ñ§ºÅ
-                                     s.Name ĞÕÃû
-                                     s.Gender ĞÔ±ğ
-                                     s.BirthDate ³öÉúÈÕÆÚ
-                                     s.Phone µç»°
-                                     c.ClassName ËùÊô°à¼¶
+            cursor.execute("""SELECT s.StudentID å­¦å·
+                                     s.Name å§“å
+                                     s.Gender æ€§åˆ«
+                                     s.BirthDate å‡ºç”Ÿæ—¥æœŸ
+                                     s.Phone ç”µè¯
+                                     c.ClassName æ‰€å±ç­çº§
                                FROM Students s LEFT JOIN
                                Classes c ON s.ClassID=c.ClassID
                                LIMIT %s OFFSET %s """(page_size,offset))
             page_data=cursor.fetchall()
-            all_data.extend(page_data)#×¢ÒâÓÃextend
+            all_data.extend(page_data)#æ³¨æ„ç”¨extend
             if all_data:
                 current_page+=1
-                print(f"ÒÑ¼ÓÔØÒ»Ò³Êı¾İµ½ÄÚ´æ")
+                print(f"å·²åŠ è½½ä¸€é¡µæ•°æ®åˆ°å†…å­˜")
             else:
-                 print ("Ã»ÓĞ¿ÉÒÔµ¼³öµÄÊı¾İ")
+                 print ("æ²¡æœ‰å¯ä»¥å¯¼å‡ºçš„æ•°æ®")
                  return 
 
-        #×ª»»ÎªDataFrame
+        #è½¬æ¢ä¸ºDataFrame
         df= pd.DataFrame(all_data)
-        #excelĞ´Èë²ÎÊı
+        #excelå†™å…¥å‚æ•°
         writer=pd.ExcelWriter(
             filepath,
             engine='xlsxwriter',
-            datetime_format='yyyy-mm-dd',#×¢Òâ×ñÑ­excelµÄ¸ñÊ½¹æ·¶
-            options={'string_to_urls':False}#½ûÖ¹½«ÌØ¶¨¸ñÊ½µÄ×Ö·û´®×Ô¶¯×ª»»ÎªExcel³¬Á´½Ó
+            datetime_format='yyyy-mm-dd',#æ³¨æ„éµå¾ªexcelçš„æ ¼å¼è§„èŒƒ
+            options={'string_to_urls':False}#ç¦æ­¢å°†ç‰¹å®šæ ¼å¼çš„å­—ç¬¦ä¸²è‡ªåŠ¨è½¬æ¢ä¸ºExcelè¶…é“¾æ¥
             )
-        df.to_excel(writer,index=False,sheet_name='Ñ§ÉúĞÅÏ¢')
+        df.to_excel(writer,index=False,sheet_name='å­¦ç”Ÿä¿¡æ¯')
 
-        #»ñÈ¡¹¤×÷±í¶ÔÏó½øĞĞexcel±íµÄ¸ñÊ½ÉèÖÃ
+        #è·å–å·¥ä½œè¡¨å¯¹è±¡è¿›è¡Œexcelè¡¨çš„æ ¼å¼è®¾ç½®
         workbook=writer.book
-        worksheet=writer.sheets['Ñ§ÉúĞÅÏ¢']
-        # ÉèÖÃÁĞ¿í×ÔÊÊÓ¦
+        worksheet=writer.sheets['å­¦ç”Ÿä¿¡æ¯']
+        # è®¾ç½®åˆ—å®½è‡ªé€‚åº”
         for idx, col in enumerate(df.columns):
             max_len = max((
-                df[col].astype(str).map(len).max(),  # ÁĞÄÚÈİ×î´ó³¤¶È
-                len(str(col))  # ÁĞ±êÌâ³¤¶È
-            )) + 2  # ¶îÍâÌî³ä
+                df[col].astype(str).map(len).max(),  # åˆ—å†…å®¹æœ€å¤§é•¿åº¦
+                len(str(col))  # åˆ—æ ‡é¢˜é•¿åº¦
+            )) + 2  # é¢å¤–å¡«å……
             worksheet.set_column(idx, idx, max_len)
                 
-        # ÉèÖÃ±êÌâĞĞ¸ñÊ½
+        # è®¾ç½®æ ‡é¢˜è¡Œæ ¼å¼
         header_format = workbook.add_format({
             'bold': True,
             'text_wrap': True,
@@ -156,6 +156,6 @@ class Students_Dao:
         for col_num, value in enumerate(df.columns.values):
             worksheet.write(0, col_num, value, header_format)
             
-        print(f"µ¼³öÍê³É£¬ÎÄ¼şÒÑ±£´æÖÁ: {filepath}")
+        print(f"å¯¼å‡ºå®Œæˆï¼Œæ–‡ä»¶å·²ä¿å­˜è‡³: {filepath}")
 
 

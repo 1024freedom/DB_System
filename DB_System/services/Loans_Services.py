@@ -6,36 +6,36 @@ from datetime import date
 import re
 class Loans_Services:
     @staticmethod
-    def equipments_loan(StudentID,EquipmentID,ReturnDate):#Éè±¸½èÓÃ
+    def equipments_loan(StudentID,EquipmentID,ReturnDate):#è®¾å¤‡å€Ÿç”¨
         try:
             if not Search_Dao.search1('Students','StudentID',StudentID):
-                return False,"¸ÃÑ§Éú²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             if not (Search_Dao.search1('Equipments','EquipmentID',EquipmentID) 
                 and Fetch_Dao.fetch('Reserve','Equipments','EquipmentID',EquipmentID)>1):
-                return False,"¸ÃÉè±¸²»´æÔÚ»òÒÑÎŞ¿â´æ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è®¾å¤‡ä¸å­˜åœ¨æˆ–å·²æ— åº“å­˜ï¼Œè¯·é‡æ–°è¾“å…¥"
             BorrowDate=date.today()
-            pattern=r"^\d{4}-\d{2}-\d{2}$"#Ê±¼ä¸ñÊ½
+            pattern=r"^\d{4}-\d{2}-\d{2}$"#æ—¶é—´æ ¼å¼
         
             if not re.match(pattern,ReturnDate):
-                return False,"¸ñÊ½´íÎó,ÇëÊ¹ÓÃÊ¾Àı¸ñÊ½"
+                return False,"æ ¼å¼é”™è¯¯,è¯·ä½¿ç”¨ç¤ºä¾‹æ ¼å¼"
             Loans_Dao.loan('Equipments','EquipmentLoans','EquipmentID',StudentID,EquipmentID,BorrowDate,ReturnDate)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def books_borrow(StudentID,BookID,ReturnDate):#Í¼Êé½èÓÃ
+    def books_borrow(StudentID,BookID,ReturnDate):#å›¾ä¹¦å€Ÿç”¨
         try:
             if not Search_Dao.search1('Students','StudentID',StudentID):
-                return False,"¸ÃÑ§Éú²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             if not (Search_Dao.search1('Books','BookID',BookID) 
                 and Fetch_Dao.fetch('Reserve','Books','BookID',BookID)>1):
-                return False,"¸ÃÍ¼Êé²»´æÔÚ»òÒÑÎŞ¿â´æ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥å›¾ä¹¦ä¸å­˜åœ¨æˆ–å·²æ— åº“å­˜ï¼Œè¯·é‡æ–°è¾“å…¥"
             BorrowDate=date.today()
-            pattern=r"^\d{4}-\d{2}-\d{2}$"#Ê±¼ä¸ñÊ½
+            pattern=r"^\d{4}-\d{2}-\d{2}$"#æ—¶é—´æ ¼å¼
             if not re.match(pattern,ReturnDate):
-                return False,"¸ñÊ½´íÎó,ÇëÊ¹ÓÃÊ¾Àı¸ñÊ½"
+                return False,"æ ¼å¼é”™è¯¯,è¯·ä½¿ç”¨ç¤ºä¾‹æ ¼å¼"
             Loans_Dao.loan('Books','BookBorrows','BookID',StudentID,BookID,BorrowDate,ReturnDate)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
 

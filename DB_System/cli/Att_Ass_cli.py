@@ -3,43 +3,43 @@ import re
 class Att_Ass_cli:
     @staticmethod
     def show_menu():
-        print("\n===== ¿¼ÇÚÓë×÷Òµ¹ÜÀíÒ³Ãæ =====")
-        print("1. ¿¼ÇÚ¼ÇÂ¼")
-        print("2. ×÷Òµ·¢²¼")
-        print("0. ÍË³ö")
+        print("===== è€ƒå‹¤ä¸ä½œä¸šç®¡ç†é¡µé¢ =====")
+        print("1. è€ƒå‹¤è®°å½•")
+        print("2. ä½œä¸šå‘å¸ƒ")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def Attendance_add():#¿¼ÇÚ¼ÇÂ¼
+    def Attendance_add():#è€ƒå‹¤è®°å½•
         while True:
-            StudentID = input("ÇëÊäÈëÑ§ÉúID£º").strip()
-            CourseID = input("ÇëÊäÈë¿Î³ÌID£º").strip()
-            Status=input("ÇëÊäÈë¸ÃÉúµÄ¿¼ÇÚ×´Ì¬:").strip()
+            StudentID = input("è¯·è¾“å…¥å­¦ç”ŸIDï¼š").strip()
+            CourseID = input("è¯·è¾“å…¥è¯¾ç¨‹IDï¼š").strip()
+            Status=input("è¯·è¾“å…¥è¯¥ç”Ÿçš„è€ƒå‹¤çŠ¶æ€:").strip()
             success,message=Att_Ass_Services.Attendance_add(StudentID,CourseID,Status)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def Assignment_add():#×÷Òµ·¢²¼
+    def Assignment_add():#ä½œä¸šå‘å¸ƒ
         while True:
-            CourseID=input("ÇëÊäÈë¸Ã×÷Òµ¹ØÁª¿Î³ÌID")
-            Title=input("ÇëÊäÈë×÷Òµ±êÌâ")
-            Deadline=input("ÇëÊäÈëÌá½»½ØÖ¹Ê±¼ä(¸ñÊ½:2025-12-31 23:34):").strip()
+            CourseID=input("è¯·è¾“å…¥è¯¥ä½œä¸šå…³è”è¯¾ç¨‹ID")
+            Title=input("è¯·è¾“å…¥ä½œä¸šæ ‡é¢˜")
+            Deadline=input("è¯·è¾“å…¥æäº¤æˆªæ­¢æ—¶é—´(æ ¼å¼:2025-12-31 23:34):").strip()
             success,message=Att_Ass_Services.Assignment_add(CourseID,Title,Deadline)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
     def run():
         Att_Ass_cli.show_menu()
         choice=1
         while True:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Att_Ass_cli.Attendance_add()
-                case 2:
+                case "2":
                     Att_Ass_cli.Assignment_add()

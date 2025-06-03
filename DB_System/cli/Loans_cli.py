@@ -2,74 +2,74 @@ from services.Loans_Services import Loans_Services
 class Loans_cli:
     @staticmethod
     def show_menu():
-        print("\n===== ³É¼¨¹ÜÀíÒ³Ãæ =====")
-        print("1. Éè±¸½èÓÃ")
-        print("2. Í¼Êé½èÓÃ")
-        print("0. ÍË³ö")
+        print("\n===== æˆç»©ç®¡ç†é¡µé¢ =====")
+        print("1. è®¾å¤‡å€Ÿç”¨")
+        print("2. å›¾ä¹¦å€Ÿç”¨")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def equipments_loan():#Éè±¸½èÓÃ
+    def equipments_loan():#è®¾å¤‡å€Ÿç”¨
         while True:
             while True:
-                StudentID=input("ÇëÊäÈëÑ§ÉúID")
+                StudentID=input("è¯·è¾“å…¥å­¦ç”ŸID")
                 if StudentID:
                     break
                 else:
-                    print("Ñ§ÉúID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å­¦ç”ŸIDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                EquipmentID=input("ÇëÊäÈëÉè±¸ID")
+                EquipmentID=input("è¯·è¾“å…¥è®¾å¤‡ID")
                 if EquipmentID:
                     break
                 else:
-                    print("Éè±¸ID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è®¾å¤‡IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                ReturnDate=input("ÇëÊäÈë¹é»¹ÈÕÆÚ Ê¾Àı£º2025-12-24")
+                ReturnDate=input("è¯·è¾“å…¥å½’è¿˜æ—¥æœŸ ç¤ºä¾‹ï¼š2025-12-24")
                 if ReturnDate:
                     break
                 else:
-                    print("¹é»¹ÈÕÆÚ²»ÄÜÎª¿Õ£¬ÇëÊäÈë")
+                    print("å½’è¿˜æ—¥æœŸä¸èƒ½ä¸ºç©ºï¼Œè¯·è¾“å…¥")
             success,message=Loans_Services.equipments_loan(StudentID,EquipmentID,ReturnDate)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def books_borrow():#Í¼Êé½èÓÃ
+    def books_borrow():#å›¾ä¹¦å€Ÿç”¨
         while True:
             while True:
-                StudentID=input("ÇëÊäÈëÑ§ÉúID")
+                StudentID=input("è¯·è¾“å…¥å­¦ç”ŸID")
                 if StudentID:
                     break
                 else:
-                    print("Ñ§ÉúID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å­¦ç”ŸIDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                BookID=input("ÇëÊäÈëÍ¼ÊéID")
+                BookID=input("è¯·è¾“å…¥å›¾ä¹¦ID")
                 if BookID:
                     break
                 else:
-                    print("Í¼ÊéID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å›¾ä¹¦IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                ReturnDate=input("ÇëÊäÈë¹é»¹ÈÕÆÚ Ê¾Àı£º2025-12-24")
+                ReturnDate=input("è¯·è¾“å…¥å½’è¿˜æ—¥æœŸ ç¤ºä¾‹ï¼š2025-12-24")
                 if ReturnDate:
                     break
                 else:
-                    print("¹é»¹ÈÕÆÚ²»ÄÜÎª¿Õ£¬ÇëÊäÈë")
+                    print("å½’è¿˜æ—¥æœŸä¸èƒ½ä¸ºç©ºï¼Œè¯·è¾“å…¥")
             success,message=Loans_Services.books_borrow(StudentID,BookID,ReturnDate)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
     def run():
         Loans_cli.show_menu()
         choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Loans_cli.equipments_loan()
-                case 2:
+                case "2":
                     Loans_cli.books_borrow()
                 

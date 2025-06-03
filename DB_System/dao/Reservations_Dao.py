@@ -8,7 +8,7 @@ import re
 from datetime import datetime
 class Reservations_Dao:
     @staticmethod
-    def lab_reservation(LabID):#ʵ����ԤԼ
+    def lab_reservation(LabID):#实验室预约
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
@@ -21,7 +21,7 @@ class Reservations_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def reservation_cancel(TeacherID,ReservationID):#ȡ��δ��ʼ��ԤԼ
+    def reservation_cancel(TeacherID,ReservationID):#取消未开始的预约
             conn = DBPool.get_instance().get_conn()
             cursor = conn.cursor()
             try:

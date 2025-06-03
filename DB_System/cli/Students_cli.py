@@ -2,41 +2,41 @@ from services.Students_Services import Students_Services
 class Students_cli:
     @staticmethod
     def show_menu():
-        print("\n===== Ñ§ÉúĞÅÏ¢¹ÜÀíÒ³Ãæ =====")
-        print("1. µ¥´ÎÔö¼ÓÑ§ÉúĞÅÏ¢")
-        print("2. ¸ü¸ÄÑ§ÉúÁªÏµ·½Ê½")
-        print("3. ÎªÑ§Éú·ÖÅä°à¼¶")
-        print("4. É¾³ıÑ§ÉúĞÅÏ¢")
-        print("5. ´ÓexcelÎÄ¼şµ¼ÈëÑ§ÉúĞÅÏ¢")
-        print("6. µ¼³öÑ§ÉúĞÅÏ¢ÎªexcelÎÄ¼ş")
-        print("0. ÍË³ö")
+        print("\n===== å­¦ç”Ÿä¿¡æ¯ç®¡ç†é¡µé¢ =====")
+        print("1. å•æ¬¡å¢åŠ å­¦ç”Ÿä¿¡æ¯")
+        print("2. æ›´æ”¹å­¦ç”Ÿè”ç³»æ–¹å¼")
+        print("3. ä¸ºå­¦ç”Ÿåˆ†é…ç­çº§")
+        print("4. åˆ é™¤å­¦ç”Ÿä¿¡æ¯")
+        print("5. ä»excelæ–‡ä»¶å¯¼å…¥å­¦ç”Ÿä¿¡æ¯")
+        print("6. å¯¼å‡ºå­¦ç”Ÿä¿¡æ¯ä¸ºexcelæ–‡ä»¶")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def add_student_once():#µ¥´ÎÔö¼ÓÑ§ÉúĞÅÏ¢
+    def add_student_once():#å•æ¬¡å¢åŠ å­¦ç”Ÿä¿¡æ¯
         while True:
             while True:
-                Name=input('ÊäÈëĞÕÃû£º').strip()
+                Name=input('è¾“å…¥å§“åï¼š').strip()
                 if Name:
                     break
-                print("ĞÕÃû²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                print("å§“åä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                Gender=input('ÊäÈëĞÔ±ğ£¨ÄĞ/Å®£©£º').strip()
-                if Gender in ('ÄĞ','Å®'):
+                Gender=input('è¾“å…¥æ€§åˆ«ï¼ˆç”·/å¥³ï¼‰ï¼š').strip()
+                if Gender in ('ç”·','å¥³'):
                     break
-                print ("ÇëÊäÈëÕıÈ·µÄĞÔ±ğ£º")
+                print ("è¯·è¾“å…¥æ­£ç¡®çš„æ€§åˆ«ï¼š")
             while True:
-                BirthDate=input('ÇëÊäÈëÕıÈ·µÄ³öÉúÄêÔÂÈÕ£¨¸ñÊ½£ºYYYY-MM-DD').strip()
+                BirthDate=input('è¯·è¾“å…¥æ­£ç¡®çš„å‡ºç”Ÿå¹´æœˆæ—¥ï¼ˆæ ¼å¼ï¼šYYYY-MM-DD').strip()
                 if BirthDate:
                     break
                 else:
-                    print("²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                Phone=input("ÇëÊäÈëÊÖ»úºÅ£º").strip()
+                Phone=input("è¯·è¾“å…¥æ‰‹æœºå·ï¼š").strip()
                 if not Phone:
                     Phone=None
                     break
                 if len(Phone)!=11:
-                    print("ËùÊäÈëÊÖ»úºÅ³¤¶È²»ºÏ·¨£¬ÇëÖØĞÂÊäÈë")
+                    print("æ‰€è¾“å…¥æ‰‹æœºå·é•¿åº¦ä¸åˆæ³•ï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             success,message=Students_Services.add_student_once(Name,Gender,BirthDate,Phone)
@@ -44,20 +44,20 @@ class Students_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def alter_student_phone():#¸ü¸ÄÑ§ÉúÁªÏµ·½Ê½
+    def alter_student_phone():#æ›´æ”¹å­¦ç”Ÿè”ç³»æ–¹å¼
         while True:
             while True:
-                StudentID=input("ÇëÊäÈëÑ§ÉúID£º").strip()
+                StudentID=input("è¯·è¾“å…¥å­¦ç”ŸIDï¼š").strip()
                 if not StudentID:
-                    print("Ñ§ÉúID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å­¦ç”ŸIDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             while True:
-                Phone=input("ÇëÊäÈëÊÖ»úºÅ£º").strip()
+                Phone=input("è¯·è¾“å…¥æ‰‹æœºå·ï¼š").strip()
                 if len(Phone)!=11:
-                    print("ËùÊäÈëÊÖ»úºÅ²»ºÏ·¨£¬ÇëÖØĞÂÊäÈë")
+                    print("æ‰€è¾“å…¥æ‰‹æœºå·ä¸åˆæ³•ï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             success,message=Students_Services.alter_student_phone(StudentID,Phone)
@@ -65,20 +65,20 @@ class Students_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def alter_student_class():#ÎªÑ§Éú·ÖÅä°à¼¶
+    def alter_student_class():#ä¸ºå­¦ç”Ÿåˆ†é…ç­çº§
         while True:
             while True:
-                StudentID=input("ÇëÊäÈëÑ§ÉúID£º").strip()
+                StudentID=input("è¯·è¾“å…¥å­¦ç”ŸIDï¼š").strip()
                 if not StudentID:
-                    print("Ñ§ÉúID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å­¦ç”ŸIDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             while True:
-                ClassID=input("ÇëÊäÈëÒªÎª¸ÃÑ§Éú·ÖÅäµÄ°à¼¶ºÅ£º")
+                ClassID=input("è¯·è¾“å…¥è¦ä¸ºè¯¥å­¦ç”Ÿåˆ†é…çš„ç­çº§å·ï¼š")
                 if not ClassID:
-                    print("°à¼¶ºÅ²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("ç­çº§å·ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             success,message=Students_Services.alter_student_class(StudentID,ClassID)
@@ -86,14 +86,14 @@ class Students_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def delete_student():  # É¾³ıÑ§ÉúĞÅÏ¢
+    def delete_student():  # åˆ é™¤å­¦ç”Ÿä¿¡æ¯
         while True:
             while True:
-                StudentID = input("ÇëÊäÈëÑ§ÉúID£º").strip()
+                StudentID = input("è¯·è¾“å…¥å­¦ç”ŸIDï¼š").strip()
                 if not StudentID:
-                    print("Ñ§ÉúID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å­¦ç”ŸIDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             success,message=Students_Services.delete_student(StudentID)
@@ -101,40 +101,40 @@ class Students_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def import_from_excel():#´ÓexcelÎÄ¼şµ¼ÈëÑ§ÉúÊı¾İµ½Êı¾İ¿â
-        filepath=input("ÇëÊäÈëÎÄ¼şµÄ¾ø¶ÔÂ·¾¶")
+    def import_from_excel():#ä»excelæ–‡ä»¶å¯¼å…¥å­¦ç”Ÿæ•°æ®åˆ°æ•°æ®åº“
+        filepath=input("è¯·è¾“å…¥æ–‡ä»¶çš„ç»å¯¹è·¯å¾„")
         success,message=Students_Services.import_from_excel(filepath)
         if success:
             print(message)
         else:
-            print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+            print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def export_to_excel():#ÒÔexcelÎÄ¼şĞÎÊ½ÅúÁ¿µ¼³öÑ§ÉúĞÅÏ¢
-        filepath=input("ÇëÊäÈëµ¼³öÂ·¾¶")
+    def export_to_excel():#ä»¥excelæ–‡ä»¶å½¢å¼æ‰¹é‡å¯¼å‡ºå­¦ç”Ÿä¿¡æ¯
+        filepath=input("è¯·è¾“å…¥å¯¼å‡ºè·¯å¾„")
         success,message=Students_Services.export_to_excel(filepath)
         if success:
             print(message)
         else:
-            print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+            print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
     def run():
         Students_cli.show_menu()
         choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Students_cli.add_student_once()
-                case 2:
+                case "2":
                     Students_cli.alter_student_phone()
-                case 3:
+                case "3":
                     Students_cli.alter_student_class()
-                case 4:
+                case "4":
                     Students_cli.delete_student()
-                case 5:
+                case "5":
                     Students_cli.import_from_excel()
-                case 6:
+                case "6":
                     Students_cli.export_to_excel()
                

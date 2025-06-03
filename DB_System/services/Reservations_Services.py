@@ -9,21 +9,21 @@ from datetime import datetime
 import re
 class Reservation_Services:
     @staticmethod
-    def lab_reservation(TeacherID,LabID,StartTime,EndTime):#ÊµÑéÊÒÔ¤Ô¼
+    def lab_reservation(TeacherID,LabID,StartTime,EndTime):#å®éªŒå®¤é¢„çº¦
         try:
             if not Search_Dao.search1('Teachers','TeacherID',TeacherID):
-                return False,"¸Ã½ÌÊ¦ID²»´æÔÚ,ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥æ•™å¸ˆIDä¸å­˜åœ¨,è¯·é‡æ–°è¾“å…¥"
             if Search_Dao.search1('Classrooms','ClassroomID',LabID):
                 Type=Fetch_Dao.fetch('Type','Classrooms','ClassroomID',LabID)
-                if Type[0]!="ÊµÑéÊÒ":
-                    return False,"¸Ã·¿¼ä²»ÊÇÊµÑéÊÒ,ÇëÖØĞÂÊäÈë"
+                if Type[0]!="å®éªŒå®¤":
+                    return False,"è¯¥æˆ¿é—´ä¸æ˜¯å®éªŒå®¤,è¯·é‡æ–°è¾“å…¥"
             else:
-                return False,"¸Ã·¿¼ä²»´æÔÚ,ÇëÖØĞÂÊäÈë"
-            pattern=r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"#Ê±¼ä¸ñÊ½
+                return False,"è¯¥æˆ¿é—´ä¸å­˜åœ¨,è¯·é‡æ–°è¾“å…¥"
+            pattern=r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"#æ—¶é—´æ ¼å¼
             if not re.match(pattern,StartTime):
-                return False,"¸ñÊ½´íÎó,ÇëÊ¹ÓÃÊ¾Àı¸ñÊ½"
+                return False,"æ ¼å¼é”™è¯¯,è¯·ä½¿ç”¨ç¤ºä¾‹æ ¼å¼"
             if not re.match(pattern,EndTime):
-                return False,"¸ñÊ½´íÎó,ÇëÊ¹ÓÃÊ¾Àı¸ñÊ½"
+                return False,"æ ¼å¼é”™è¯¯,è¯·ä½¿ç”¨ç¤ºä¾‹æ ¼å¼"
             sql="""SELECT 
                     l.StartTime,
                     l.EndTime 
@@ -33,14 +33,14 @@ class Reservation_Services:
             params=(LabID)
             for(exist_start,exist_end) in Fetch_Dao.fetchof(sql,params):    
                 if (StartTime>exist_start and StartTime<exist_end) or (EndTime>exist_start and EndTime<exist_end):
-                    return False,f"¸ÃÊ±¼ä¶Î{StartTime}-{EndTime}ÒÑ±»Ô¤Ô¼£¬ÇëÖØĞÂÑ¡Ôñ"
+                    return False,f"è¯¥æ—¶é—´æ®µ{StartTime}-{EndTime}å·²è¢«é¢„çº¦ï¼Œè¯·é‡æ–°é€‰æ‹©"
             Reservations_Dao.lab_reservation(LabID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def reservation_ask(current_page,ID):#Ô¤Ô¼¼ÇÂ¼²éÑ¯
-        #Ô¤Ô¼¼ÇÂ¼ÊÓÍ¼
+    def reservation_ask(current_page,ID):#é¢„çº¦è®°å½•æŸ¥è¯¢
+        #é¢„çº¦è®°å½•è§†å›¾
         """CREATE VIEW vw_Lab_Reservations AS
                 SELECT 
                     l.ReservationID,
@@ -66,35 +66,35 @@ class Reservation_Services:
                     LIMIT %s OFFSET %s
         """
         count_sql="""SELECT COUNT(*) AS total FROM vm_Lab_Reservations"""
-        #·ÖÒ³²ÎÊı
+        #åˆ†é¡µå‚æ•°
         page_size=20
         try:
             if not Search_Dao.search1('vw_Lab_Reservations','TeacherID',ID):
-                return False,"¸Ã½ÌÊ¦IDÎŞÔ¤Ô¼¼ÇÂ¼»ò¸Ã½ÌÊ¦ID²»´æÔÚ,ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥æ•™å¸ˆIDæ— é¢„çº¦è®°å½•æˆ–è¯¥æ•™å¸ˆIDä¸å­˜åœ¨,è¯·é‡æ–°è¾“å…¥"
             results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page,ID)
-            #ÏÔÊ¾Êı¾İ×¼±¸
+            #æ˜¾ç¤ºæ•°æ®å‡†å¤‡
                
-            #(ÏÔÊ¾Âß¼­´¦Àí)
+            #(æ˜¾ç¤ºé€»è¾‘å¤„ç†)
             #for item in results['data']:
                     
             return True,results
         except Exception as e:
-            print(f"²Ù×÷Ê§°Ü£º{str(e)}")
+            print(f"æ“ä½œå¤±è´¥ï¼š{str(e)}")
     @staticmethod
-    def reservation_cancel(TeacherID,ReservationID):#È¡ÏûÎ´¿ªÊ¼µÄÔ¤Ô¼
+    def reservation_cancel(TeacherID,ReservationID):#å–æ¶ˆæœªå¼€å§‹çš„é¢„çº¦
             if not Search_Dao.search1('vw_Lab_Reservations','TeacherID',TeacherID):
-                return False,"¸Ã½ÌÊ¦IDÎŞÔ¤Ô¼¼ÇÂ¼»ò¸Ã½ÌÊ¦ID²»´æÔÚ,ÇëÖØĞÂÊäÈë"
-            #»ñÈ¡µ±Ç°Ê±¼ä
+                return False,"è¯¥æ•™å¸ˆIDæ— é¢„çº¦è®°å½•æˆ–è¯¥æ•™å¸ˆIDä¸å­˜åœ¨,è¯·é‡æ–°è¾“å…¥"
+            #è·å–å½“å‰æ—¶é—´
             DateTime=datetime.today()
             if not Search_Dao.search1('LabReservations','ReservationID',ReservationID):
-                return False,"¸ÃÔ¤Ô¼¼ÇÂ¼²»´æÔÚ,ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥é¢„çº¦è®°å½•ä¸å­˜åœ¨,è¯·é‡æ–°è¾“å…¥"
                 
             re_datetime=Fetch_Dao.fetch('StartTime','LabReservations','ReservationID',ReservationID)
             if DateTime<re_datetime[0]:
                 try:
                     Reservations_Dao.reservation_cancel(TeacherID,ReservationID)
-                    return True,"²Ù×÷³É¹¦"
+                    return True,"æ“ä½œæˆåŠŸ"
                 except Exception as e:
                     return False,f"{str(e)}"
             else:
-                return False,"Ê±¼ä²»ºÏ·¨"
+                return False,"æ—¶é—´ä¸åˆæ³•"

@@ -1,26 +1,26 @@
 from sqlalchemy import true
 from services.Userlogin_Services import Userlogin_Services
 class Userlogin_cli:
-    current_role=None#¼ÇÂ¼µ±Ç°ÓÃ»§½ÇÉ«
+    current_role=None#è®°å½•å½“å‰ç”¨æˆ·è§’è‰²
     @staticmethod
     def show_login_menu():
-        print("\n===== ÓÃ»§Ò³Ãæ =====")
-        print("1. ÓÃ»§µÇÂ¼")
-        print("2. ÍË³ö")
+        print("\n===== ç”¨æˆ·é¡µé¢ =====")
+        print("1. ç”¨æˆ·ç™»å½•")
+        print("2. é€€å‡º")
         print("========================")
     @staticmethod
     def login():
         while True:
             while True:
-                user_id=input("ÇëÊäÈëÓÃ»§ID£º").strip()
+                user_id=input("è¯·è¾“å…¥ç”¨æˆ·IDï¼š").strip()
                 if not user_id:
-                    print("ÓÃ»§ID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("ç”¨æˆ·IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             while True:
-                password=input("ÇëÊäÈëÃÜÂë£º").strip()
+                password=input("è¯·è¾“å…¥å¯†ç ï¼š").strip()
                 if not password:
-                    print("ÃÜÂë²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("å¯†ç ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             success,message,Userlogin_cli.current_role=Userlogin_Services.login(user_id,password)
@@ -28,49 +28,49 @@ class Userlogin_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def show_main_menu():#µÇÂ¼ºóÊ×Ò³
+    def show_main_menu():#ç™»å½•åé¦–é¡µ
         if not Userlogin_cli.current_user:
-            print("ÇëÏÈµÇÂ¼")
+            print("è¯·å…ˆç™»å½•")
             return
         
         role = Userlogin_cli.current_role
-        print(f"===== Ö÷²Ëµ¥ ({role} {Userlogin_cli.current_role} =====")
+        print(f"===== ä¸»èœå• ({role} {Userlogin_cli.current_role} =====")
         
-        # Ñ§Éú²Ëµ¥
-        if role == 'Ñ§Éú':
-            print("1. Ñ¡¿ÎÄ£¿é")
-            print("2. ½èÓÃÄ£¿é")
-            print("3. Ô¤Ô¼Ä£¿é")
-            print("4. ĞŞ¸Ä¸öÈËĞÅÏ¢")
-            print("0. ÍË³ö")
+        # å­¦ç”Ÿèœå•
+        if role == 'å­¦ç”Ÿ':
+            print("1. é€‰è¯¾æ¨¡å—")
+            print("2. å€Ÿç”¨æ¨¡å—")
+            print("3. é¢„çº¦æ¨¡å—")
+            print("4. ä¿®æ”¹ä¸ªäººä¿¡æ¯")
+            print("0. é€€å‡º")
         
-        # ½ÌÊ¦²Ëµ¥
-        elif role == '½ÌÊ¦':
-            print("1. ¿¼ÇÚÓë×÷Òµ¹ÜÀíÄ£¿é")
-            print("2. ¿Î³Ì¹ÜÀíÄ£¿é")
-            print("3. ³É¼¨¹ÜÀíÄ£¿é")
-            print("4. ½èÓÃÄ£¿é")
-            print("5. Ñ§ÉúĞÅÏ¢¹ÜÀíÄ£¿é")
-            print("0. ÍË³ö")
+        # æ•™å¸ˆèœå•
+        elif role == 'æ•™å¸ˆ':
+            print("1. è€ƒå‹¤ä¸ä½œä¸šç®¡ç†æ¨¡å—")
+            print("2. è¯¾ç¨‹ç®¡ç†æ¨¡å—")
+            print("3. æˆç»©ç®¡ç†æ¨¡å—")
+            print("4. å€Ÿç”¨æ¨¡å—")
+            print("5. å­¦ç”Ÿä¿¡æ¯ç®¡ç†æ¨¡å—")
+            print("0. é€€å‡º")
         
-        # ¹ÜÀíÔ±²Ëµ¥
-        elif role == '¹ÜÀíÔ±':
-            print("1. ÓÃ»§¹ÜÀí")
-            print("2. È¨ÏŞ¹ÜÀí")
-            print("3. ÏµÍ³ÉèÖÃ")
-            print("0. ÍË³ö")
+        # ç®¡ç†å‘˜èœå•
+        elif role == 'ç®¡ç†å‘˜':
+            print("1. ç”¨æˆ·ç®¡ç†")
+            print("2. æƒé™ç®¡ç†")
+            print("3. ç³»ç»Ÿè®¾ç½®")
+            print("0. é€€å‡º")
         print("==============================")
     @staticmethod
     def run():
         Userlogin_cli.show_login_menu()
         choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Userlogin_cli.login()
                     Userlogin_cli.show_main_menu()
-                case 2:
+                case "2":
                     return 

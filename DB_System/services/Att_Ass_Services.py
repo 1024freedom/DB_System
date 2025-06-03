@@ -7,33 +7,33 @@ import re
 from datetime import date
 class Att_Ass_Services:
     @staticmethod
-    def Attendance_add(StudentID,CourseID,Status):#¿¼ÇÚ¼ÇÂ¼
+    def Attendance_add(StudentID,CourseID,Status):#è€ƒå‹¤è®°å½•
        try:
             if not Search_Dao.search1('Students','StudentID',StudentID):
-                return False,"¸ÃÑ§Éú²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             if not Search_Dao.search2('Enrollments','CourseID','StudentID',CourseID,StudentID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ¸ÃÑ§ÉúµÄ¿Î±íÖĞ£¬ÇëÖØĞÂÊäÈë£º"
-            if Status not in ('³öÇÚ','³Ùµ½','È±ÇÚ'):
-                return False,"×´Ì¬²»ºÏ·¨£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨è¯¥å­¦ç”Ÿçš„è¯¾è¡¨ä¸­ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
+            if Status not in ('å‡ºå‹¤','è¿Ÿåˆ°','ç¼ºå‹¤'):
+                return False,"çŠ¶æ€ä¸åˆæ³•ï¼Œè¯·é‡æ–°è¾“å…¥"
             Date=date.today()
             Att_Ass_Dao.Attendance_add(StudentID,CourseID,Date,Status)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
        except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def Assignment_add(CourseID,Title,Deadline):#×÷Òµ·¢²¼
+    def Assignment_add(CourseID,Title,Deadline):#ä½œä¸šå‘å¸ƒ
         try:
             if not Search_Dao.search1('Courses','CourseID',CourseID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ,ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨,è¯·é‡æ–°è¾“å…¥"
             if not Title:
-                return False,"±êÌâ²»ÄÜÎª¿Õ"
-            #´¦Àí½ØÖÁÊ±¼ä
-            pattern=r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"#Ê±¼ä¸ñÊ½
+                return False,"æ ‡é¢˜ä¸èƒ½ä¸ºç©º"
+            #å¤„ç†æˆªè‡³æ—¶é—´
+            pattern=r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"#æ—¶é—´æ ¼å¼
             if not Deadline:
-                return False,"½ØÖ¹Ê±¼ä²»ÄÜÎª¿Õ"
+                return False,"æˆªæ­¢æ—¶é—´ä¸èƒ½ä¸ºç©º"
             if not re.match(pattern,Deadline):
-                return False,"¸ñÊ½´íÎó,ÇëÊ¹ÓÃÊ¾Àı¸ñÊ½"
+                return False,"æ ¼å¼é”™è¯¯,è¯·ä½¿ç”¨ç¤ºä¾‹æ ¼å¼"
             Att_Ass_Dao.Assignment_add(CourseID,Title,Deadline)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"

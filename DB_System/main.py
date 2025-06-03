@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from cli.Att_Ass_cli import Att_Ass_cli
 from cli.Courses_cli import Courses_cli
 from cli.Enrollments_cli import Enrollments_cli
@@ -10,72 +11,67 @@ from cli.Students_cli import Students_cli
 from cli.Userlogin_cli import Userlogin_cli
 def main():
     main_menu.main_menu_show()
-    """print("===== ½ÌÎñ¹ÜÀíÏµÍ³ =====")
-        print("1. ÓÃ»§×¢²á")
-        print("2. ÓÃ»§µÇÂ¼")
-        print("3. ÍË³öÏµÍ³")
-        print("ÇëÊäÈëÄãµÄÑ¡Ôñ£º")
-        print("========================")"""
+   
     choice=1
-    while choice:#×¢²áºóµÇÂ¼»òÖ±½ÓµÇÂ¼
-        choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+    while choice:#æ³¨å†Œåç™»å½•æˆ–ç›´æ¥ç™»å½•
+        choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
         match choice:
-            case 1:
+            case "1":
                 Register_cli.run()
-            case 2:
+            case "2":
                 Userlogin_cli.run()
-            case 3:
+            case "3":
                 break
-    """# Ñ§Éú²Ëµ¥
-        if role == 'Ñ§Éú':
-            print("1. Ñ¡¿ÎÄ£¿é")
-            print("2. ½èÓÃÄ£¿é")
-            print("3. Ô¤Ô¼Ä£¿é")
-            print("4. ĞŞ¸Ä¸öÈËĞÅÏ¢")
+    """# å­¦ç”Ÿèœå•
+        if role == 'å­¦ç”Ÿ':
+            print("1. é€‰è¯¾æ¨¡å—")
+            print("2. å€Ÿç”¨æ¨¡å—")
+            print("3. é¢„çº¦æ¨¡å—")
+            print("4. ä¿®æ”¹ä¸ªäººä¿¡æ¯")
         
-        # ½ÌÊ¦²Ëµ¥
-        elif role == '½ÌÊ¦':
-            print("1. ¿¼ÇÚÓë×÷Òµ¹ÜÀíÄ£¿é")
-            print("2. ¿Î³Ì¹ÜÀíÄ£¿é")
-            print("3. ³É¼¨¹ÜÀíÄ£¿é")
-            print("4. ½èÓÃÄ£¿é")
-            print("5. Ñ§ÉúĞÅÏ¢¹ÜÀíÄ£¿é")
+        # æ•™å¸ˆèœå•
+        elif role == 'æ•™å¸ˆ':
+            print("1. è€ƒå‹¤ä¸ä½œä¸šç®¡ç†æ¨¡å—")
+            print("2. è¯¾ç¨‹ç®¡ç†æ¨¡å—")
+            print("3. æˆç»©ç®¡ç†æ¨¡å—")
+            print("4. å€Ÿç”¨æ¨¡å—")
+            print("5. å­¦ç”Ÿä¿¡æ¯ç®¡ç†æ¨¡å—")
         
-        # ¹ÜÀíÔ±²Ëµ¥
-        elif role == '¹ÜÀíÔ±':
-            print("1. ÓÃ»§¹ÜÀí")
-            print("2. È¨ÏŞ¹ÜÀí")
-            print("3. ÏµÍ³ÉèÖÃ")"""
-            #µÇÂ½ºó
-    if Userlogin_cli.current_role=='Ñ§Éú':
+        # ç®¡ç†å‘˜èœå•
+        elif role == 'ç®¡ç†å‘˜':
+            print("1. ç”¨æˆ·ç®¡ç†")
+            print("2. æƒé™ç®¡ç†")
+            print("3. ç³»ç»Ÿè®¾ç½®")"""
+            #ç™»é™†å
+    if Userlogin_cli.current_role=='å­¦ç”Ÿ':
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Enrollments_cli.run()
-                case 2:
+                case "2":
                     Loans_cli.run()
-                case 3:
+                case "3":
                     Reservation_cli.run()
-                case 4:
+                case "4":
                     Students_cli.run()
-    if Userlogin_cli.current_role=='½ÌÊ¦':
+    if Userlogin_cli.current_role=='æ•™å¸ˆ':
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Att_Ass_cli.run()
-                case 2:
+                case "2":
                     Courses_cli.run()
-                case 3:
+                case "3":
                     Grades_cli.run()
-                case 4:
+                case "4":
                     Loans_cli.run()
-                case 5:
+                case "5":
                     Students_cli.run()
-    """if Userlogin_cli.current_role=='¹ÜÀíÔ±':
+    """if Userlogin_cli.current_role=='ç®¡ç†å‘˜':
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
                 case 1:
                     Register_cli.run()

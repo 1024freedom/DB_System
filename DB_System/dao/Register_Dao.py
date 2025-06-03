@@ -10,11 +10,11 @@ import re
 import datetime
 class Register_Dao():
     @staticmethod
-    def register_student(user_id,password):#注册学生用户
+    def register_student(user_id,password):#娉ㄥ唽瀛︾敓鐢ㄦ埛
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        role='学生'
-        password=Security_tools.hash_password(password)#哈希加密存储
+        role='瀛︾敓'
+        password=Security_tools.hash_password(password)#鍝堝笇鍔犲瘑瀛樺偍
         try:
             cursor.execute("INSERT INTO UserRoles(UserID,Role,Password) VALUES(%s,%s,%s)",(user_id,role,password,))
             conn.commit()
@@ -25,10 +25,10 @@ class Register_Dao():
             cursor.close()
             conn.close()
     @staticmethod
-    def register_teacher(user_id,password):#注册教师用户
+    def register_teacher(user_id,password):#娉ㄥ唽鏁欏笀鐢ㄦ埛
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        role='教师'
+        role='鏁欏笀'
         password=Security_tools.hash_password(password)
         try:
             cursor.execute("INSERT INTO UserRoles(UserID,Role,Password) VALUES(%s,%s,%s)",(user_id,role,password,))

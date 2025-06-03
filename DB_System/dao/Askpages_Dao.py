@@ -4,19 +4,19 @@ from numpy._core.multiarray import normalize_axis_index
 from pymysql import NULL
 from sqlalchemy import Boolean
 from utils.db_pool import DBPool
-class Askpages_Dao:#·ÖÒ³²éÑ¯
-    def ask(base_sql:str,count_sql:str,page_size:int,current_page:int,ID:any):#Ô¤Ô¼¼ÇÂ¼²éÑ¯
+class Askpages_Dao:#åˆ†é¡µæŸ¥è¯¢
+    def ask(base_sql:str,count_sql:str,page_size:int,current_page:int,ID:any):#é¢„çº¦è®°å½•æŸ¥è¯¢
             try:
                 conn = DBPool.get_instance().get_conn()
                 cursor = conn.cursor()
-            #»ñÈ¡×Ü¼ÇÂ¼Êı
+            #è·å–æ€»è®°å½•æ•°
                 cursor.execute(count_sql)
                 total_records=cursor.fetchone()['total']
-                #ÉèÖÃ·ÖÒ³²ÎÊı
-                total_pages=(total_records+page_size-1)//page_size#ÏòÉÏÈ¡Õû
-                #¼ÆËãÆ«ÒÆÁ¿
+                #è®¾ç½®åˆ†é¡µå‚æ•°
+                total_pages=(total_records+page_size-1)//page_size#å‘ä¸Šå–æ•´
+                #è®¡ç®—åç§»é‡
                 offset=(current_page-1)*page_size
-                #·ÖÒ³²éÑ¯
+                #åˆ†é¡µæŸ¥è¯¢
                 if ID:
                     base_sql=base_sql(ID,page_size,offset)
                     cursor.execute(base_sql,(ID,page_size,offset))

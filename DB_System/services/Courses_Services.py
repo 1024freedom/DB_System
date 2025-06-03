@@ -7,57 +7,57 @@ import datetime
 import re
 class Course_Services:
     @staticmethod
-    def add_courses(CourseName,Credit,TeacherID):#ĞÂÔö¿Î³Ì
+    def add_courses(CourseName,Credit,TeacherID):#æ–°å¢è¯¾ç¨‹
         try:
             if not TeacherID or not Search_Dao.search1('Teachers','TeacherID',TeacherID):
-                return False,"½ÌÊ¦ID²»ÄÜÎª¿Õ»ò¸Ã½ÌÊ¦²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"æ•™å¸ˆIDä¸èƒ½ä¸ºç©ºæˆ–è¯¥æ•™å¸ˆä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             Courses_Dao.add_courses(CourseName,Credit,TeacherID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def edit_courses_name(CourseID,newCourseName):#±à¼­¿Î³ÌÃû³Æ
+    def edit_courses_name(CourseID,newCourseName):#ç¼–è¾‘è¯¾ç¨‹åç§°
         try:
             if not Search_Dao.search1('Courses','CourseID',CourseID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             Courses_Dao.edit_courses_name(newCourseName,CourseID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def edit_courses_credit(CourseID,newCredit):#±à¼­¿Î³ÌÑ§·Ö
+    def edit_courses_credit(CourseID,newCredit):#ç¼–è¾‘è¯¾ç¨‹å­¦åˆ†
         try:
             if not Search_Dao.search1('Courses','CourseID',CourseID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             Courses_Dao.edit_courses_credit()
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def edit_teachers(CourseID,newTeacherID):#±à¼­ÊÚ¿Î½ÌÊ¦
+    def edit_teachers(CourseID,newTeacherID):#ç¼–è¾‘æˆè¯¾æ•™å¸ˆ
         try:
             if not Search_Dao.search1('Courses','CourseID',CourseID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             if not Search_Dao.search1('Teachers','TeacherID',newTeacherID):
-                return False,"¸Ã½ÌÊ¦²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥æ•™å¸ˆä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             Courses_Dao.edit_teachers(newTeacherID,CourseID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def attach_course_tb(TextbookID,CourseID):#Îª¿Î³Ì°ó¶¨½Ì²Ä
+    def attach_course_tb(TextbookID,CourseID):#ä¸ºè¯¾ç¨‹ç»‘å®šæ•™æ
         try:
             if not Search_Dao.search1('Textbooks','TextbookID',TextbookID):
-                return False,"¸Ã½Ì²Ä²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥æ•™æä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             if not Search_Dao.search1('Courses','CourseID',CourseID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             Courses_Dao.attach_course_tb(CourseID,TextbookID)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def course_capacity(current_page):#¿Î³ÌÈİÁ¿¼à¿Ø ÊµÊ±ÏÔÊ¾Ñ¡¿ÎÈËÊıÓë¿Î³Ì×î´óÈİÁ¿ Ô¤¾¯³¬ÏŞÇé¿ö
-        #ÈİÁ¿¼à¿ØÊÓÍ¼
+    def course_capacity(current_page):#è¯¾ç¨‹å®¹é‡ç›‘æ§ å®æ—¶æ˜¾ç¤ºé€‰è¯¾äººæ•°ä¸è¯¾ç¨‹æœ€å¤§å®¹é‡ é¢„è­¦è¶…é™æƒ…å†µ
+        #å®¹é‡ç›‘æ§è§†å›¾
         """CREATE VIEW vw_Course_Capacity AS
             SELECT
                 c.CourseID,
@@ -77,31 +77,31 @@ class Course_Services:
                         LIMIT %s OFFSET %s
         """
         count_sql="""SELECT COUNT(*) AS total FROM vw_Course_Capacity"""
-        #·ÖÒ³²ÎÊı
+        #åˆ†é¡µå‚æ•°
         page_size=20
         try:
             results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)
-            #ÏÔÊ¾Êı¾İ×¼±¸
+            #æ˜¾ç¤ºæ•°æ®å‡†å¤‡
                
-            #(ÏÔÊ¾Âß¼­´¦Àí)
+            #(æ˜¾ç¤ºé€»è¾‘å¤„ç†)
             for item in results['data']:
                     capacity=item['Capacity']
                     remain=item['remain']
-                        #×´Ì¬
-                    item['status']="Õı³£"
+                        #çŠ¶æ€
+                    item['status']="æ­£å¸¸"
                     if (remain/capacity>=0.9):
-                        item['status']="Ô¤¾¯£¡"
+                        item['status']="é¢„è­¦ï¼"
             return True,results
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def course_time_arr(CourseID,Day,StartTime,EndTime):#ÅÅ¿Î
+    def course_time_arr(CourseID,Day,StartTime,EndTime):#æ’è¯¾
         try:
             if not Search_Dao.search1('Courses','CourseID',CourseID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ£¬ÇëÖØĞÂÊäÈë"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥"
             if Search_Dao.search_time('Courses',Day,StartTime,EndTime):
-                return False,"ÓëÒÑÅÅ¿ÎÊ±¼ä³åÍ»£¬ÇëÖØĞÂÅÅ¿Î"
+                return False,"ä¸å·²æ’è¯¾æ—¶é—´å†²çªï¼Œè¯·é‡æ–°æ’è¯¾"
             Courses_Dao.course_time_arr(CourseID,Day,StartTime,EndTime)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"

@@ -8,10 +8,10 @@ import re
 import datetime
 class Enrollments_Dao:
     @staticmethod
-    def students_enroll(StudentID,CourseID):#Ñ§ÉúÑ¡¿Î
+    def students_enroll(StudentID,CourseID):#å­¦ç”Ÿé€‰è¯¾
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-                #Ğ´ÈëÑ¡¿Î±í
+                #å†™å…¥é€‰è¯¾è¡¨
         try:
             cursor.execute("INSERT INTO Enrollments (StudentID,CourseID) VALUES (%s,%s)"(StudentID,CourseID))
             conn.commit()
@@ -22,17 +22,17 @@ class Enrollments_Dao:
             cursor.close()
             conn.close()
     @staticmethod
-    def students_drop_course(StudentID,CourseID):#Ñ§ÉúÍË¿Î
+    def students_drop_course(StudentID,CourseID):#å­¦ç”Ÿé€€è¯¾
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
-        #¸ü¸Ä¼ÇÂ¼
+        #æ›´æ”¹è®°å½•
         try:
             cursor.execute("DELETE FROM Enrollments WHERE StudentId=%s ADD CourseID=%s"(StudentID,CourseID))
             conn.commit()
-            print("ÍË¿Î³É¹¦")
+            print("é€€è¯¾æˆåŠŸ")
         except Exception as e:
             conn.rollback()
-            print(f"²Ù×÷Ê§°Ü£º{str(e)}")
+            print(f"æ“ä½œå¤±è´¥ï¼š{str(e)}")
         finally:
             cursor.close()
             conn.close()

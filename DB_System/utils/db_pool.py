@@ -1,22 +1,22 @@
 import pymysql
 from dbutils.pooled_db import PooledDB
 class DBPool:
-    _instance=None#µ¥ÀıÄ£Ê½,È·±£Ò»¸öÀàÖ»ÓĞÒ»¸öÊµÀı£¬Ìá¹©È«¾Ö·ÃÎÊµã
+    _instance=None#å•ä¾‹æ¨¡å¼,ç¡®ä¿ä¸€ä¸ªç±»åªæœ‰ä¸€ä¸ªå®ä¾‹ï¼Œæä¾›å…¨å±€è®¿é—®ç‚¹
     def __init__(self):
         self.pool=PooledDB(
-            creator=pymysql,#Ö¸¶¨Êı¾İ¿âÇı¶¯
-            maxconnections=100,#Á¬½Ó³ØÔÊĞíµÄ×î´óÁ¬½ÓÊı
-            mincached=10,#³õÊ¼»¯Ê±Á¬½Ó³ØÖÁÉÙ´´½¨µÄ¿ÕÏĞÁ¬½ÓÊı
+            creator=pymysql,#æŒ‡å®šæ•°æ®åº“é©±åŠ¨
+            maxconnections=100,#è¿æ¥æ± å…è®¸çš„æœ€å¤§è¿æ¥æ•°
+            mincached=10,#åˆå§‹åŒ–æ—¶è¿æ¥æ± è‡³å°‘åˆ›å»ºçš„ç©ºé—²è¿æ¥æ•°
             host='localhost',
             user='root',
             password='20050119Sh?',
             database='education_system',
             )
-        @classmethod
-        def get_instance(cls):#ÀàÊôĞÔ
-            if not cls._instance:
-                cls._instance=cls()#³õÊ¼»¯ÊµÀı
-                return cls._instance
-        #get_instance·½·¨È·±£Êı¾İÁ¬½Ó³ØÔÚÈ«¾Ö·¶Î§ÄÚÊÇÎ¨Ò»µÄ
-        def get_conn(self):
-            return self.pool.connection()#´ÓÁ¬½Ó³Ø»ñÈ¡Ò»¸ö¿ÉÓÃµÄÊı¾İ¿â¶ÔÏó
+    @classmethod
+    def get_instance(cls):#ç±»å±æ€§
+        if not cls._instance:
+            cls._instance=cls()#åˆå§‹åŒ–å®ä¾‹
+            return cls._instance
+    #get_instanceæ–¹æ³•ç¡®ä¿æ•°æ®è¿æ¥æ± åœ¨å…¨å±€èŒƒå›´å†…æ˜¯å”¯ä¸€çš„
+    def get_conn(self):
+        return self.pool.connection()#ä»è¿æ¥æ± è·å–ä¸€ä¸ªå¯ç”¨çš„æ•°æ®åº“å¯¹è±¡

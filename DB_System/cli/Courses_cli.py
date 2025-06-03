@@ -3,112 +3,112 @@ from services.Courses_Services import Course_Services
 class Courses_cli:
     @staticmethod
     def show_menu():
-        print("\n===== ¿Î³Ì¹ÜÀíÒ³Ãæ =====")
-        print("1. ĞÂÔö¿Î³Ì")
-        print("2. ±à¼­¿Î³ÌÃû³Æ")
-        print("3. ±à¼­¿Î³ÌÑ§·Ö")
-        print("4. ±à¼­ÊÚ¿Î½ÌÊ¦")
-        print("5. Îª¿Î³Ì°ó¶¨½Ì²Ä")
-        print("6. ¿Î³ÌÈİÁ¿¼àÊÓ")
-        print("7. ÅÅ¿Î")
-        print("0. ÍË³ö")
+        print("\n===== è¯¾ç¨‹ç®¡ç†é¡µé¢ =====")
+        print("1. æ–°å¢è¯¾ç¨‹")
+        print("2. ç¼–è¾‘è¯¾ç¨‹åç§°")
+        print("3. ç¼–è¾‘è¯¾ç¨‹å­¦åˆ†")
+        print("4. ç¼–è¾‘æˆè¯¾æ•™å¸ˆ")
+        print("5. ä¸ºè¯¾ç¨‹ç»‘å®šæ•™æ")
+        print("6. è¯¾ç¨‹å®¹é‡ç›‘è§†")
+        print("7. æ’è¯¾")
+        print("0. é€€å‡º")
         print("========================")
     @staticmethod
-    def add_courses():#ĞÂÔö¿Î³Ì
+    def add_courses():#æ–°å¢è¯¾ç¨‹
         while True:
             while True:
-                CourseName=input("ÇëÊäÈë¿Î³ÌÃû³Æ").strip()
+                CourseName=input("è¯·è¾“å…¥è¯¾ç¨‹åç§°").strip()
                 if CourseName:
                     break
-                print("¿Î³ÌÃû²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                print("è¯¾ç¨‹åä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                Credit=input("ÇëÊäÈë¸Ã¿Î³ÌµÄÑ§·Ö").strip()
+                Credit=input("è¯·è¾“å…¥è¯¥è¯¾ç¨‹çš„å­¦åˆ†").strip()
                 if Credit:
                     break
-                print("²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
-            TeacherID=input("ÇëÊäÈë½ÌÊ¦ID")
+                print("ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
+            TeacherID=input("è¯·è¾“å…¥æ•™å¸ˆID")
             success,message=Course_Services.add_courses(CourseName,Credit,TeacherID)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def edit_courses_name():#±à¼­¿Î³ÌÃû³Æ
+    def edit_courses_name():#ç¼–è¾‘è¯¾ç¨‹åç§°
         while True:
             while True:
-                CourseID=input("ÇëÊäÈëÒª²Ù×÷µÄ¿Î³ÌID").strip()
+                CourseID=input("è¯·è¾“å…¥è¦æ“ä½œçš„è¯¾ç¨‹ID").strip()
                 if not CourseID:
-                    print("¿Î³ÌID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             while True:
-                newCourseName=input("ÇëÊäÈëĞÂÃû³Æ").strip()
+                newCourseName=input("è¯·è¾“å…¥æ–°åç§°").strip()
                 if newCourseName:
                     break
                 else:
-                    print("¿Î³ÌÃû²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹åä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             success,message=Course_Services.edit_courses_name(CourseID,newCourseName)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def edit_courses_credit():#±à¼­¿Î³ÌÑ§·Ö
+    def edit_courses_credit():#ç¼–è¾‘è¯¾ç¨‹å­¦åˆ†
         while True:
             while True:
-                CourseID=input("ÇëÊäÈëÒª²Ù×÷µÄ¿Î³ÌID").strip()
+                CourseID=input("è¯·è¾“å…¥è¦æ“ä½œçš„è¯¾ç¨‹ID").strip()
                 if not CourseID:
-                    print("¿Î³ÌID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             while True:
-                newCredit=input("ÇëÊäÈëÑ§·Ö").strip()
+                newCredit=input("è¯·è¾“å…¥å­¦åˆ†").strip()
                 if newCredit:
                     break
                 else:
-                    print("¿Î³ÌÃû²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹åä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             success,message=Course_Services.edit_courses_credit(CourseID,newCredit)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def edit_teachers():#±à¼­ÊÚ¿Î½ÌÊ¦
+    def edit_teachers():#ç¼–è¾‘æˆè¯¾æ•™å¸ˆ
         while True:
             while True:
-                CourseID=input("ÇëÊäÈëÒª²Ù×÷µÄ¿Î³ÌID").strip()
+                CourseID=input("è¯·è¾“å…¥è¦æ“ä½œçš„è¯¾ç¨‹ID").strip()
                 if not CourseID:
-                    print("¿Î³ÌID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             while True:
-                newTeacherID=input("ÇëÊäÈë½ÌÊ¦ID").strip()
+                newTeacherID=input("è¯·è¾“å…¥æ•™å¸ˆID").strip()
                 if newTeacherID:
                     break
                 else:
-                    print("ID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             success,message=Course_Services.edit_teachers(CourseID,newTeacherID)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def attach_course_tb():#Îª¿Î³Ì°ó¶¨½Ì²Ä
+    def attach_course_tb():#ä¸ºè¯¾ç¨‹ç»‘å®šæ•™æ
         while True:
             while True:
-                TextbookID=input("ÇëÊäÈëÒª²Ù×÷µÄ½Ì²ÄID").strip()
+                TextbookID=input("è¯·è¾“å…¥è¦æ“ä½œçš„æ•™æID").strip()
                 if not TextbookID:
-                    print("½Ì²ÄID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("æ•™æIDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             while True:
-                CourseID=input("ÇëÊäÈëÒª°ó¶¨µÄ¿Î³ÌID").strip()
+                CourseID=input("è¯·è¾“å…¥è¦ç»‘å®šçš„è¯¾ç¨‹ID").strip()
                 if not CourseID:
-                    print("¿Î³ÌID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
                 else:
                     break
             success,message=Course_Services.attach_course_tb(TextbookID,CourseID)
@@ -116,18 +116,18 @@ class Courses_cli:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def course_capacity_show():#¿Î³ÌÈİÁ¿¼àÊÓ
+    def course_capacity_show():#è¯¾ç¨‹å®¹é‡ç›‘è§†
         current_page=1
         while True:
             success,results=Course_Services.course_capacity(current_page)
             if success:
                 result=results['data']
                 total_pages=results['total_pages']
-                print(f"µ±Ç°Ò³Âë:{current_page}/{total_pages}")
+                print(f"å½“å‰é¡µç :{current_page}/{total_pages}")
                 print("{:<10}{:<25}{:<10}{:<10}{:<5}".format(
-                        "¿Î³ÌID","¿Î³ÌÃû³Æ","ÈİÁ¿","ÓàÁ¿","×´Ì¬"))
+                        "è¯¾ç¨‹ID","è¯¾ç¨‹åç§°","å®¹é‡","ä½™é‡","çŠ¶æ€"))
                 print("-"*60)
                 for item in result:
                         print("{:<10}{:<25}{:<10}{:<10}{:<5}".format(
@@ -137,74 +137,74 @@ class Courses_cli:
                             item['remain'],
                             item['status']
                             ))
-                    #·ÖÒ³µ¼º½
+                    #åˆ†é¡µå¯¼èˆª
                 if total_pages>1:
-                        action=input("ÇëÊäÈë²Ù×÷:n:ÏÂÒ»Ò³ p:ÏÂÒ»Ò³ j:Ìø×ªÄ¿±êÒ³ q:ÍË³ö ").lower()
+                        action=input("è¯·è¾“å…¥æ“ä½œ:n:ä¸‹ä¸€é¡µ p:ä¸‹ä¸€é¡µ j:è·³è½¬ç›®æ ‡é¡µ q:é€€å‡º ").lower()
                         if action=='n':
                             current_page=min(current_page+1,total_pages)
                         elif action=='p':
                             current_page=max(current_page-1,1)
                         elif action=='j':
-                            target=int(input(f"ÇëÊäÈëÄ¿±êÒ³(1-{total_pages})"))
+                            target=int(input(f"è¯·è¾“å…¥ç›®æ ‡é¡µ(1-{total_pages})"))
                             current_page=max(1,min(target,total_pages))
                         elif action=='q':
                             break
                         else:
-                            print("ÎŞĞ§²Ù×÷Âë")
+                            print("æ— æ•ˆæ“ä½œç ")
                 else:
-                        input("Ã»ÓĞ¸ü¶àÒ³,°´ÈÎÒâ¼ü·µ»Ø")
+                        input("æ²¡æœ‰æ›´å¤šé¡µ,æŒ‰ä»»æ„é”®è¿”å›")
                         break
             else:
-                print('\033[91m' + results + '\033[0m')#ºìÉ«ÎÄ±¾
+                print('\033[91m' + results + '\033[0m')#çº¢è‰²æ–‡æœ¬
     @staticmethod
-    def course_time_arr():#ÅÅ¿Î
+    def course_time_arr():#æ’è¯¾
         while True:
             while True:
-                CourseID=input("ÇëÊäÈëÒª²Ù×÷µÄ¿Î³ÌID")
+                CourseID=input("è¯·è¾“å…¥è¦æ“ä½œçš„è¯¾ç¨‹ID")
                 if CourseID:
                     break
                 else:
-                    print("¿Î³ÌID²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¯¾ç¨‹IDä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                Day=input("ÇëÊäÈëÉÏ¿ÎµÄĞÇÆÚ£¨1-7£©")
+                Day=input("è¯·è¾“å…¥ä¸Šè¯¾çš„æ˜ŸæœŸï¼ˆ1-7ï¼‰")
                 if Day:
                     if 1<=Day<=7:
                         break
                     else:
-                        print("ÇëÊäÈëÊı×Ö1-7")
+                        print("è¯·è¾“å…¥æ•°å­—1-7")
                 else:
-                    print("ĞÇÆÚ²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("æ˜ŸæœŸä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             while True:
-                StartTime=input("ÇëÊäÈëÉÏ¿ÎÊ±¼ä")
-                EndTime=input("ÇëÊäÈëÏÂ¿ÎÊ±¼ä")
+                StartTime=input("è¯·è¾“å…¥ä¸Šè¯¾æ—¶é—´")
+                EndTime=input("è¯·è¾“å…¥ä¸‹è¯¾æ—¶é—´")
                 if StartTime and EndTime:
                     break
                 else:
-                    print("ÊäÈë²»ÄÜÎª¿Õ£¬ÇëÖØĞÂÊäÈë")
+                    print("è¾“å…¥ä¸èƒ½ä¸ºç©ºï¼Œè¯·é‡æ–°è¾“å…¥")
             success,message=Course_Services.course_time_arr(CourseID,Day,StartTime,EndTime)
             if success:
                 print(message)
                 break
             else:
-                print('\033[91m' + message + '\033[0m')#ºìÉ«ÎÄ±¾\
+                print('\033[91m' + message + '\033[0m')#çº¢è‰²æ–‡æœ¬\
     @staticmethod
     def run():
         Courses_cli.show_menu()
         choice=1
         while choice:
-            choice=input("ÇëÑ¡Ôñ²Ù×÷£º").strip()
+            choice=input("è¯·é€‰æ‹©æ“ä½œï¼š").strip()
             match choice:
-                case 1:
+                case "1":
                     Courses_cli.add_courses()
-                case 2:
+                case "2":
                     Courses_cli.edit_courses_name()
-                case 3:
+                case "3":
                     Courses_cli.edit_courses_credit()
-                case 4:
+                case "4":
                     Courses_cli.edit_teachers()
-                case 5:
+                case "5":
                     Courses_cli.attach_course_tb()
-                case 6:
+                case "6":
                     Courses_cli.course_capacity_show()
-                case 7:
+                case "7":
                     Courses_cli.course_time_arr()

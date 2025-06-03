@@ -2,14 +2,14 @@ import bcrypt
 import secrets
 class Security_tools:
     @staticmethod
-    def hash_password(password):#¹şÏ£ÃÜÂë
+    def hash_password(password):#å“ˆå¸Œå¯†ç 
         salt=bcrypt.gensalt()
         return bcrypt.hashpw(password.encode('utf-8'),salt).decode('utf-8')
     @staticmethod
-    def verify_password(password,hashed_password):#ÑéÖ¤ÃÜÂë
+    def verify_password(password,hashed_password):#éªŒè¯å¯†ç 
         return bcrypt.checkpw(password.encode('utf-8'),hashed_password.encode('utf-8'))
     @staticmethod
-    def is_password_strong(password):#ÑéÖ¤ÃÜÂëÇ¿¶È
+    def is_password_strong(password):#éªŒè¯å¯†ç å¼ºåº¦
         if len(password)<8:
             return False
         if not any(char.isdigit() for char in password):

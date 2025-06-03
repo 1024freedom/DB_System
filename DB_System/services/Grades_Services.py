@@ -9,19 +9,19 @@ import datetime
 import re
 class Grades_Services:
     @staticmethod
-    def grades_insert_once(StudentID,CourseID,Score):#µ¥Ìõ³É¼¨Â¼Èë
+    def grades_insert_once(StudentID,CourseID,Score):#å•æ¡æˆç»©å½•å…¥
         try:
             if not Search_Dao.search1('Studnets','StudentID',StudentID):
-                return False,"¸ÃÑ§Éú²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£º"
+                return False,"è¯¥å­¦ç”Ÿä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
             if not Search_Dao.search2('Enrollments','CourseID','StudentID',CourseID,StudentID):
-                return False,"¸Ã¿Î³Ì²»´æÔÚ¸ÃÑ§ÉúµÄ¿Î±íÖĞ£¬ÇëÖØĞÂÊäÈë£º"
+                return False,"è¯¥è¯¾ç¨‹ä¸å­˜åœ¨è¯¥å­¦ç”Ÿçš„è¯¾è¡¨ä¸­ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š"
             Grades_Dao.grades_insert_once(StudentID,CourseID,Score)
-            return True,"²Ù×÷³É¹¦"
+            return True,"æ“ä½œæˆåŠŸ"
         except Exception as e:
             return False,f"{str(e)}"
     @staticmethod
-    def grades_alert(current_page):#Éú³É¾¯¸æÃûµ¥
-        #Ñ¡¿Î¼ÇÂ¼ÊÓÍ¼
+    def grades_alert(current_page):#ç”Ÿæˆè­¦å‘Šåå•
+        #é€‰è¯¾è®°å½•è§†å›¾
         """CREATE VIEW vw_Student_Enrollments AS 
             SELECT 
             e.EnrollmentID,
@@ -52,9 +52,9 @@ class Grades_Services:
         page_size=20
         try:
             results=Askpages_Dao.ask(base_sql,count_sql,page_size,current_page)
-            #ÏÔÊ¾Êı¾İ×¼±¸
+            #æ˜¾ç¤ºæ•°æ®å‡†å¤‡
                
-            #(ÏÔÊ¾Âß¼­´¦Àí)
+            #(æ˜¾ç¤ºé€»è¾‘å¤„ç†)
             #for item in results['data']:
                     
             return True,results

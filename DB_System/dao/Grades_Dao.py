@@ -8,7 +8,7 @@ import re
 import datetime
 class Grades_Dao:
     @staticmethod
-    def grades_insert_once(StudentID,CourseID,Score):#单条成绩录入
+    def grades_insert_once(StudentID,CourseID,Score):#鍗曟潯鎴愮哗褰曞叆
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
