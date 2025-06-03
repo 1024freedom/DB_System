@@ -27,6 +27,7 @@ PYTHONUTF8=1</Environment>
   <ItemGroup>
     <Folder Include="dao\" />
     <Folder Include="cli\" />
+    <Folder Include="tests\" />
     <Folder Include="services\" />
     <Folder Include="utils\" />
   </ItemGroup>
@@ -65,6 +66,7 @@ PYTHONUTF8=1</Environment>
     <Compile Include="services\Reservations_Services.py" />
     <Compile Include="services\Students_Services.py" />
     <Compile Include="services\Userlogin_Services.py" />
+    <Compile Include="tests\generate_test_data.py" />
     <Compile Include="utils\db_pool.py" />
     <Compile Include="utils\Security_tools.py" />
   </ItemGroup>

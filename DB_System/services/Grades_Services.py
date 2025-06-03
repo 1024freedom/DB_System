@@ -21,23 +21,7 @@ class Grades_Services:
             return False,f"{str(e)}"
     @staticmethod
     def grades_alert(current_page):#生成警告名单
-        #选课记录视图
-        """CREATE VIEW vw_Student_Enrollments AS 
-            SELECT 
-            e.EnrollmentID,
-            s.StudentID,
-            s.Name AS StudentName,
-            c.CourseID,
-            c.CourseName,
-            t.Name AS TeacherName,
-            c.Day,
-            c.StartTime,
-            c.EndTime
-        FROM Enrollments e
-        LEFT JOIN Students s ON e.StudentID=s.StudentID
-        LEFT JOIN Courses c ON e.CourseID=c.CourseID
-        LEFT JOIN Teachers t ON c.TeacherID=t.TeacherID
-        """
+        
         base_sql="""SELECT
                         StudentID,
                         CourseID,
