@@ -1,14 +1,11 @@
 from itertools import filterfalse
-from pickle import FALSE
-from numpy import False_
 from dao.Students_Dao import Students_Dao
 from dao.Askpages_Dao import Askpages_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao
 from openpyxl import Workbook
-from pymysql import NULL
 from utils.db_pool import DBPool
-from sqlalchemy import create_engine, false
+from sqlalchemy import create_engine
 import pandas as pd
 import datetime
 import re

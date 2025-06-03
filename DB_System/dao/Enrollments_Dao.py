@@ -1,6 +1,5 @@
 from sqlite3 import Cursor
 from openpyxl import Workbook
-from pymysql import NULL
 from utils.db_pool import DBPool
 from sqlalchemy import create_engine, true
 import pandas as pd

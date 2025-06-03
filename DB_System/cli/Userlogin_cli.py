@@ -1,4 +1,3 @@
-from sqlalchemy import true
 from services.Userlogin_Services import Userlogin_Services
 class Userlogin_cli:
     current_role=None#记录当前用户角色

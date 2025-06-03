@@ -1,9 +1,6 @@
-from sqlalchemy import true
 from dao.Att_Ass_Dao import Att_Ass_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao
-import datetime
-import re
 from datetime import date
 class Att_Ass_Services:
     @staticmethod

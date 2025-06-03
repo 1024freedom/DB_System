@@ -1,6 +1,5 @@
 from sqlite3 import Cursor
 from openpyxl import Workbook
-from pymysql import NULL
 from utils.db_pool import DBPool
 from sqlalchemy import create_engine
 import pandas as pd
@@ -15,7 +14,7 @@ class Students_Dao:
         try:
             sql="""INSERT INTO Students (Name, Gender, BirthDate, Phone)
             VALUES (%s, %s, %s, %s)"""
-            cursor.execute(sql,(Name, Gender, BirthDate, Phone))
+            cursor.execute(sql,(Name, Gender, BirthDate, Phone,))
             conn.commit()
         except Exception as e:
             conn.rollback()
@@ -29,7 +28,7 @@ class Students_Dao:
         cursor=conn.cursor()
         try:
             sql="""UPDATE Students SET Phone=%s WHERE StudentID=%s"""
-            cursor.execute(sql,(Phone,StudentID))
+            cursor.execute(sql,(Phone,StudentID,))
             conn.commit()
             print("学生手机号修改成功！")
         except Exception as e:
@@ -44,7 +43,7 @@ class Students_Dao:
         cursor=conn.cursor()
 
         try:
-            cursor.execute("UPDATE Students SET ClassID=%s WHERE StudentID=%s",(ClassID,StudentID))
+            cursor.execute("UPDATE Students SET ClassID=%s WHERE StudentID=%s",(ClassID,StudentID,))
             cursor.execute("UPDATE Classer SET CapacityNow=%s+1 WHERE ClassID=%s",(CapacityNow,ClassID,))
             conn.commit()
         except Exception as e:
@@ -71,7 +70,7 @@ class Students_Dao:
         conn = DBPool.get_instance().get_conn()
         cursor = conn.cursor()
         try:
-            cursor.executemany("INSERT INTO Students(Name,Gender,BirthDate,Phone,ClassID)VALUES(%s,%s,%s,%s,%s)"(valid_records))
+            cursor.executemany("INSERT INTO Students(Name,Gender,BirthDate,Phone,ClassID)VALUES(%s,%s,%s,%s,%s)"(valid_records,))
             conn.commit()
         except Exception as e:
             conn.rollback()

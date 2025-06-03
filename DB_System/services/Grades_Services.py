@@ -1,6 +1,3 @@
-from pickle import FALSE
-from numpy import False_
-from sqlalchemy import false
 from dao.Grades_Dao import Grades_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao

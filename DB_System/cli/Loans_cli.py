@@ -2,7 +2,7 @@ from services.Loans_Services import Loans_Services
 class Loans_cli:
     @staticmethod
     def show_menu():
-        print("\n===== 成绩管理页面 =====")
+        print("\n===== 借用管理页面 =====")
         print("1. 设备借用")
         print("2. 图书借用")
         print("0. 退出")

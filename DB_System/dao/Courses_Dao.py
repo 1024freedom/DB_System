@@ -1,18 +1,12 @@
 from sqlite3 import Cursor
-from numpy._core.multiarray import normalize_axis_index
-from pymysql import NULL
 from utils.db_pool import DBPool
-from sqlalchemy import create_engine
-import pandas as pd
-import re
-import datetime
 class Courses_Dao:
     @staticmethod
     def add_courses(CourseName,Credit,TeacherID):#新增课程
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
-            cursor.execute("INSERT INTO Courses (CourseName,Credit,TeacherID) VALUES(%s,%s,%s)"(CourseName,Credit,TeacherID))
+            cursor.execute("INSERT INTO Courses (CourseName,Credit,TeacherID) VALUES(%s,%s,%s)"(CourseName,Credit,TeacherID,))
             conn.commit()
         except Exception as e:
             conn.rollback()
@@ -25,7 +19,7 @@ class Courses_Dao:
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
-            cursor.execute("UPDATE FROM Courses SET CourseName=%s WHERE CourseID=%s"(newCourseName,CourseID))
+            cursor.execute("UPDATE FROM Courses SET CourseName=%s WHERE CourseID=%s"(newCourseName,CourseID,))
             conn.commit()
         except Exception as e:
             conn.rollback()
@@ -38,7 +32,7 @@ class Courses_Dao:
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
-            cursor.execute("UPDATE FROM Courses SET Credit=%s WHERE CourseID=%s"(newCredit,CourseID))
+            cursor.execute("UPDATE FROM Courses SET Credit=%s WHERE CourseID=%s"(newCredit,CourseID,))
             conn.commit()
         except Exception as e:
             conn.rollback()
@@ -51,7 +45,7 @@ class Courses_Dao:
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
-            cursor.execute("UPDATE FROM Courses SET TeacherID=%s WHERE CourseID=%s"(newTeacherID,CourseID))
+            cursor.execute("UPDATE FROM Courses SET TeacherID=%s WHERE CourseID=%s"(newTeacherID,CourseID,))
             conn.commit()
         except Exception as e:
             conn.rollback()
@@ -64,7 +58,7 @@ class Courses_Dao:
         conn=DBPool.get_instance().get_conn()
         cursor=conn.cursor()
         try:
-            cursor.execute("UPDATE FROM Textbooks SET CourseID=%s WHERE TextbookID=%s"(CourseID,TextbookID))
+            cursor.execute("UPDATE FROM Textbooks SET CourseID=%s WHERE TextbookID=%s"(CourseID,TextbookID,))
             conn.commit()
         except Exception as e:
             conn.rollback()

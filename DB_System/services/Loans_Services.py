@@ -1,4 +1,4 @@
-from numpy import False_
+
 from dao.LoanS_Dao import Loans_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao

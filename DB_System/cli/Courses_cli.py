@@ -1,4 +1,3 @@
-from numpy import True_
 from services.Courses_Services import Course_Services
 class Courses_cli:
     @staticmethod

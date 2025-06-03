@@ -2,10 +2,6 @@ from sqlite3 import Cursor
 from openpyxl import Workbook
 from pymysql import NULL
 from utils.db_pool import DBPool
-from sqlalchemy import create_engine
-import pandas as pd
-import re
-import datetime
 class Search_Dao:
     def search1(table:str,column:str,value:any):#检查是否存在(存在返回true)
         conn = DBPool.get_instance().get_conn()

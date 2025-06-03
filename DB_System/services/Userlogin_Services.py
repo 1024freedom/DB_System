@@ -1,4 +1,3 @@
-from sqlalchemy import true
 from dao.Userlogin_Dao import Userlogin_Dao
 from dao.Search_Dao import Search_Dao
 from utils.Security_tools import Security_tools

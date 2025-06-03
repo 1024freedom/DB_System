@@ -1,6 +1,3 @@
-from pickle import FALSE
-from numpy import False_
-from sqlalchemy import false
 from dao.Reservations_Dao import Reservations_Dao
 from dao.Askpages_Dao import Askpages_Dao
 from dao.Search_Dao import Search_Dao
@@ -34,7 +31,7 @@ class Reservation_Services:
             for(exist_start,exist_end) in Fetch_Dao.fetchof(sql,params):    
                 if (StartTime>exist_start and StartTime<exist_end) or (EndTime>exist_start and EndTime<exist_end):
                     return False,f"该时间段{StartTime}-{EndTime}已被预约，请重新选择"
-            Reservations_Dao.lab_reservation(LabID)
+            Reservations_Dao.lab_reservation(TeacherID,LabID,StartTime,EndTime)
             return True,"操作成功"
         except Exception as e:
             return False,f"{str(e)}"

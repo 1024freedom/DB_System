@@ -1,10 +1,7 @@
-from numpy import False_
 from dao.Courses_Dao import Courses_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao
 from dao.Askpages_Dao import Askpages_Dao
-import datetime
-import re
 class Course_Services:
     @staticmethod
     def add_courses(CourseName,Credit,TeacherID):#新增课程

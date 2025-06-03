@@ -1,11 +1,7 @@
-from numpy import False_
-from sqlalchemy import false
 from dao.Enrollments_Dao import Enrollments_Dao
 from dao.Search_Dao import Search_Dao
 from dao.Fetch_Dao import Fetch_Dao
 from dao.Askpages_Dao import Askpages_Dao
-import datetime
-import re
 class Enrollments_Servises:
     @staticmethod
     def students_enroll_avail(current_page):#可选课程查询
